@@ -655,6 +655,10 @@ set_location_assignment PLL_2 -to "altpll4:inst22|altpll:altpll_component|altpll
 
 set_location_assignment PLL_4 -to "altpll1:inst|altpll:altpll_component|altpll_hsp2:auto_generated|pll1"
 
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name AHDL_FILE blitter.tdf
 set_global_assignment -name SDC_FILE firebee1.sdc
 set_global_assignment -name VHDL_FILE compile_date.vhd
 set_global_assignment -name VHDL_FILE datetime.vhd
@@ -841,6 +845,4 @@ set_global_assignment -name QIP_FILE FPGA_DATE.qip
 set_global_assignment -name QIP_FILE Video/Doppelzeilen_Fifo.qip
 set_global_assignment -name QIP_FILE Video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE Video/BLITTER/lpm_ror128.qip
-set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
-set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
