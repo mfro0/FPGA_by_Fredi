@@ -117,10 +117,10 @@ begin
 		end if;
 	end process P_SAMPLE;
 
-	CLKDIV: process(CLK)
-	variable CLK_LOCK	: boolean;
-	variable STRB_LOCK	: boolean;
-	variable CLK_DIVCNT	: std_logic_vector(6 downto 0);
+	CLKDIV: process(all)
+        variable CLK_LOCK	: boolean;
+        variable STRB_LOCK	: boolean;
+        variable CLK_DIVCNT	: std_logic_vector(6 downto 0);
 	begin
 		if rising_edge(CLK) then
 			if CDS = "00" then -- Divider off.
@@ -174,7 +174,7 @@ begin
 		end if;
 	end process CLKDIV;
 	
-	DATAREG: process(RESETn, CLK)
+	DATAREG: process(all)
 	begin
 		if RESETn = '0' or MCLR = '1' then
 			DATA_REG <= x"00";
@@ -284,7 +284,7 @@ begin
 		end if;
 	end process OVERRUN;
 	
-	PARITY_TEST: process(RESETn,MCLR,CLK)
+	PARITY_TEST: process(all)
 	variable PAR_TMP	: bit;
 	variable PE_I		: bit;
 	begin
