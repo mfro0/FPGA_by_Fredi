@@ -3,17 +3,17 @@
 -- the Block Editor! File corruption is VERY likely to occur.
 
 -- Copyright (C) 1991-2008 Altera Corporation
--- Your use of Altera Corporation's design tools, logic functions 
--- and other software and tools, and its AMPP partner logic 
--- functions, and any output files from any of the foregoing 
--- (including device programming or simulation files), and any 
--- associated documentation or information are expressly subject 
--- to the terms and conditions of the Altera Program License 
--- Subscription Agreement, Altera MegaCore Function License 
--- Agreement, or other applicable license agreement, including, 
--- without limitation, that your use is for the sole purpose of 
--- programming logic devices manufactured by Altera and sold by 
--- Altera or its authorized distributors.  Please refer to the 
+-- Your use of Altera Corporation's design tools, logic functions
+-- and other software and tools, and its AMPP partner logic
+-- functions, and any output files from any of the foregoing
+-- (including device programming or simulation files), and any
+-- associated documentation or information are expressly subject
+-- to the terms and conditions of the Altera Program License
+-- Subscription Agreement, Altera MegaCore Function License
+-- Agreement, or other applicable license agreement, including,
+-- without limitation, that your use is for the sole purpose of
+-- programming logic devices manufactured by Altera and sold by
+-- Altera or its authorized distributors.  Please refer to the
 -- applicable agreement for further details.
 
 
@@ -37,323 +37,323 @@ ENTITY FalconIO_SDCard_IDE_CF IS
 	-- {{ALTERA_IO_BEGIN}} DO NOT REMOVE THIS LINE!
 	PORT
 	(
-		CLK33M : IN STD_LOGIC;
-		MAIN_CLK : IN STD_LOGIC;
-		CLK2M : IN STD_LOGIC;
-		CLK500k : IN STD_LOGIC;
-		nFB_CS1 : IN STD_LOGIC;
-		nFB_CS3 : IN STD_LOGIC;
-		FB_SIZE0 : IN STD_LOGIC;
-		FB_SIZE1 : IN STD_LOGIC;
-		nFB_BURST : IN STD_LOGIC;
-		FB_ADR : IN STD_LOGIC_VECTOR(31 downto 0);
-		LP_BUSY : IN STD_LOGIC;
-		nACSI_DRQ : IN STD_LOGIC;
-		nACSI_INT : IN STD_LOGIC;
-		nSCSI_DRQ : IN STD_LOGIC;
-		nSCSI_MSG : IN STD_LOGIC;
-		MIDI_IN : IN STD_LOGIC;
-		RxD : IN STD_LOGIC;
-		CTS : IN STD_LOGIC;
-		RI : IN STD_LOGIC;
-		DCD : IN STD_LOGIC;
-		AMKB_RX : IN STD_LOGIC;
-		PIC_AMKB_RX : IN STD_LOGIC;
-		IDE_RDY : IN STD_LOGIC;
-		IDE_INT : IN STD_LOGIC;
-		WP_CS_CARD : IN STD_LOGIC;
-		nINDEX : IN STD_LOGIC;
-		TRACK00 : IN STD_LOGIC;
-		nRD_DATA : IN STD_LOGIC;
-		nDCHG : IN STD_LOGIC;
-		SD_DATA0 : IN STD_LOGIC;
-		SD_DATA1 : IN STD_LOGIC;
-		SD_DATA2 : IN STD_LOGIC;
-		SD_CARD_DEDECT : IN STD_LOGIC;
-		SD_WP : IN STD_LOGIC;
-		nDACK0 : IN STD_LOGIC;
-		nFB_WR : INOUT STD_LOGIC;
-		WP_CF_CARD : IN STD_LOGIC;
-		nWP : IN STD_LOGIC;
-		nFB_CS2 : IN STD_LOGIC;
-		nRSTO : IN STD_LOGIC;
-		HD_DD : IN STD_LOGIC;
-		nSCSI_C_D : IN STD_LOGIC;
-		nSCSI_I_O : IN STD_LOGIC;
-		CLK2M4576 : IN STD_LOGIC;
-		nFB_OE : IN STD_LOGIC;
-		VSYNC : IN STD_LOGIC;
-		HSYNC : IN STD_LOGIC;
-		BLITTER_INT : IN STD_LOGIC;
-		DSP_INT : IN STD_LOGIC;
-		nBLANK : IN STD_LOGIC;
-		FDC_CLK : IN STD_LOGIC;
-		FB_ALE : IN STD_LOGIC;
-		ACP_CONF : IN STD_LOGIC_VECTOR(31 downto 0);
-		nIDE_CS1 : OUT STD_LOGIC;
-		nIDE_CS0 : OUT STD_LOGIC;
-		LP_STR : OUT STD_LOGIC;
-		LP_DIR : OUT STD_LOGIC;
-		nACSI_ACK : OUT STD_LOGIC;
-		nACSI_RESET : OUT STD_LOGIC;
-		nACSI_CS : OUT STD_LOGIC;
-		ACSI_DIR : OUT STD_LOGIC;
-		ACSI_A1 : OUT STD_LOGIC;
-		nSCSI_ACK : OUT STD_LOGIC;
-		nSCSI_ATN : OUT STD_LOGIC;
-		SCSI_DIR : OUT STD_LOGIC;
-		SD_CLK : OUT STD_LOGIC;
-		YM_QA : OUT STD_LOGIC;
-		YM_QC : OUT STD_LOGIC;
-		YM_QB : OUT STD_LOGIC;
-		nSDSEL : OUT STD_LOGIC;
-		STEP : OUT STD_LOGIC;
-		MOT_ON : OUT STD_LOGIC;
-		nRP_LDS : OUT STD_LOGIC;
-		nRP_UDS : OUT STD_LOGIC;
-		nROM4 : OUT STD_LOGIC;
-		nROM3 : OUT STD_LOGIC;
-		nCF_CS1 : OUT STD_LOGIC;
-		nCF_CS0 : OUT STD_LOGIC;
-		nIDE_RD : INOUT STD_LOGIC;
-		nIDE_WR : INOUT STD_LOGIC;
-		AMKB_TX : buffer STD_LOGIC;
-		IDE_RES : OUT STD_LOGIC;
-		DTR : OUT STD_LOGIC;
-		RTS : OUT STD_LOGIC;
-		TxD : OUT STD_LOGIC;
-		MIDI_OLR : OUT STD_LOGIC;
-		MIDI_TLR : OUT STD_LOGIC;
-		nDREQ0 : OUT STD_LOGIC;
-		DSA_D : OUT STD_LOGIC;
-		nMFP_INT : OUT STD_LOGIC;
-		FALCON_IO_TA : OUT STD_LOGIC;
-		STEP_DIR : OUT STD_LOGIC;
-		WR_DATA : OUT STD_LOGIC;
-		WR_GATE : OUT STD_LOGIC;
-		DMA_DRQ : OUT STD_LOGIC;
-		FB_AD : INOUT STD_LOGIC_VECTOR(31 downto 0);
-		LP_D : INOUT STD_LOGIC_VECTOR(7 downto 0);
-		ACSI_D : INOUT STD_LOGIC_VECTOR(7 downto 0);
-		SCSI_D : INOUT STD_LOGIC_VECTOR(7 downto 0);
-		SCSI_PAR : INOUT STD_LOGIC;
-		nSCSI_SEL : INOUT STD_LOGIC;
-		nSCSI_BUSY : INOUT STD_LOGIC;
-		nSCSI_RST : INOUT STD_LOGIC;
-		SD_CD_DATA3 : INOUT STD_LOGIC;
-		SD_CDM_D1 : INOUT STD_LOGIC;
-		VIDEO_TA : IN STD_LOGIC
+		CLK33M          : IN STD_LOGIC;
+		MAIN_CLK        : IN STD_LOGIC;
+		CLK2M           : IN STD_LOGIC;
+		CLK500k         : IN STD_LOGIC;
+		nFB_CS1         : IN STD_LOGIC;
+		nFB_CS3         : IN STD_LOGIC;
+		FB_SIZE0        : IN STD_LOGIC;
+		FB_SIZE1        : IN STD_LOGIC;
+		nFB_BURST       : IN STD_LOGIC;
+		FB_ADR          : IN STD_LOGIC_VECTOR(31 downto 0);
+		LP_BUSY         : IN STD_LOGIC;
+		nACSI_DRQ       : IN STD_LOGIC;
+		nACSI_INT       : IN STD_LOGIC;
+		nSCSI_DRQ       : IN STD_LOGIC;
+		nSCSI_MSG       : IN STD_LOGIC;
+		MIDI_IN         : IN STD_LOGIC;
+		RxD             : IN STD_LOGIC;
+		CTS             : IN STD_LOGIC;
+		RI              : IN STD_LOGIC;
+		DCD             : IN STD_LOGIC;
+		AMKB_RX         : IN STD_LOGIC;
+		PIC_AMKB_RX     : IN STD_LOGIC;
+		IDE_RDY         : IN STD_LOGIC;
+		IDE_INT         : IN STD_LOGIC;
+		WP_CS_CARD      : IN STD_LOGIC;
+		nINDEX          : IN STD_LOGIC;
+		TRACK00         : IN STD_LOGIC;
+		nRD_DATA        : IN STD_LOGIC;
+		nDCHG           : IN STD_LOGIC;
+		SD_DATA0        : IN STD_LOGIC;
+		SD_DATA1        : IN STD_LOGIC;
+		SD_DATA2        : IN STD_LOGIC;
+		SD_CARD_DEDECT  : IN STD_LOGIC;
+		SD_WP           : IN STD_LOGIC;
+		nDACK0          : IN STD_LOGIC;
+		nFB_WR          : INOUT STD_LOGIC;
+		WP_CF_CARD      : IN STD_LOGIC;
+		nWP             : IN STD_LOGIC;
+		nFB_CS2         : IN STD_LOGIC;
+		nRSTO           : IN STD_LOGIC;
+		HD_DD           : IN STD_LOGIC;
+		nSCSI_C_D       : IN STD_LOGIC;
+		nSCSI_I_O       : IN STD_LOGIC;
+		CLK2M4576       : IN STD_LOGIC;
+		nFB_OE          : IN STD_LOGIC;
+		VSYNC           : IN STD_LOGIC;
+		HSYNC           : IN STD_LOGIC;
+		BLITTER_INT     : IN STD_LOGIC;
+		DSP_INT         : IN STD_LOGIC;
+		nBLANK          : IN STD_LOGIC;
+		FDC_CLK         : IN STD_LOGIC;
+		FB_ALE          : IN STD_LOGIC;
+		ACP_CONF        : IN STD_LOGIC_VECTOR(31 downto 0);
+		nIDE_CS1        : OUT STD_LOGIC;
+		nIDE_CS0        : OUT STD_LOGIC;
+		LP_STR          : OUT STD_LOGIC;
+		LP_DIR          : OUT STD_LOGIC;
+		nACSI_ACK       : OUT STD_LOGIC;
+		nACSI_RESET     : OUT STD_LOGIC;
+		nACSI_CS        : OUT STD_LOGIC;
+		ACSI_DIR        : OUT STD_LOGIC;
+		ACSI_A1         : OUT STD_LOGIC;
+		nSCSI_ACK       : OUT STD_LOGIC;
+		nSCSI_ATN       : OUT STD_LOGIC;
+		SCSI_DIR        : OUT STD_LOGIC;
+		SD_CLK          : OUT STD_LOGIC;
+		YM_QA           : OUT STD_LOGIC;
+		YM_QC           : OUT STD_LOGIC;
+		YM_QB           : OUT STD_LOGIC;
+		nSDSEL          : OUT STD_LOGIC;
+		STEP            : OUT STD_LOGIC;
+		MOT_ON          : OUT STD_LOGIC;
+		nRP_LDS         : OUT STD_LOGIC;
+		nRP_UDS         : OUT STD_LOGIC;
+		nROM4           : OUT STD_LOGIC;
+		nROM3           : OUT STD_LOGIC;
+		nCF_CS1         : OUT STD_LOGIC;
+		nCF_CS0         : OUT STD_LOGIC;
+		nIDE_RD         : INOUT STD_LOGIC;
+		nIDE_WR         : INOUT STD_LOGIC;
+		AMKB_TX         : buffer STD_LOGIC;
+		IDE_RES         : OUT STD_LOGIC;
+		DTR             : OUT STD_LOGIC;
+		RTS             : OUT STD_LOGIC;
+		TxD             : OUT STD_LOGIC;
+		MIDI_OLR        : OUT STD_LOGIC;
+		MIDI_TLR        : OUT STD_LOGIC;
+		nDREQ0          : OUT STD_LOGIC;
+		DSA_D           : OUT STD_LOGIC;
+		nMFP_INT        : OUT STD_LOGIC;
+		FALCON_IO_TA    : OUT STD_LOGIC;
+		STEP_DIR        : OUT STD_LOGIC;
+		WR_DATA         : OUT STD_LOGIC;
+		WR_GATE         : OUT STD_LOGIC;
+		DMA_DRQ         : OUT STD_LOGIC;
+		FB_AD           : INOUT STD_LOGIC_VECTOR(31 downto 0);
+		LP_D            : INOUT STD_LOGIC_VECTOR(7 downto 0);
+		ACSI_D          : INOUT STD_LOGIC_VECTOR(7 downto 0);
+		SCSI_D          : INOUT STD_LOGIC_VECTOR(7 downto 0);
+		SCSI_PAR        : INOUT STD_LOGIC;
+		nSCSI_SEL       : INOUT STD_LOGIC;
+		nSCSI_BUSY      : INOUT STD_LOGIC;
+		nSCSI_RST       : INOUT STD_LOGIC;
+		SD_CD_DATA3     : INOUT STD_LOGIC;
+		SD_CDM_D1       : INOUT STD_LOGIC;
+		VIDEO_TA        : IN STD_LOGIC
 	);
 	-- {{ALTERA_IO_END}} DO NOT REMOVE THIS LINE!
-	
+
 END FalconIO_SDCard_IDE_CF;
 
 
 --  Architecture Body
 
 ARCHITECTURE FalconIO_SDCard_IDE_CF_architecture OF FalconIO_SDCard_IDE_CF IS
--- system
-signal SYS_CLK					: STD_LOGIC;
-signal RESETn					: STD_LOGIC;
-signal FB_B0					: STD_LOGIC;	-- UPPER BYT BEI 16BIT BUS
-signal FB_B1					: STD_LOGIC;	-- LOWER BYT BEI 16BIT BUS
-signal BYT						: STD_LOGIC;	-- WENN BYT -> 1
-signal LONG						: STD_LOGIC;	-- WENN Long -> 1
-signal FB_ADI					: STD_LOGIC_VECTOR(15 downto 0);	-- gespeicherte writedaten
-signal nResetatio				: STD_LOGIC;	-- reset atari bausteine
--- KEYBOARD MIDI
-signal ACIA_CS_I				: STD_LOGIC;
-signal IRQ_KEYBDn				: STD_LOGIC;
-signal IRQ_MIDIn				: STD_LOGIC;
-signal KEYB_RxD					: STD_LOGIC;
-signal AMKB_REG					: STD_LOGIC_VECTOR(3 downto 0);
-signal AMKB_TX_sync				: std_logic;
-signal MIDI_OUT					: STD_LOGIC;
-signal DATA_OUT_ACIA_I			: STD_LOGIC_VECTOR(7 downto 0);
-signal DATA_OUT_ACIA_II			: STD_LOGIC_VECTOR(7 downto 0);
--- MFP
-signal MFP_CS					: STD_LOGIC;
-signal MFP_INTACK				: STD_LOGIC;
-signal LDS						: STD_LOGIC;
-signal acia_irq					: STD_LOGIC;
-signal DTACK_OUT_MFPn			: STD_LOGIC;
-signal DINTn					: STD_LOGIC;
-signal DATA_OUT_MFP				: STD_LOGIC_VECTOR(7 downto 0);
-signal TDO						: STD_LOGIC;
--- SOUND
-signal SNDCS					: STD_LOGIC;
-signal SNDCS_I					: STD_LOGIC;
-signal SNDIR_I					: STD_LOGIC;
-signal DA_OUT_X					: STD_LOGIC_VECTOR(7 downto 0);
-signal LP_D_X					: STD_LOGIC_VECTOR(7 downto 0);
-signal LP_STR_X					: STD_LOGIC;
-signal LP_STR_NS1				: STD_LOGIC;
-signal LP_STR_NS0				: STD_LOGIC;
-signal LP_DIR_X					: STD_LOGIC;
-signal LP_DIR_NS1				: STD_LOGIC;
-signal LP_DIR_NS0				: STD_LOGIC;
--- DMA SOUND
-signal dma_snd_cs				: STD_LOGIC;
-signal sndmactl					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndbashi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndbasmi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndbaslo					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndadrhi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndadrmi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndadrlo					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndendhi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndendmi					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndendlo					: STD_LOGIC_VECTOR(7 downto 0);
-signal sndmode					: STD_LOGIC_VECTOR(7 downto 0);
--- DIV
-signal SUB_BUS					: STD_LOGIC;	-- SUB BUS MIT ROM-PORT, CF UND IDE
-signal ROM_CS					: STD_LOGIC;
--- DMA UND FLOPPY
-signal DMA_DATEN_CS				: STD_LOGIC;
-signal DMA_MODUS_CS				: STD_LOGIC;
-signal DMA_MODUS				: STD_LOGIC_VECTOR(15 downto 0);
-signal WDC_BSL_CS				: STD_LOGIC;
-signal WDC_BSL					: STD_LOGIC_VECTOR(1 DOWNTO 0);
-signal HD_DD_OUT				: STD_LOGIC;
-signal FDCS_In					: STD_LOGIC;
-signal CA0						: STD_LOGIC;
-signal CA1						: STD_LOGIC;
-signal CA2						: STD_LOGIC;
-signal FDINT					: STD_LOGIC;
-signal FDRQ						: STD_LOGIC;
-signal CD_OUT_FDC				: STD_LOGIC_VECTOR(7 downto 0);
-signal CD_IN_FDC				: STD_LOGIC_VECTOR(7 downto 0);
-signal DMA_TOP_CS				: STD_LOGIC;
-signal DMA_TOP					: STD_LOGIC_VECTOR(7 downto 0);
-signal DMA_HIGH_CS				: STD_LOGIC;
-signal DMA_HIGH					: STD_LOGIC_VECTOR(7 downto 0);
-signal DMA_MID_CS				: STD_LOGIC;
-signal DMA_MID					: STD_LOGIC_VECTOR(7 downto 0);
-signal DMA_LOW_CS				: STD_LOGIC;
-signal DMA_LOW					: STD_LOGIC_VECTOR(7 downto 0);
-signal DMA_DIRM_CS				: STD_LOGIC;
-signal DMA_ADR_CS				: STD_LOGIC;
-signal DMA_STATUS				: STD_LOGIC_VECTOR(2 downto 0);
-signal DMA_DIR_OLD				: STD_LOGIC;
-signal DMA_BYT_CNT_CS			: STD_LOGIC;
-signal DMA_BYT_CNT				: STD_LOGIC_VECTOR(31 downto 0);
-signal CLR_FIFO					: STD_LOGIC;
-signal DMA_DRQ_I				: STD_LOGIC;
-signal DMA_DRQ_REG				: STD_LOGIC_VECTOR(1 downto 0);
-signal DMA_DRQQ					: STD_LOGIC;
-signal DMA_DRQ_Q				: STD_LOGIC;
-signal RDF_DOUT					: STD_LOGIC_VECTOR(31 downto 0);
-signal RDF_AZ					: STD_LOGIC_VECTOR(9 downto 0);
-signal RDF_RDE					: STD_LOGIC;
-signal RDF_WRE					: STD_LOGIC;
-signal RDF_DIN					: STD_LOGIC_VECTOR(7 downto 0);
-signal WRF_DOUT					: STD_LOGIC_VECTOR(7 downto 0);
-signal WRF_AZ					: STD_LOGIC_VECTOR(9 downto 0);
-signal WRF_RDE					: STD_LOGIC;
-signal WRF_WRE					: STD_LOGIC;
-signal nFDC_WR					: STD_LOGIC;
-type FCF_STATES is(	FCF_IDLE, FCF_T0, FCF_T1, FCF_T2, FCF_T3, FCF_T6, FCF_T7);
-signal FCF_STATE				: FCF_STATES;
-signal NEXT_FCF_STATE			: FCF_STATES;
-signal DMA_REQ					: STD_LOGIC;
-signal FDC_CS					: STD_LOGIC;
-signal FCF_CS					: STD_LOGIC;
-signal FCF_APH					: STD_LOGIC;
-signal DMA_AZ_CS				: STD_LOGIC;
-signal DMA_ACTIV				: STD_LOGIC;
-signal DMA_ACTIV_NEW			: STD_LOGIC;
-signal FDC_OUT					: STD_LOGIC_VECTOR(7 downto 0);
--- SCSI
-signal SCSI_CS					: STD_LOGIC;
-signal SCSI_CSn					: STD_LOGIC;
-signal SCSI_DOUT				: STD_LOGIC_VECTOR(7 downto 0);
-signal nSCSI_DACK				: STD_LOGIC;
-signal SCSI_DRQ					: STD_LOGIC;
-signal SCSI_INT					: STD_LOGIC;
-signal DB_OUTn					: STD_LOGIC_VECTOR(7 downto 0);
-signal DB_EN					: STD_LOGIC;
-signal DBP_OUTn					: STD_LOGIC;
-signal DBP_EN					: STD_LOGIC;
-signal RST_OUTn					: STD_LOGIC;
-signal RST_EN					: STD_LOGIC;
-signal BSY_OUTn					: STD_LOGIC;
-signal BSY_EN					: STD_LOGIC;
-signal SEL_OUTn					: STD_LOGIC;
-signal SEL_EN					: STD_LOGIC;
--- IDE
-signal nnIDE_RES				: STD_LOGIC;
-signal IDE_CF_CS				: STD_LOGIC;
-signal IDE_DRIVE0				: STD_LOGIC;
-signal IDE_DRIVE1				: STD_LOGIC;
-signal IDE_DCS					: STD_LOGIC;
-signal IDE_TA					: STD_LOGIC;
-type CMD_STATES is(IDLE,T1,T2,T3,T4,T5,T6,T7,T8,T9);
-signal CMD_STATE				: CMD_STATES;
-signal NEXT_CMD_STATE			: CMD_STATES;
--- Paddle
-signal paddle_cs				: STD_LOGIC;
+    -- system
+    signal SYS_CLK					: STD_LOGIC;
+    signal RESETn					: STD_LOGIC;
+    signal FB_B0					: STD_LOGIC;	-- UPPER BYT BEI 16BIT BUS
+    signal FB_B1					: STD_LOGIC;	-- LOWER BYT BEI 16BIT BUS
+    signal BYT						: STD_LOGIC;	-- WENN BYT -> 1
+    signal LONG						: STD_LOGIC;	-- WENN Long -> 1
+    signal FB_ADI					: STD_LOGIC_VECTOR(15 downto 0);	-- gespeicherte writedaten
+    signal nResetatio				: STD_LOGIC;	-- reset atari bausteine
+    -- KEYBOARD MIDI
+    signal ACIA_CS_I				: STD_LOGIC;
+    signal IRQ_KEYBDn				: STD_LOGIC;
+    signal IRQ_MIDIn				: STD_LOGIC;
+    signal KEYB_RxD					: STD_LOGIC;
+    signal AMKB_REG					: STD_LOGIC_VECTOR(3 downto 0);
+    signal AMKB_TX_sync				: std_logic;
+    signal MIDI_OUT					: STD_LOGIC;
+    signal DATA_OUT_ACIA_I			: STD_LOGIC_VECTOR(7 downto 0);
+    signal DATA_OUT_ACIA_II			: STD_LOGIC_VECTOR(7 downto 0);
+    -- MFP
+    signal MFP_CS					: STD_LOGIC;
+    signal MFP_INTACK				: STD_LOGIC;
+    signal LDS						: STD_LOGIC;
+    signal acia_irq					: STD_LOGIC;
+    signal DTACK_OUT_MFPn			: STD_LOGIC;
+    signal DINTn					: STD_LOGIC;
+    signal DATA_OUT_MFP				: STD_LOGIC_VECTOR(7 downto 0);
+    signal TDO						: STD_LOGIC;
+    -- SOUND
+    signal SNDCS					: STD_LOGIC;
+    signal SNDCS_I					: STD_LOGIC;
+    signal SNDIR_I					: STD_LOGIC;
+    signal DA_OUT_X					: STD_LOGIC_VECTOR(7 downto 0);
+    signal LP_D_X					: STD_LOGIC_VECTOR(7 downto 0);
+    signal LP_STR_X					: STD_LOGIC;
+    signal LP_STR_NS1				: STD_LOGIC;
+    signal LP_STR_NS0				: STD_LOGIC;
+    signal LP_DIR_X					: STD_LOGIC;
+    signal LP_DIR_NS1				: STD_LOGIC;
+    signal LP_DIR_NS0				: STD_LOGIC;
+    -- DMA SOUND
+    signal dma_snd_cs				: STD_LOGIC;
+    signal sndmactl					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndbashi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndbasmi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndbaslo					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndadrhi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndadrmi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndadrlo					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndendhi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndendmi					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndendlo					: STD_LOGIC_VECTOR(7 downto 0);
+    signal sndmode					: STD_LOGIC_VECTOR(7 downto 0);
+    -- DIV
+    signal SUB_BUS					: STD_LOGIC;	-- SUB BUS MIT ROM-PORT, CF UND IDE
+    signal ROM_CS					: STD_LOGIC;
+    -- DMA UND FLOPPY
+    signal DMA_DATEN_CS				: STD_LOGIC;
+    signal DMA_MODUS_CS				: STD_LOGIC;
+    signal DMA_MODUS				: STD_LOGIC_VECTOR(15 downto 0);
+    signal WDC_BSL_CS				: STD_LOGIC;
+    signal WDC_BSL					: STD_LOGIC_VECTOR(1 DOWNTO 0);
+    signal HD_DD_OUT				: STD_LOGIC;
+    signal FDCS_In					: STD_LOGIC;
+    signal CA0						: STD_LOGIC;
+    signal CA1						: STD_LOGIC;
+    signal CA2						: STD_LOGIC;
+    signal FDINT					: STD_LOGIC;
+    signal FDRQ						: STD_LOGIC;
+    signal CD_OUT_FDC				: STD_LOGIC_VECTOR(7 downto 0);
+    signal CD_IN_FDC				: STD_LOGIC_VECTOR(7 downto 0);
+    signal DMA_TOP_CS				: STD_LOGIC;
+    signal DMA_TOP					: STD_LOGIC_VECTOR(7 downto 0);
+    signal DMA_HIGH_CS				: STD_LOGIC;
+    signal DMA_HIGH					: STD_LOGIC_VECTOR(7 downto 0);
+    signal DMA_MID_CS				: STD_LOGIC;
+    signal DMA_MID					: STD_LOGIC_VECTOR(7 downto 0);
+    signal DMA_LOW_CS				: STD_LOGIC;
+    signal DMA_LOW					: STD_LOGIC_VECTOR(7 downto 0);
+    signal DMA_DIRM_CS				: STD_LOGIC;
+    signal DMA_ADR_CS				: STD_LOGIC;
+    signal DMA_STATUS				: STD_LOGIC_VECTOR(2 downto 0);
+    signal DMA_DIR_OLD				: STD_LOGIC;
+    signal DMA_BYT_CNT_CS			: STD_LOGIC;
+    signal DMA_BYT_CNT				: STD_LOGIC_VECTOR(31 downto 0);
+    signal CLR_FIFO					: STD_LOGIC;
+    signal DMA_DRQ_I				: STD_LOGIC;
+    signal DMA_DRQ_REG				: STD_LOGIC_VECTOR(1 downto 0);
+    signal DMA_DRQQ					: STD_LOGIC;
+    signal DMA_DRQ_Q				: STD_LOGIC;
+    signal RDF_DOUT					: STD_LOGIC_VECTOR(31 downto 0);
+    signal RDF_AZ					: STD_LOGIC_VECTOR(9 downto 0);
+    signal RDF_RDE					: STD_LOGIC;
+    signal RDF_WRE					: STD_LOGIC;
+    signal RDF_DIN					: STD_LOGIC_VECTOR(7 downto 0);
+    signal WRF_DOUT					: STD_LOGIC_VECTOR(7 downto 0);
+    signal WRF_AZ					: STD_LOGIC_VECTOR(9 downto 0);
+    signal WRF_RDE					: STD_LOGIC;
+    signal WRF_WRE					: STD_LOGIC;
+    signal nFDC_WR					: STD_LOGIC;
+    type FCF_STATES is(	FCF_IDLE, FCF_T0, FCF_T1, FCF_T2, FCF_T3, FCF_T6, FCF_T7);
+    signal FCF_STATE				: FCF_STATES;
+    signal NEXT_FCF_STATE			: FCF_STATES;
+    signal DMA_REQ					: STD_LOGIC;
+    signal FDC_CS					: STD_LOGIC;
+    signal FCF_CS					: STD_LOGIC;
+    signal FCF_APH					: STD_LOGIC;
+    signal DMA_AZ_CS				: STD_LOGIC;
+    signal DMA_ACTIV				: STD_LOGIC;
+    signal DMA_ACTIV_NEW			: STD_LOGIC;
+    signal FDC_OUT					: STD_LOGIC_VECTOR(7 downto 0);
+    -- SCSI
+    signal SCSI_CS					: STD_LOGIC;
+    signal SCSI_CSn					: STD_LOGIC;
+    signal SCSI_DOUT				: STD_LOGIC_VECTOR(7 downto 0);
+    signal nSCSI_DACK				: STD_LOGIC;
+    signal SCSI_DRQ					: STD_LOGIC;
+    signal SCSI_INT					: STD_LOGIC;
+    signal DB_OUTn					: STD_LOGIC_VECTOR(7 downto 0);
+    signal DB_EN					: STD_LOGIC;
+    signal DBP_OUTn					: STD_LOGIC;
+    signal DBP_EN					: STD_LOGIC;
+    signal RST_OUTn					: STD_LOGIC;
+    signal RST_EN					: STD_LOGIC;
+    signal BSY_OUTn					: STD_LOGIC;
+    signal BSY_EN					: STD_LOGIC;
+    signal SEL_OUTn					: STD_LOGIC;
+    signal SEL_EN					: STD_LOGIC;
+    -- IDE
+    signal nnIDE_RES				: STD_LOGIC;
+    signal IDE_CF_CS				: STD_LOGIC;
+    signal IDE_DRIVE0				: STD_LOGIC;
+    signal IDE_DRIVE1				: STD_LOGIC;
+    signal IDE_DCS					: STD_LOGIC;
+    signal IDE_TA					: STD_LOGIC;
+    type CMD_STATES is(IDLE,T1,T2,T3,T4,T5,T6,T7,T8,T9);
+    signal CMD_STATE				: CMD_STATES;
+    signal NEXT_CMD_STATE			: CMD_STATES;
+    -- Paddle
+    signal paddle_cs				: STD_LOGIC;
 
 BEGIN
-LONG  <= '1' when FB_SIZE1 = '0' and FB_SIZE0 = '0' else '0';
-BYT   <= '1' when FB_SIZE1 = '0' and FB_SIZE0 = '1' else '0';
-FB_B0 <= '1' when FB_ADR(0) = '0' or BYT = '0' else '0';
-FB_B1 <= '1' when FB_ADR(0) = '1' or BYT = '0' else '0';
+    LONG  <= '1' when FB_SIZE1 = '0' and FB_SIZE0 = '0' else '0';
+    BYT   <= '1' when FB_SIZE1 = '0' and FB_SIZE0 = '1' else '0';
+    FB_B0 <= '1' when FB_ADR(0) = '0' or BYT = '0' else '0';
+    FB_B1 <= '1' when FB_ADR(0) = '1' or BYT = '0' else '0';
 
-FALCON_IO_TA <= '1' when ACIA_CS_I = '1' or DTACK_OUT_MFPn = '0' or DMA_MODUS_CS ='1' or dma_snd_cs = '1' or paddle_cs = '1'
-				 or DMA_ADR_CS = '1' or DMA_DIRM_CS = '1' or DMA_BYT_CNT_CS = '1' or FCF_CS = '1' or IDE_TA = '1' else '0';	--SNDCS = '1' or 
-SUB_BUS <= '1' when nFB_WR = '1' and ROM_CS = '1' ELSE
-           '1' when IDE_CF_CS = '1' ELSE '0';					-- DARF NICHT AKTIV SEIN BEI ZUGRIFF AUF DRIVE 0 UND 1 DA KOMMEN DIE DATEN DIREKT VOM FPGA
-nRP_UDS <= '0' when SUB_BUS = '1' and FB_B0 = '1' else '1'; 
-nRP_LDS <= '0' when SUB_BUS = '1' and FB_B1 = '1' else '1'; 
+    FALCON_IO_TA <= '1' when ACIA_CS_I = '1' or DTACK_OUT_MFPn = '0' or DMA_MODUS_CS ='1' or dma_snd_cs = '1' or paddle_cs = '1'
+                     or DMA_ADR_CS = '1' or DMA_DIRM_CS = '1' or DMA_BYT_CNT_CS = '1' or FCF_CS = '1' or IDE_TA = '1' else '0';	--SNDCS = '1' or
+    SUB_BUS <= '1' when nFB_WR = '1' and ROM_CS = '1' ELSE
+               '1' when IDE_CF_CS = '1' ELSE '0';					-- DARF NICHT AKTIV SEIN BEI ZUGRIFF AUF DRIVE 0 UND 1 DA KOMMEN DIE DATEN DIREKT VOM FPGA
+    nRP_UDS <= '0' when SUB_BUS = '1' and FB_B0 = '1' else '1';
+    nRP_LDS <= '0' when SUB_BUS = '1' and FB_B1 = '1' else '1';
 
--- input daten halten
-process(MAIN_CLK, nFB_WR, FB_AD(31 downto 16), FB_ADI(15 downto 0))
-	begin
-		if rising_edge(MAIN_CLK) then
-			IF nFB_WR = '0' THEN
-				FB_ADI <= FB_AD(31 downto 16); 
-			ELSE
-				FB_ADI <= FB_ADI; 
-			end if;
-		ELSE
-			FB_ADI <= FB_ADI; 
-		end if;
-	END PROCESS;
-----------------------------------------------------------------------------
--- SD
-----------------------------------------------------------------------------
-SD_CLK <= 'Z';
-SD_CD_DATA3 <= 'Z';
-SD_CDM_D1 <= 'Z';
-----------------------------------------------------------------------------
--- IDE
-----------------------------------------------------------------------------
-IDE_RES <= not ACP_CONF(25) and nRSTO; 	-- !!!!ACHTUNG: RESET wenn 0!!!!!!!!!!!!!!! -- IDE_RES manuel oder weil nRSTO 
-IDE_CF_CS  	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 7) = x"1E000"  else '0';		-- FFF0'0000-FFF0'007F
-IDE_DRIVE0 	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 0) = x"F00099" else '0';		-- FFF0'0099 (19+80!)
-IDE_DRIVE1 	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 0) = x"F000D9" else '0';		-- FFF0'00D9 (19+40+80!)
-IDE_DCS    	<= '1' when  FB_ALE = '1' and FB_ADR(31 downto 2) = x"3FFC0000" else 							-- FFF0'000x 0-3
-               '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 2) = x"3C0000" else			-- FFF0'000x 0-3
-			   '1' when  FB_ALE = '1' and FB_ADR(31 downto 2) = x"3FFC0010" else 							-- FFF0'004x 0-3
-               '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 2) = x"3C0010" else '0';		-- FFF0'004x 0-3
-nCF_CS0    <=     FB_ADR(5) or (FB_ADR(6) xor (ACP_CONF(31) xnor HD_DD)); 									-- xxxx'xx00-1F
-nCF_CS1    <= not FB_ADR(5) or (FB_ADR(6) xor (ACP_CONF(31) xnor HD_DD)); 									-- xxxx'xx20-3F
-nIDE_CS0   <=     FB_ADR(5) or (FB_ADR(6) xnor (ACP_CONF(30) xnor HD_DD)); 									-- xxxx'xx40-5F
-nIDE_CS1   <= not FB_ADR(5) or (FB_ADR(6) xnor (ACP_CONF(30) xnor HD_DD)); 									-- xxxx'xx60-7F
-nDREQ0 <= '1';
-FB_AD(23 downto 20) <= ACP_CONF(19 downto 16) when IDE_DRIVE0 = '1' and nFB_OE = '0' else "ZZZZ";
-FB_AD(23 downto 20) <= ACP_CONF(23 downto 20) when IDE_DRIVE1 = '1' and nFB_OE = '0' else "ZZZZ";
+    -- input daten halten
+    process(MAIN_CLK, nFB_WR, FB_AD(31 downto 16), FB_ADI(15 downto 0))
+        begin
+            if rising_edge(MAIN_CLK) then
+                IF nFB_WR = '0' THEN
+                    FB_ADI <= FB_AD(31 downto 16);
+                ELSE
+                    FB_ADI <= FB_ADI;
+                end if;
+            ELSE
+                FB_ADI <= FB_ADI;
+            end if;
+        END PROCESS;
+    ----------------------------------------------------------------------------
+    -- SD
+    ----------------------------------------------------------------------------
+    SD_CLK <= 'Z';
+    SD_CD_DATA3 <= 'Z';
+    SD_CDM_D1 <= 'Z';
+    ----------------------------------------------------------------------------
+    -- IDE
+    ----------------------------------------------------------------------------
+    IDE_RES <= not ACP_CONF(25) and nRSTO; 	-- !!!!ACHTUNG: RESET wenn 0!!!!!!!!!!!!!!! -- IDE_RES manuel oder weil nRSTO
+    IDE_CF_CS  	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 7) = x"1E000"  else '0';		-- FFF0'0000-FFF0'007F
+    IDE_DRIVE0 	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 0) = x"F00099" else '0';		-- FFF0'0099 (19+80!)
+    IDE_DRIVE1 	<= '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 0) = x"F000D9" else '0';		-- FFF0'00D9 (19+40+80!)
+    IDE_DCS    	<= '1' when  FB_ALE = '1' and FB_ADR(31 downto 2) = x"3FFC0000" else 							-- FFF0'000x 0-3
+                   '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 2) = x"3C0000" else			-- FFF0'000x 0-3
+                   '1' when  FB_ALE = '1' and FB_ADR(31 downto 2) = x"3FFC0010" else 							-- FFF0'004x 0-3
+                   '1' when (nFB_CS1 = '0' OR nFB_CS3 = '0') and FB_ADR(23 downto 2) = x"3C0010" else '0';		-- FFF0'004x 0-3
+    nCF_CS0    <=     FB_ADR(5) or (FB_ADR(6) xor (ACP_CONF(31) xnor HD_DD)); 									-- xxxx'xx00-1F
+    nCF_CS1    <= not FB_ADR(5) or (FB_ADR(6) xor (ACP_CONF(31) xnor HD_DD)); 									-- xxxx'xx20-3F
+    nIDE_CS0   <=     FB_ADR(5) or (FB_ADR(6) xnor (ACP_CONF(30) xnor HD_DD)); 									-- xxxx'xx40-5F
+    nIDE_CS1   <= not FB_ADR(5) or (FB_ADR(6) xnor (ACP_CONF(30) xnor HD_DD)); 									-- xxxx'xx60-7F
+    nDREQ0 <= '1';
+    FB_AD(23 downto 20) <= ACP_CONF(19 downto 16) when IDE_DRIVE0 = '1' and nFB_OE = '0' else "ZZZZ";
+    FB_AD(23 downto 20) <= ACP_CONF(23 downto 20) when IDE_DRIVE1 = '1' and nFB_OE = '0' else "ZZZZ";
 
-CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
-	begin
-		if nRSTO = '0' then
-			CMD_STATE <= IDLE;
-		elsif rising_edge(MAIN_CLK) then
-				CMD_STATE <= NEXT_CMD_STATE; 	-- go to next
-			else
-				CMD_STATE <= CMD_STATE; 		-- halten
-			end if;
-	end process CMD_REG;
+    CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
+    begin
+        if nRSTO = '0' then
+            CMD_STATE <= IDLE;
+        elsif rising_edge(MAIN_CLK) then
+            CMD_STATE <= NEXT_CMD_STATE; 	-- go to next
+        else
+            CMD_STATE <= CMD_STATE; 		-- halten
+        end if;
+    end process CMD_REG;
 
 	CMD_DECODER: process(CMD_STATE, NEXT_CMD_STATE, nIDE_RD, nIDE_WR, IDE_RDY,IDE_DCS, IDE_CF_CS, FB_ADR, ACP_CONF, nFB_WR, FB_SIZE0, FB_SIZE1)
 	begin
@@ -388,8 +388,8 @@ CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
 					if  IDE_CF_CS = '1' then
 						NEXT_CMD_STATE <= T1;
 					else
-						NEXT_CMD_STATE <= IDLE; 
-					end if;		 
+						NEXT_CMD_STATE <= IDLE;
+					end if;
 				end if;
 			when T1 =>
 				IDE_TA <= '0';
@@ -411,12 +411,12 @@ CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
 					IDE_TA <= '1';
 					NEXT_CMD_STATE <= T5;
 				end if;
-			when T4 => 
+			when T4 =>
 				IDE_TA <= '0';
 				nIDE_RD <= '1';
 				nIDE_WR <= '1';
 				NEXT_CMD_STATE <= IDLE;
-			when T5 => 
+			when T5 =>
 				IDE_TA <= '0';
 				nIDE_RD <= '1';
 				nIDE_WR <= '1';
@@ -445,7 +445,7 @@ CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
 						end if;
 					end if;
 				end if;
-			when T6 => 
+			when T6 =>
 				IDE_TA <= '0';
 				nIDE_RD <= '1';
 				nIDE_WR <= '1';
@@ -472,12 +472,14 @@ CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
 				end if;
 		end case;
 	end process CMD_DECODER;
------------------------------------------------------------------------------------------------------------------------------------------
--- ACSI, SCSI UND FLOPPY WD1772 
--------------------------------------------------------------------------------------------------------------------------------------------
--- daten read fifo
+
+    -----------------------------------------------------------------------------------------------------------------------------------------
+    -- ACSI, SCSI UND FLOPPY WD1772
+    -------------------------------------------------------------------------------------------------------------------------------------------
+    -- daten read fifo
 	RDF: dcfifo0
-		port map(
+		port map
+        (
 			aclr				=> CLR_FIFO,
 			data				=> RDF_DIN,
 			rdclk				=> MAIN_CLK,
@@ -486,13 +488,15 @@ CMD_REG: process(nRSTO, MAIN_CLK, CMD_STATE, NEXT_CMD_STATE)
 			wrreq				=> RDF_WRE,
 			q					=> RDF_DOUT,
 			wrusedw				=> RDF_AZ
-	);
-FCF_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"0020110" and LONG = '1' else '0';		-- F002'0110 LONG ONLY
-FCF_APH <= '1' when FB_ALE = '1' and FB_AD(31 downto 0)  = x"F0020110" and LONG = '1' else '0';		-- ADRESSPHASE F0020110 LONG ONLY
-RDF_RDE <= '1' when FCF_APH = '1' and nFB_WR = '1' else '0';										-- AKTIVIEREN IN ADRESSPHASE
-FB_AD <= RDF_DOUT(7 downto 0) & RDF_DOUT(15 downto 8) & RDF_DOUT(23 downto 16) & RDF_DOUT(31 downto 24) when FCF_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";	 
-RDF_DIN <= CD_OUT_FDC when DMA_MODUS(7) = '1' else SCSI_DOUT;
--- daten write fifo
+        );
+
+    FCF_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"0020110" and LONG = '1' else '0';		-- F002'0110 LONG ONLY
+    FCF_APH <= '1' when FB_ALE = '1' and FB_AD(31 downto 0)  = x"F0020110" and LONG = '1' else '0';		-- ADRESSPHASE F0020110 LONG ONLY
+    RDF_RDE <= '1' when FCF_APH = '1' and nFB_WR = '1' else '0';										-- AKTIVIEREN IN ADRESSPHASE
+    FB_AD <= RDF_DOUT(7 downto 0) & RDF_DOUT(15 downto 8) & RDF_DOUT(23 downto 16) & RDF_DOUT(31 downto 24) when FCF_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+    RDF_DIN <= CD_OUT_FDC when DMA_MODUS(7) = '1' else SCSI_DOUT;
+
+    -- daten write fifo
 	WRF: dcfifo1
 		port map(
 			aclr				=> CLR_FIFO,
@@ -504,11 +508,13 @@ RDF_DIN <= CD_OUT_FDC when DMA_MODUS(7) = '1' else SCSI_DOUT;
 			q					=> WRF_DOUT,
 			rdusedw				=> WRF_AZ
 	);
-CD_IN_FDC <=  WRF_DOUT when DMA_ACTIV = '1' and DMA_MODUS(8) = '1' else FB_ADI(7 downto 0); 							-- BEI DMA WRITE <-FIFO SONST <-FB
-DMA_AZ_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"002010C" else '0';										-- F002'010C LONG
-FB_AD <= DMA_DRQ_Q & DMA_DRQ_REG & IDE_INT & FDINT & SCSI_INT & RDF_AZ & "0" & DMA_STATUS & "00" & WRF_AZ when DMA_AZ_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
-DMA_DRQ_Q <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
--- FIFO WRITE: GENAU 1 MAIN_CLK  -------------------------------------------------------------------------
+
+    CD_IN_FDC <=  WRF_DOUT when DMA_ACTIV = '1' and DMA_MODUS(8) = '1' else FB_ADI(7 downto 0); 							-- BEI DMA WRITE <-FIFO SONST <-FB
+    DMA_AZ_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"002010C" else '0';										-- F002'010C LONG
+    FB_AD <= DMA_DRQ_Q & DMA_DRQ_REG & IDE_INT & FDINT & SCSI_INT & RDF_AZ & "0" & DMA_STATUS & "00" & WRF_AZ when DMA_AZ_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+    DMA_DRQ_Q <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
+
+    -- FIFO WRITE: GENAU 1 MAIN_CLK  -------------------------------------------------------------------------
 	process(MAIN_CLK, nRSTO, WRF_WRE, nFB_WR, FCF_APH)
 	begin
 		if nRSTO = '0' THEN
@@ -523,8 +529,8 @@ DMA_DRQ_Q <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
 				WRF_WRE <= WRF_WRE;
 			end if;
 	END PROCESS;
- 
-FCF_REG: process(nRSTO, FDC_CLK, FCF_STATE, NEXT_FCF_STATE, DMA_ACTIV)
+
+    FCF_REG: process(nRSTO, FDC_CLK, FCF_STATE, NEXT_FCF_STATE, DMA_ACTIV)
 	begin
 		if nRSTO = '0' then
 			FCF_STATE <= FCF_IDLE;
@@ -538,7 +544,7 @@ FCF_REG: process(nRSTO, FDC_CLK, FCF_STATE, NEXT_FCF_STATE, DMA_ACTIV)
 			end if;
 	end process FCF_REG;
 
-FDC_REG: process(nRSTO, FDC_CLK, FDC_OUT, FDCS_In, CD_OUT_FDC)
+    FDC_REG: process(nRSTO, FDC_CLK, FDC_OUT, FDCS_In, CD_OUT_FDC)
 	begin
 		if nRSTO = '0' then
 			FDC_OUT <= x"00";
@@ -549,9 +555,9 @@ FDC_REG: process(nRSTO, FDC_CLK, FDC_OUT, FDCS_In, CD_OUT_FDC)
 			end if;
 	end process FDC_REG;
 
-DMA_REQ <= '1' when ((DMA_DRQ_I = '1' and DMA_MODUS(7) = '1') or (SCSI_DRQ = '1' and DMA_MODUS(7) = '0')) and DMA_STATUS(1) = '1' and DMA_MODUS(6) = '0' and CLR_FIFO = '0' else '0';
-FDC_CS   <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "00" and FB_B1 = '1' else '0';
-SCSI_CS  <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and FB_B1 = '1' else '0';
+    DMA_REQ <= '1' when ((DMA_DRQ_I = '1' and DMA_MODUS(7) = '1') or (SCSI_DRQ = '1' and DMA_MODUS(7) = '0')) and DMA_STATUS(1) = '1' and DMA_MODUS(6) = '0' and CLR_FIFO = '0' else '0';
+    FDC_CS   <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "00" and FB_B1 = '1' else '0';
+    SCSI_CS  <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and FB_B1 = '1' else '0';
 
 	FCF_DECODER: process(FCF_STATE, NEXT_FCF_STATE, DMA_REQ,FDC_CS, RDF_WRE, WRF_RDE, SCSI_DRQ, nSCSI_DACK, DMA_MODUS, DMA_ACTIV, FDCS_In,SCSI_CS, SCSI_CSn)
 	begin
@@ -562,12 +568,12 @@ SCSI_CS  <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and FB_
 				RDF_WRE <= '0';
 				WRF_RDE <= '0';
 				nSCSI_DACK <= '1';
-				if DMA_REQ = '1' or FDC_CS = '1' or SCSI_CS = '1' then 	 
+				if DMA_REQ = '1' or FDC_CS = '1' or SCSI_CS = '1' then
 					DMA_ACTIV_NEW <= DMA_REQ;
 					NEXT_FCF_STATE <= FCF_T0;
 				else
 					DMA_ACTIV_NEW <= '0';
-					NEXT_FCF_STATE <= FCF_IDLE; 		 
+					NEXT_FCF_STATE <= FCF_IDLE;
 				end if;
 			when FCF_T0 =>
 				SCSI_CSn <= '1';
@@ -620,10 +626,10 @@ SCSI_CS  <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and FB_
 				WRF_RDE <= '0';
 				nSCSI_DACK <= '1';
 				DMA_ACTIV_NEW <= '0';
-				if FDC_CS = '1' and DMA_REQ = '0'  then 	 
+				if FDC_CS = '1' and DMA_REQ = '0'  then
 					NEXT_FCF_STATE <= FCF_T7;
 				else
-					NEXT_FCF_STATE <= FCF_IDLE; 		 
+					NEXT_FCF_STATE <= FCF_IDLE;
 				end if;
 		end case;
 	end process FCF_DECODER;
@@ -644,29 +650,31 @@ SCSI_CS  <= '1' when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and FB_
 			IPn					=> nINDEX,
 			WPRTn				=> nWP,
 			DDEn				=> '0', -- Fixed to MFM.
-			HDTYPE				=> HD_DD_OUT,  
+			HDTYPE				=> HD_DD_OUT,
 			MO					=> MOT_ON,
 			WG					=> WR_GATE,
 			WD					=> WR_DATA,
 			STEP				=> STEP,
 			DIRC				=> STEP_DIR,
 			DRQ					=> DMA_DRQ_I,
-			INTRQ				=> FDINT 
+			INTRQ				=> FDINT
 		);
-DMA_DATEN_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C302" else '0';						-- F8604/2 
-DMA_MODUS_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C303" else '0';						-- F8606/2
-WDC_BSL_CS   <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C307" else '0';						-- F860E/2
-HD_DD_OUT <= HD_DD WHEN ACP_CONF(29) = '0' ELSE WDC_BSL(0);
-nFDC_WR <= (not DMA_MODUS(8)) when DMA_ACTIV = '1' else nFB_WR;
-CA0 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(0);
-CA1 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(1);
-CA2 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(2);
-FB_AD(23 downto 16) <= "0000" & (not DMA_STATUS(1)) & "0" & WDC_BSL(1) & HD_DD when WDC_BSL_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(31 downto 24) <= "00000000" when DMA_DATEN_CS = '1'                               and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(23 downto 16) <= FDC_OUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "00" and nFB_OE = '0' else
-                     SCSI_DOUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and nFB_OE = '0' else 
-      DMA_BYT_CNT(16 downto 9) when DMA_DATEN_CS = '1' and DMA_MODUS(4) = '1'           and nFB_OE = '0' else "ZZZZZZZZ";
---- WDC BSL REGISTER -------------------------------------------------------
+
+    DMA_DATEN_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C302" else '0';						-- F8604/2
+    DMA_MODUS_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C303" else '0';						-- F8606/2
+    WDC_BSL_CS   <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C307" else '0';						-- F860E/2
+    HD_DD_OUT <= HD_DD WHEN ACP_CONF(29) = '0' ELSE WDC_BSL(0);
+    nFDC_WR <= (not DMA_MODUS(8)) when DMA_ACTIV = '1' else nFB_WR;
+    CA0 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(0);
+    CA1 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(1);
+    CA2 <= '1' when DMA_ACTIV = '1' ELSE DMA_MODUS(2);
+    FB_AD(23 downto 16) <= "0000" & (not DMA_STATUS(1)) & "0" & WDC_BSL(1) & HD_DD when WDC_BSL_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(31 downto 24) <= "00000000" when DMA_DATEN_CS = '1'                               and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= FDC_OUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "00" and nFB_OE = '0' else
+                         SCSI_DOUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3) = "01" and nFB_OE = '0' else
+          DMA_BYT_CNT(16 downto 9) when DMA_DATEN_CS = '1' and DMA_MODUS(4) = '1'           and nFB_OE = '0' else "ZZZZZZZZ";
+
+    --- WDC BSL REGISTER -------------------------------------------------------
 	process(MAIN_CLK, nRSTO, WDC_BSL_CS, WDC_BSL, nFB_WR, FB_B0, FB_B1)
 	begin
 		if nRSTO = '0' THEN
@@ -679,7 +687,8 @@ FB_AD(23 downto 16) <= FDC_OUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3)
 			end if;
 		end if;
 	END PROCESS;
---- DMA MODUS REGISTER -------------------------------------------------------
+
+    --- DMA MODUS REGISTER -------------------------------------------------------
 	process(MAIN_CLK, nRSTO, DMA_MODUS_CS, DMA_MODUS, nFB_WR, FB_B0, FB_B1)
 	begin
 		if nRSTO = '0' THEN
@@ -699,11 +708,12 @@ FB_AD(23 downto 16) <= FDC_OUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3)
 			DMA_MODUS <= DMA_MODUS;
 		end if;
 	END PROCESS;
--- BYT COUNTER, SECTOR COUNTER ----------------------------------------------------
+
+    -- BYT COUNTER, SECTOR COUNTER ----------------------------------------------------
 	process(MAIN_CLK, nRSTO, DMA_DATEN_CS, DMA_BYT_CNT_CS, DMA_BYT_CNT, nFB_WR, FB_B0, FB_B1, DMA_MODUS, CLR_FIFO)
 	begin
 		if nRSTO = '0' or CLR_FIFO = '1' THEN
-			DMA_BYT_CNT <= x"00000000";													 
+			DMA_BYT_CNT <= x"00000000";
 		elsif rising_edge(MAIN_CLK) and nFB_WR = '0' and DMA_DATEN_CS = '1' and nFB_WR = '0' and DMA_MODUS(4) = '1' and FB_B1 = '1' then
 				DMA_BYT_CNT(31 downto 17) <= "000000000000000";
 				DMA_BYT_CNT(16 downto 9) <= FB_AD(23 downto 16);
@@ -714,15 +724,17 @@ FB_AD(23 downto 16) <= FDC_OUT when DMA_DATEN_CS = '1' and DMA_MODUS(4 downto 3)
 					DMA_BYT_CNT <= DMA_BYT_CNT;
 				end if;
 	END PROCESS;
---------------------------------------------------------------------
-FB_AD(31 downto 16) <= "0000000000000" & DMA_STATUS when DMA_MODUS_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-DMA_STATUS(0) <= '1';													-- DMA OK
-DMA_STATUS(1) <= '1' when DMA_BYT_CNT /= 0 and DMA_BYT_CNT(31) = '0' else '0';					-- WENN byts UND NICHT MINUS
-DMA_STATUS(2) <= '0' when DMA_DRQ_I = '1' or SCSI_DRQ = '1' else '0'; 
-DMA_DRQQ <= '1' when DMA_STATUS(1) = '1' and DMA_MODUS(8) = '0' and RDF_AZ >  15 and DMA_MODUS(6) = '0' else 
-            '1' when DMA_STATUS(1) = '1' and DMA_MODUS(8) = '1' and WRF_AZ < 512 and DMA_MODUS(6) = '0' else '0';
-DMA_DRQ <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
--- DMA REQUEST: SPIKES AUSFILTERN  ------------------------------------------
+
+    --------------------------------------------------------------------
+    FB_AD(31 downto 16) <= "0000000000000" & DMA_STATUS when DMA_MODUS_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    DMA_STATUS(0) <= '1';													-- DMA OK
+    DMA_STATUS(1) <= '1' when DMA_BYT_CNT /= 0 and DMA_BYT_CNT(31) = '0' else '0';					-- WENN byts UND NICHT MINUS
+    DMA_STATUS(2) <= '0' when DMA_DRQ_I = '1' or SCSI_DRQ = '1' else '0';
+    DMA_DRQQ <= '1' when DMA_STATUS(1) = '1' and DMA_MODUS(8) = '0' and RDF_AZ >  15 and DMA_MODUS(6) = '0' else
+                '1' when DMA_STATUS(1) = '1' and DMA_MODUS(8) = '1' and WRF_AZ < 512 and DMA_MODUS(6) = '0' else '0';
+    DMA_DRQ <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
+
+    -- DMA REQUEST: SPIKES AUSFILTERN  ------------------------------------------
 	process(FDC_CLK, nRSTO, DMA_DRQ_REG)
 	begin
 		if nRSTO = '0' THEN
@@ -734,14 +746,15 @@ DMA_DRQ <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
 				DMA_DRQ_REG <= DMA_DRQ_REG;
 			end if;
 	END PROCESS;
--- DMA ADRESSE ------------------------------------------------------
+
+    -- DMA ADRESSE ------------------------------------------------------
 	process(MAIN_CLK, nRSTO, DMA_TOP_CS, DMA_TOP, nFB_WR, DMA_ADR_CS)
 	begin
 		if nRSTO = '0' THEN
 			DMA_TOP <= x"00";
 		elsif rising_edge(MAIN_CLK) and nFB_WR = '0' and (DMA_TOP_CS = '1' or DMA_ADR_CS = '1') then
 				DMA_TOP <= FB_AD(31 downto 24);
-			else 
+			else
 				DMA_TOP <= DMA_TOP;
 			end if;
 	END PROCESS;
@@ -781,23 +794,25 @@ DMA_DRQ <= '1' when DMA_DRQ_REG = "11" and DMA_MODUS(6) = '0' else '0';
 					end if;
 			end if;
 	END PROCESS;
---------------------------------------------------------------------------------------------
-DMA_TOP_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C304" and FB_B0 = '1' else '0';			-- F8608/2
-DMA_HIGH_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C304" and FB_B1 = '1' else '0';			-- F8609/2		
-DMA_MID_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C305" and FB_B1 = '1' else '0';			-- F860B/2		
-DMA_LOW_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C306" and FB_B1 = '1' else '0';			-- F860D/2	
-FB_AD(31 downto 24) <= DMA_TOP  when DMA_TOP_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(23 downto 16) <= DMA_HIGH when DMA_HIGH_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(23 downto 16) <= DMA_MID  when DMA_MID_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(23 downto 16) <= DMA_LOW  when DMA_LOW_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
--- DIRECTZUGRIFF
-DMA_DIRM_CS <= '1' when nFB_CS2 = '0' and     FB_ADR(26 downto 0) = x"20100" else '0';						-- F002'0100 WORD 
-DMA_ADR_CS  <= '1' when nFB_CS2 = '0' and     FB_ADR(26 downto 0) = x"20104" else '0';						-- F002'0104 LONG 
-DMA_BYT_CNT_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"20108" else '0';						-- F002'0108 LONG 
-FB_AD <= DMA_TOP & DMA_HIGH & DMA_MID & DMA_LOW when DMA_ADR_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= DMA_MODUS when DMA_DIRM_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD <= DMA_BYT_CNT when DMA_BYT_CNT_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
--- DMA RW TOGGLE ------------------------------------------
+
+    --------------------------------------------------------------------------------------------
+    DMA_TOP_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C304" and FB_B0 = '1' else '0';			-- F8608/2
+    DMA_HIGH_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 1) = x"7C304" and FB_B1 = '1' else '0';			-- F8609/2
+    DMA_MID_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C305" and FB_B1 = '1' else '0';			-- F860B/2
+    DMA_LOW_CS <= '1' when nFB_CS1 = '0'  and FB_ADR(19 downto 1) = x"7C306" and FB_B1 = '1' else '0';			-- F860D/2
+    FB_AD(31 downto 24) <= DMA_TOP  when DMA_TOP_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= DMA_HIGH when DMA_HIGH_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= DMA_MID  when DMA_MID_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= DMA_LOW  when DMA_LOW_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZ";
+    -- DIRECTZUGRIFF
+    DMA_DIRM_CS <= '1' when nFB_CS2 = '0' and     FB_ADR(26 downto 0) = x"20100" else '0';						-- F002'0100 WORD
+    DMA_ADR_CS  <= '1' when nFB_CS2 = '0' and     FB_ADR(26 downto 0) = x"20104" else '0';						-- F002'0104 LONG
+    DMA_BYT_CNT_CS  <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"20108" else '0';						-- F002'0108 LONG
+    FB_AD <= DMA_TOP & DMA_HIGH & DMA_MID & DMA_LOW when DMA_ADR_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= DMA_MODUS when DMA_DIRM_CS = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD <= DMA_BYT_CNT when DMA_BYT_CNT_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+
+    -- DMA RW TOGGLE ------------------------------------------
 	process(MAIN_CLK, nRSTO, DMA_MODUS_CS, DMA_MODUS, DMA_DIR_OLD)
 	begin
 		if nRSTO = '0' THEN
@@ -808,14 +823,16 @@ FB_AD <= DMA_BYT_CNT when DMA_BYT_CNT_CS = '1'  and nFB_OE = '0' else "ZZZZZZZZZ
 				DMA_DIR_OLD <= DMA_DIR_OLD;
 			end if;
 	END PROCESS;
-CLR_FIFO <= DMA_MODUS(8) xor DMA_DIR_OLD;	
--- SCSI ----------------------------------------------------------------------------------
+
+    CLR_FIFO <= DMA_MODUS(8) xor DMA_DIR_OLD;
+
+    -- SCSI ----------------------------------------------------------------------------------
     I_SCSI: WF5380_TOP_SOC
         port map(
             CLK					=> FDC_CLK,
             RESETn				=> nResetatio,
 			ADR			        => CA2 & CA1 & CA0,
-			DATA_IN		        => CD_IN_FDC,	
+			DATA_IN		        => CD_IN_FDC,
 			DATA_OUT			=> SCSI_DOUT,
 			--DATA_EN			: out bit;
             -- Bus and DMA controls:
@@ -826,7 +843,7 @@ CLR_FIFO <= DMA_MODUS(8) xor DMA_DIR_OLD;
 			DACKn	            => nSCSI_DACK,
 			DRQ		            => SCSI_DRQ,
 			INT		            => SCSI_INT,
---            READY                	=> 
+--            READY                	=>
             -- SCSI bus:
             DB_INn		        => SCSI_D,
             DB_OUTn		        => DB_OUTn,
@@ -861,30 +878,32 @@ CLR_FIFO <= DMA_MODUS(8) xor DMA_DIR_OLD;
             MSG_INn             => nSCSI_MSG
 --            MSG_OUTn            => MSG_OUTn,
 --            MSG_EN              => MSG_EN
-        );              
--- SCSI ACSI ---------------------------------------------------------------
-SCSI_D <= "ZZZZZZZZ";--DB_OUTn when DB_EN = '1' else "ZZZZZZZZ";
-SCSI_DIR <= '1';-- when DB_EN = '1' else '1';	 
-SCSI_PAR <= DBP_OUTn when DBP_EN = '1' else 'Z';
-nSCSI_RST <= 'Z';--RST_OUTn when RST_EN = '1' else 'Z';
-nSCSI_BUSY <= 'Z';--BSY_OUTn when BSY_EN = '1' else 'Z';
-nSCSI_SEL <= 'Z';--SEL_OUTn when SEL_EN = '1' else 'Z';
-ACSI_DIR <= '0';
-ACSI_D <= "ZZZZZZZZ";
-nACSI_CS <= '1';
-ACSI_A1 <= CA1;
-nACSI_RESET <= nRSTO;
-nACSI_ACK <= '1';
-nResetatio <= '0' when nRSTO = '0' or ACP_CONF(24) = '1' else '1';
-----------------------------------------------------------------------------
--- ROM-PORT TA KOMMT FROM DEFAULT TA = 16 BUSCYCLEN = 500ns
-----------------------------------------------------------------------------
-ROM_CS <= '1' when nFB_CS1 = '0' and nFB_WR = '1' and FB_ADR(19 downto 17) = x"5" else '0';		-- FFF A'0000/2'0000
-nROM4 <= '0' when ROM_CS = '1' and FB_ADR(16) = '0' else '1';
-nROM3 <= '0' when ROM_CS = '1' and FB_ADR(16) = '1' else '1';
-----------------------------------------------------------------------------
--- ACIA KEYBOARD
-----------------------------------------------------------------------------
+        );
+
+    -- SCSI ACSI ---------------------------------------------------------------
+    SCSI_D <= "ZZZZZZZZ";--DB_OUTn when DB_EN = '1' else "ZZZZZZZZ";
+    SCSI_DIR <= '1';-- when DB_EN = '1' else '1';
+    SCSI_PAR <= DBP_OUTn when DBP_EN = '1' else 'Z';
+    nSCSI_RST <= 'Z';--RST_OUTn when RST_EN = '1' else 'Z';
+    nSCSI_BUSY <= 'Z';--BSY_OUTn when BSY_EN = '1' else 'Z';
+    nSCSI_SEL <= 'Z';--SEL_OUTn when SEL_EN = '1' else 'Z';
+    ACSI_DIR <= '0';
+    ACSI_D <= "ZZZZZZZZ";
+    nACSI_CS <= '1';
+    ACSI_A1 <= CA1;
+    nACSI_RESET <= nRSTO;
+    nACSI_ACK <= '1';
+    nResetatio <= '0' when nRSTO = '0' or ACP_CONF(24) = '1' else '1';
+
+    ----------------------------------------------------------------------------
+    -- ROM-PORT TA KOMMT FROM DEFAULT TA = 16 BUSCYCLEN = 500ns
+    ----------------------------------------------------------------------------
+    ROM_CS <= '1' when nFB_CS1 = '0' and nFB_WR = '1' and FB_ADR(19 downto 17) = x"5" else '0';		-- FFF A'0000/2'0000
+    nROM4 <= '0' when ROM_CS = '1' and FB_ADR(16) = '0' else '1';
+    nROM3 <= '0' when ROM_CS = '1' and FB_ADR(16) = '1' else '1';
+    ----------------------------------------------------------------------------
+    -- ACIA KEYBOARD
+    ----------------------------------------------------------------------------
 	I_ACIA_KEYBOARD: WF6850IP_TOP_SOC
 	  port map(
 			CLK					=> MAIN_CLK,
@@ -907,16 +926,17 @@ nROM3 <= '0' when ROM_CS = '1' and FB_ADR(16) = '1' else '1';
 
 			CTSn				=> '0',
 			DCDn				=> '0',
-        
+
 			IRQn				=> IRQ_KEYBDn,
 			TXDATA				=> AMKB_TX_sync
 			--RTSn				=> -- Not used.
-		);                                              
-ACIA_CS_I <= '1' when nFB_CS1 = '0'and FB_ADR(19 downto 3) = x"1FF80" else '0';		-- FFC00-FFC07 FFC00/8
-KEYB_RxD <= '0' when AMKB_REG(3) = '0' or PIC_AMKB_RX = '0' else '1';				-- TASTATUR DATEN VOM PIC(PS2) OR NORMAL  // 
-FB_AD(31 downto 24) <= DATA_OUT_ACIA_I  when ACIA_CS_I = '1' and FB_ADR(2) = '0' and nFB_OE = '0' else  
-					   DATA_OUT_ACIA_II when ACIA_CS_I = '1' and FB_ADR(2) = '1' and nFB_OE = '0' else "ZZZZZZZZ";
--- AMKB_TX: SPIKES AUSFILTERN  und sychronisieren ------------------------------------------
+		);
+
+    ACIA_CS_I <= '1' when nFB_CS1 = '0'and FB_ADR(19 downto 3) = x"1FF80" else '0';		-- FFC00-FFC07 FFC00/8
+    KEYB_RxD <= '0' when AMKB_REG(3) = '0' or PIC_AMKB_RX = '0' else '1';				-- TASTATUR DATEN VOM PIC(PS2) OR NORMAL  //
+    FB_AD(31 downto 24) <= DATA_OUT_ACIA_I  when ACIA_CS_I = '1' and FB_ADR(2) = '0' and nFB_OE = '0' else
+                           DATA_OUT_ACIA_II when ACIA_CS_I = '1' and FB_ADR(2) = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    -- AMKB_TX: SPIKES AUSFILTERN  und sychronisieren ------------------------------------------
 	process(CLK2M, AMKB_RX, AMKB_TX, AMKB_REG, CLK500k)
 	begin
 		if rising_edge(CLK500k) then
@@ -939,11 +959,12 @@ FB_AD(31 downto 24) <= DATA_OUT_ACIA_I  when ACIA_CS_I = '1' and FB_ADR(2) = '0'
 			AMKB_REG <= AMKB_REG;
 		end if;
 	END PROCESS;
--- acia interrupt  ------------------------------------------
-acia_irq <= '0' when IRQ_KEYBDn = '0' or IRQ_MIDIn = '0' else '1';
-----------------------------------------------------------------------------
--- ACIA MIDI
-----------------------------------------------------------------------------
+
+    -- acia interrupt  ------------------------------------------
+    acia_irq <= '0' when IRQ_KEYBDn = '0' or IRQ_MIDIn = '0' else '1';
+    ----------------------------------------------------------------------------
+    -- ACIA MIDI
+    ----------------------------------------------------------------------------
 	I_ACIA_MIDI: WF6850IP_TOP_SOC
 		port map(
 			CLK					=> MAIN_CLK,
@@ -965,18 +986,19 @@ acia_irq <= '0' when IRQ_KEYBDn = '0' or IRQ_MIDIn = '0' else '1';
 			RXDATA				=> MIDI_IN,
 			CTSn				=> '0',
 			DCDn				=> '0',
-        
+
 			IRQn				=> IRQ_MIDIn,
 			TXDATA				=> MIDI_OUT
 			--RTSn				=> -- Not used.
 	    );
-MIDI_TLR <= MIDI_IN;
-MIDI_OLR <= MIDI_OUT;
-----------------------------------------------------------------------------
--- MFP
-----------------------------------------------------------------------------
+
+    MIDI_TLR <= MIDI_IN;
+    MIDI_OLR <= MIDI_OUT;
+    ----------------------------------------------------------------------------
+    -- MFP
+    ----------------------------------------------------------------------------
 	I_MFP: WF68901IP_TOP_SOC
-		port map(  
+		port map(
 			-- System control:
 			CLK					=> not MAIN_CLK,
 			RESETn				=> nResetatio,
@@ -1016,7 +1038,7 @@ MIDI_OLR <= MIDI_OUT;
 			-- Serial I/O control:
 			RC					=> TDO,
 			TC					=> TDO,
-			SI					=> RxD, 
+			SI					=> RxD,
 			SO					=> TxD
 			-- SO_EN			=> MFP_SO_EN
 			-- DMA control:
@@ -1024,20 +1046,20 @@ MIDI_OLR <= MIDI_OUT;
 			-- TRn				=>
 		);
 
-MFP_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3FE8" else '0';		-- FFA00/40
-MFP_INTACK <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"20000" else '0'; 	--F002'0000
-LDS <= '1' when MFP_CS = '1' or MFP_INTACK = '1' else '0';
-FB_AD(23 downto 16) <= DATA_OUT_MFP when MFP_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(31 downto 10) <= "0000000000000000000000" when MFP_INTACK = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZ";
-FB_AD(9 downto 2) <= DATA_OUT_MFP when MFP_INTACK = '1' and nFB_OE = '0' else "ZZZZZZZZ";
-FB_AD(1 downto 0) <= "00" when MFP_INTACK = '1' and nFB_OE = '0' else "ZZ";
-DINTn <= '0' when IDE_INT = '1' AND ACP_CONF(28) = '1' else
-         '0' when FDINT = '1' else
-         '0' when SCSI_INT = '1' AND ACP_CONF(27) = '1' else '1';
+    MFP_CS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3FE8" else '0';		-- FFA00/40
+    MFP_INTACK <= '1' when nFB_CS2 = '0' and FB_ADR(26 downto 0) = x"20000" else '0'; 	--F002'0000
+    LDS <= '1' when MFP_CS = '1' or MFP_INTACK = '1' else '0';
+    FB_AD(23 downto 16) <= DATA_OUT_MFP when MFP_CS = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(31 downto 10) <= "0000000000000000000000" when MFP_INTACK = '1' and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZZZZZZZ";
+    FB_AD(9 downto 2) <= DATA_OUT_MFP when MFP_INTACK = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(1 downto 0) <= "00" when MFP_INTACK = '1' and nFB_OE = '0' else "ZZ";
+    DINTn <= '0' when IDE_INT = '1' AND ACP_CONF(28) = '1' else
+             '0' when FDINT = '1' else
+             '0' when SCSI_INT = '1' AND ACP_CONF(27) = '1' else '1';
 
------------------------------------------------------------------------------
--- Sound
-----------------------------------------------------------------------------
+    -----------------------------------------------------------------------------
+    -- Sound
+    ----------------------------------------------------------------------------
  	I_SOUND: WF2149IP_TOP_SOC
 		port map(
 			SYS_CLK				=> not MAIN_CLK,
@@ -1058,7 +1080,7 @@ DINTn <= '0' when IDE_INT = '1' AND ACP_CONF(28) = '1' else
 			IO_A_IN				=> x"00", -- All port pins are dedicated outputs.
 			IO_A_OUT(7)			=> nnIDE_RES,
             IO_A_OUT(6)			=> LP_DIR_NS0,
-			IO_A_OUT(5)			=> LP_STR_NS0, 
+			IO_A_OUT(5)			=> LP_STR_NS0,
 			IO_A_OUT(4)			=> DTR,
 			IO_A_OUT(3)			=> RTS,
 --			IO_A_OUT(2)			=> FDD_D1SEL,
@@ -1074,40 +1096,41 @@ DINTn <= '0' when IDE_INT = '1' AND ACP_CONF(28) = '1' else
 			OUT_C				=> YM_QC
 		);
 
-SNDCS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 2) = x"3E200" else '0';		-- 8800-8803 F8800/4
-SNDCS_I <= '1' when SNDCS = '1' and FB_ADR (1 downto 1) = "0" else '0';
-SNDIR_I <= '1' when SNDCS = '1' and nFB_WR = '0' else '0';
-FB_AD(31 downto 24) <= DA_OUT_X when SNDCS_I = '1' and nFB_OE = '0' else "ZZZZZZZZ";
-LP_D <= LP_D_X when (LP_DIR_X = '0' OR ACP_CONF(2) = '0') else "ZZZZZZZZ";
-LP_STR <= LP_STR_X XOR ACP_CONF(0);
-LP_DIR <= LP_DIR_X XOR ACP_CONF(3);
--- spikes weg ------------------------------------------
+    SNDCS <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 2) = x"3E200" else '0';		-- 8800-8803 F8800/4
+    SNDCS_I <= '1' when SNDCS = '1' and FB_ADR (1 downto 1) = "0" else '0';
+    SNDIR_I <= '1' when SNDCS = '1' and nFB_WR = '0' else '0';
+    FB_AD(31 downto 24) <= DA_OUT_X when SNDCS_I = '1' and nFB_OE = '0' else "ZZZZZZZZ";
+    LP_D <= LP_D_X when (LP_DIR_X = '0' OR ACP_CONF(2) = '0') else "ZZZZZZZZ";
+    LP_STR <= LP_STR_X XOR ACP_CONF(0);
+    LP_DIR <= LP_DIR_X XOR ACP_CONF(3);
+    -- spikes weg ------------------------------------------
 	process(CLK2M,LP_STR_NS1,LP_STR_NS0,LP_STR_X)
 	begin
 		if rising_edge(CLK2M) then
 				LP_STR_X   <= (LP_STR_NS1 AND LP_STR_NS0) OR (LP_STR_X AND LP_STR_NS1);
-				LP_STR_NS1 <=  LP_STR_NS0; 
+				LP_STR_NS1 <=  LP_STR_NS0;
 			else
 				LP_STR_X   <=  LP_STR_X;
 				LP_STR_NS1 <=  LP_STR_NS1;
 			end if;
 	END PROCESS;
-	
+
 	process(CLK2M,LP_DIR_NS1,LP_DIR_NS0,LP_DIR_X)
 	begin
 		if rising_edge(CLK2M) then
 				LP_DIR_X   <= (LP_DIR_NS1 AND LP_DIR_NS0) OR (LP_DIR_X AND LP_DIR_NS1);
-				LP_DIR_NS1 <=  LP_DIR_NS0; 
+				LP_DIR_NS1 <=  LP_DIR_NS0;
 			else
 				LP_DIR_X   <=  LP_DIR_X;
 				LP_DIR_NS1 <=  LP_DIR_NS1;
 			end if;
 	END PROCESS;
-----------------------------------------------------------------------------
--- DMA Sound register
-----------------------------------------------------------------------------
 
-dma_snd_cs <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3E24" else '0';	-- F8900-F893F
+    ----------------------------------------------------------------------------
+    -- DMA Sound register
+    ----------------------------------------------------------------------------
+
+    dma_snd_cs <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3E24" else '0';	-- F8900-F893F
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs, nFB_WR, FB_B1, sndmactl)
 	begin
@@ -1119,7 +1142,7 @@ dma_snd_cs <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3E24" else '0';
 				sndmactl <= sndmactl;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndmactl when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"0" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndmactl when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"0" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs, sndbashi)
 	begin
@@ -1131,7 +1154,7 @@ FB_AD(23 downto 16) <= sndmactl when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndbashi <= sndbashi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndbashi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"1" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndbashi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"1" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1143,7 +1166,7 @@ FB_AD(23 downto 16) <= sndbashi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndbasmi <= sndbasmi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndbasmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"2" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndbasmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"2" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1155,7 +1178,7 @@ FB_AD(23 downto 16) <= sndbasmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndbaslo <= sndbaslo;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndbaslo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"3" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndbaslo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"3" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1167,7 +1190,7 @@ FB_AD(23 downto 16) <= sndbaslo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndadrhi <= sndadrhi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndadrhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"4" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndadrhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"4" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1179,7 +1202,7 @@ FB_AD(23 downto 16) <= sndadrhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndadrmi <= sndadrmi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndadrmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"5" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndadrmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"5" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1191,7 +1214,7 @@ FB_AD(23 downto 16) <= sndadrmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndadrlo <= sndadrlo;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndadrlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"6" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndadrlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"6" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1203,7 +1226,7 @@ FB_AD(23 downto 16) <= sndadrlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndendhi <= sndendhi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndendhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"7" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndendhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"7" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1215,7 +1238,7 @@ FB_AD(23 downto 16) <= sndendhi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndendmi <= sndendmi;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndendmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"8" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndendmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"8" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1227,7 +1250,7 @@ FB_AD(23 downto 16) <= sndendmi when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndendlo <= sndendlo;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndendlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"9" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndendlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"9" and nFB_OE = '0' else "ZZZZZZZZ";
 
 	process(nRSTO,MAIN_CLK,FB_ADR(5 downto 1), dma_snd_cs)
 	begin
@@ -1239,21 +1262,21 @@ FB_AD(23 downto 16) <= sndendlo when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x
 				sndmode <= sndmode;
 			end if;
 	END PROCESS;
-FB_AD(23 downto 16) <= sndmode when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"10" and nFB_OE = '0' else "ZZZZZZZZ";
+    FB_AD(23 downto 16) <= sndmode when dma_snd_cs = '1' and FB_ADR(5 downto 1) = x"10" and nFB_OE = '0' else "ZZZZZZZZ";
 
-----------------------------------------------------------------------------
--- Paddle
-----------------------------------------------------------------------------
-paddle_cs <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3E48" else '0';	-- F9200-F923F
+    ----------------------------------------------------------------------------
+    -- Paddle
+    ----------------------------------------------------------------------------
+    paddle_cs <= '1' when nFB_CS1 = '0' and FB_ADR(19 downto 6) = x"3E48" else '0';	-- F9200-F923F
 
-FB_AD(31 downto 16) <= x"bfff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"0" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"1" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"8" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"9" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"A" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"B" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"0000" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"10" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
-FB_AD(31 downto 16) <= x"0000" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"11" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"bfff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"0" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"1" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"8" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"9" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"A" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"ffff" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"B" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"0000" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"10" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
+    FB_AD(31 downto 16) <= x"0000" when paddle_cs = '1' and FB_ADR(5 downto 1) = x"11" and nFB_OE = '0' else "ZZZZZZZZZZZZZZZZ";
 
---****************************************************************
+    --****************************************************************
 END FalconIO_SDCard_IDE_CF_architecture;
