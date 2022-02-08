@@ -3,9 +3,9 @@ SHELL=/bin/csh
 ifeq ($(OS),Windows_NT)
 	ALTPATH=c:/opt/altera/9.1sp2/quartus/bin64
 else
-	ALTPATH=/opt/altera/9.1sp2/quartus/bin
+	ALTPATH=/opt/altera/13.1/quartus/bin
 endif
-BITSTREAM=output_files/$(PROJ).sof
+BITSTREAM=$(PROJ).sof
 BUILD_DIR=.
 
 PROJ=firebee1
