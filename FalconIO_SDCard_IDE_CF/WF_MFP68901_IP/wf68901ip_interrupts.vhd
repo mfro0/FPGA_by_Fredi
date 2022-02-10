@@ -143,7 +143,7 @@ begin
 
 
     -- Interrupt source priority sorted (15 = highest):
-    INT_SRC <=  GP_INT(7 downto 6) & TIMER_A_INT & RCV_BUF_F & RCV_ERR & TRM_BUF_E & TRM_ERR & TIMER_B_INT & 
+    INT_SRC <=  GP_INT(7 downto 6) & TIMER_A_INT & RCV_BUF_F & RCV_ERR & TRM_BUF_E & TRM_ERR & TIMER_B_INT &
     GP_INT(5) & GP_INT_4 & TIMER_C_INT & TIMER_D_INT & GP_INT_3 & GP_INT(2 downto 0);
 
     INT_ENA     <= IERA & IERB;
@@ -268,7 +268,8 @@ begin
             end loop;
         end if;
     end process INT_REGISTERS;
-    DATA_OUT_EN <= '1' when CSn = '0' and DSn = '0' and RWn = '1' and RS > "00010" and RS <= "01011" else                                                                    '1' when INT_STATE = VECTOR_OUT else '0';
+    DATA_OUT_EN <= '1' when CSn = '0' and DSn = '0' and RWn = '1' and RS > "00010" and RS <= "01011" else
+                   '1' when INT_STATE = VECTOR_OUT else '0';
 
     DATA_OUT <= IERA when CSn = '0' and DSn = '0' and RWn = '1' and RS = "00011" else
                 IERB when CSn = '0' and DSn = '0' and RWn = '1' and RS = "00100" else
