@@ -226,6 +226,11 @@ begin
         bus_cyc <= bus_cyc and not bus_cyc_end;
     end process p_cpu_ac;
     
+    cpu_sig <= '1' when ddr_sel = '1' and (nFB_WR = '0' and fline = '0') and ddr_config = '0' else
+               '1' when ddr_sel = '1' and ddr_config = '0' else
+               '1' when fb_regddr = FR_S1 and nFB_WR = '0' else
+               '0';
+
     p_cpu_req : process
     begin
         wait until rising_edge(DDR_SYNC_66M);
