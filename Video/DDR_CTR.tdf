@@ -135,25 +135,25 @@ VARIABLE
 
     FB_SIZ[1..0]            : NODE;
 BEGIN
-    FB_SIZ = (FB_SIZE1, FB_SIZE0);
+    FB_SIZ[] = (FB_SIZE1, FB_SIZE0);
 
     LINE =  FB_SIZE0 & FB_SIZE1;
 
     -- byte select
     FB_B0 = FB_ADR[1..0] == 0
-          # FB_SIZ == SIZ_LONG
-          # FB_SIZ == SIZ_LINE;
+          # FB_SIZ[] == SIZ_LONG
+          # FB_SIZ[] == SIZ_LINE;
     FB_B1 = FB_ADR[1..0] == 1
-          # FB_SIZ == SIZ_WORD & !FB_ADR1
-          # FB_SIZ == SIZ_LONG
-          # FB_SIZ == SIZ_LINE;
+          # FB_SIZ[] == SIZ_WORD & !FB_ADR1
+          # FB_SIZ[] == SIZ_LONG
+          # FB_SIZ[] == SIZ_LINE;
     FB_B2 = FB_ADR[1..0] == 2
-          # FB_SIZ == SIZ_LONG
-          # FB_SIZ == SIZ_LINE;
+          # FB_SIZ[] == SIZ_LONG
+          # FB_SIZ[] == SIZ_LINE;
     FB_B3 = FB_ADR[1..0] == 3
-          # FB_SIZ == SIZ_WORD & FB_ADR1
-          # FB_SIZ == SIZ_LONG
-          # FB_SIZ == SIZ_LINE;
+          # FB_SIZ[] == SIZ_WORD & FB_ADR1
+          # FB_SIZ[] == SIZ_LONG
+          # FB_SIZ[] == SIZ_LINE;
 
 -- CPU READ (REG DDR => CPU) AND WRITE (CPU => REG DDR)  --------------------------------------------------
     FB_REGDDR.CLK = MAIN_CLK;
