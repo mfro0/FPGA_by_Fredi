@@ -148,6 +148,7 @@ begin
              '1' when fb_siz = SIZ_LONG else
              '0';
 
+    -- CPU read (DDR registers to CPU) and write (CPU to DDR registers)
     p_cpu_rw : process
     begin
         wait until rising_edge(MAIN_CLK);
@@ -155,7 +156,8 @@ begin
         case fb_regddr is
             when FR_WAIT =>
                 fb_le(0) <= not nFB_WR;
-                if bus_cyc = '1' or ddr_sel = '1' or fline = '1' or nFB_WR = '0' then
+                if bus_cyc = '1' or (ddr_sel = '1' and fline = '1' and nFB_WR = '0') then
+                    -- start state machine when ready or always if line write
                     fb_regddr <= FR_S0;
                 end if;
             
@@ -226,8 +228,12 @@ begin
         bus_cyc <= bus_cyc and not bus_cyc_end;
     end process p_cpu_ac;
     
+    --
+    -- byte, word or long reads and writes trigger a DDR request immediately,
+    -- (DDR config as well), line writes are delayed
+    --
     cpu_sig <= '1' when ddr_sel = '1' and (nFB_WR = '0' and fline = '0') and ddr_config = '0' else
-               '1' when ddr_sel = '1' and ddr_config = '0' else
+               '1' when ddr_sel = '1' and ddr_config = '1' else
                '1' when fb_regddr = FR_S1 and nFB_WR = '0' else
                '0';
 
