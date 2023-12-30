@@ -118,11 +118,17 @@ set_false_path -from MAIN_CLK -to altpll4:inst22|altpll:altpll_component|altpll_
 #set_false_path -from [get_keepers {*delayed_wrptr_g*}] -to [get_keepers {*rs_dgwp|dffpipe_jd9:dffpipe12|dffe13a*}]
 #set_false_path -from [get_keepers {*rdptr_g*}] -to [get_keepers {*ws_dgrp|dffpipe_te9:dffpipe20|dffe21a*}]
 
+#set_false_path -from Video::Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VDL_HHT[*] -to FB_AD[*]
+#set_false_path -from Video::Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VDL_HBB[*] -to FB_AD[*]
 
 #**************************************************************
 # Set Multicycle Path
 #**************************************************************
 
+# this one has a multiplication in the path but we do not care if the value appears in the destination
+# register a few cycles later
+set_multicycle_path -setup -from Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VDL_HHT[*] -to FB_AD[*] 4
+set_multicycle_path -setup -from Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VDL_HBB[*] -to FB_AD[*] 4
 
 
 #**************************************************************
@@ -130,13 +136,13 @@ set_false_path -from MAIN_CLK -to altpll4:inst22|altpll:altpll_component|altpll_
 #**************************************************************
 
 # TPD
-set_max_delay -from [all_inputs] -to [all_outputs] 1
+set_max_delay -from [all_inputs] -to [remove_from_collection [all_outputs] FB_AD[*]] 1
 
 # TSU
 set_max_delay -from [all_inputs] -to [all_registers] 1
 
 # TCO
-set_max_delay -from [all_registers] -to [all_outputs] 1
+set_max_delay -from [all_registers] -to [remove_from_collection [all_outputs] FB_AD[*]] 1
 
 set_max_delay -from [get_keepers FB_AD*] -to [get_keepers BA*] 5
 set_max_delay -from [get_keepers FB_AD*] -to [get_keepers VA*] 5
