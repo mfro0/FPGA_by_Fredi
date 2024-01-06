@@ -89,7 +89,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal falcon_shift_mode        : std_ulogic_vector(10 downto 0);
     signal falcon_shift_mode_cs     : std_ulogic;
     
-    type clut_mux_av_type is array(3 downto 0) of std_ulogic_vector(1 downto 0);
+    type clut_mux_av_type is array(1 downto 0) of std_ulogic_vector(3 downto 0);
     signal clut_mux_av              : clut_mux_av_type;
     
     signal acp_vctr_cs              : std_ulogic;
@@ -634,8 +634,150 @@ begin
             end if;
             if vhcnt = hs_start and inter_zei = '1' then dop_fifo_clr <= '1'; else dop_fifo_clr <= '0';  end if; -- delete fifo at end of odd lines
             
+            -- counters
+            if vhcnt = std_ulogic_vector(unsigned(h_total) - 1) then last <= '1'; else last <= '0'; end if;
+            if not(last) then vhcnt <= std_ulogic_vector(unsigned(vhcnt) + 1); else vhcnt <= (others => '0'); end if;
+            if last then
+                if vvcnt = v_total then
+                    vvcnt <= (others => '0');
+                else
+                    vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1);
+                end if;
+            end if;
+            
+            -- display on/off
+            if (unsigned(vvcnt) > unsigned(rand_oben) and unsigned(vvcnt) <  unsigned(rand_unten)) then
+                vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1);
+            else
+                vvcnt <= (others => '0');
+            end if;
+            
+            if vhcnt = std_ulogic_vector(unsigned(rand_links) - 1) then
+                dpo_on <= '1';
+            else
+                dpo_on <= '0';
+            end if;
+            
+            if vhcnt = std_ulogic_vector(unsigned(rand_rechts) - 2) then
+                dpo_off <= '1';
+            else
+                dpo_off <= '0';
+            end if;
+            
+            disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
+            
+            -- data transfer on/off
+            if vhcnt = std_ulogic_vector(unsigned(hdis_start) - 2) then 
+                vdo_on <= '1';
+            else
+                vdo_on <= '0';
+            end if;
+            if vhcnt = std_ulogic_vector(unsigned(hdis_end) - 1) then
+                vdo_off <= '1';
+            else
+                vdo_off <= '0';
+            end if;
+            
+            if unsigned(vvcnt) > unsigned(vdis_start) and unsigned(vvcnt) <= unsigned(vdis_end) then
+                vdo_zl <= '1';
+            else
+                vdo_zl <= '0';
+            end if;
+            
+            vdtron <= (vdtron and not(vdo_off)) or (vdo_on and vdo_zl);
+            
+            -- delay and sync
+            if vhcnt = std_ulogic_vector(unsigned(hs_start) - 2) then
+                hsync_start <= '1';
+            else
+                hsync_start <= '0';
+            end if;
+            
+            -- that "?" nonsense is fun - Quartus doesn't accept it without the '"' - strange.
+            hsync_i <= (hsy_len and hsync_start) or 
+                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and ("?" (hsync_i /= 13x"0")));
+
+            
+            if vvcnt(12 downto 1) = vs_start(12 downto 1) then
+                vsync_i <= (others => '1');
+            else
+                vsync_i <= (others => '0');
+            end if;
+            
+            
+            for j in 0 to 2 loop
+                for i in 0 to 8 loop
+                    verz(j)(i + 1) <= verz(j)(i);
+                end loop;
+            end loop;
+            verz(0)(0) <= disp_on;
+            
+            if (vdl_vct(6) = '0' and hsync_i /= 8d"0") or (vdl_vct(6) = '1' and hsync_i = 8d"0") then
+                verz(1)(0) <= '1';
+            else
+                verz(1)(0) <= '0';
+            end if;
+            if (vdl_vct(5) = '0' and vsync_i /= 8d"0") or (vdl_vct(5) = '1' and vsync_i = 8d"0") then
+                verz(2)(0) <= '1';
+            else
+                verz(2)(0) <= '0';
+            end if;
+            nBLANK <= verz(0)(8);
+            hsync <= verz(1)(9);
+            vsync <= verz(2)(9);
+            
+            -- make border color
+            rand(0) <= disp_on and not(vdtron) and acp_vctr(25);
+            for i in 0 to 5 loop
+                rand(i + 1) <= rand(i);
+            end loop;
+            rand_on <= rand(6);
+            
+            -- fifo clr
+            if last then
+                if vvcnt = std_ulogic_vector(unsigned(vdis_end) + 2) then
+                    clr_fifo <= '1';
+                else
+                    clr_fifo <= '0';
+                end if;
+            end if;
+            
+            if vvcnt = d"1" then
+                if last then
+                    start_zeile <= '1';
+                else
+                    start_zeile <= '0';
+                end if;
+            end if;
+            
+            if start_zeile then
+                if vhcnt = d"3" then sync_pix <= '1'; else sync_pix <= '0'; end if;
+                if vhcnt = d"5" then sync_pix1 <= '1'; else sync_pix1 <= '0'; end if;
+                if vhcnt = d"7" then sync_pix2 <= '1'; else sync_pix2 <= '0'; end if;
+            end if;
+            
+            if vdtron or sync_pix then
+                if not sync_pix then
+                    sub_pixel_cnt <= std_ulogic_vector(unsigned(sub_pixel_cnt) + 1);
+                else
+                    sub_pixel_cnt <= (others => '0');
+                end if;
+            end if;
+            
+            fifo_rde <= (("?" (sub_pixel_cnt(6 downto 0) = "1") and color1) or
+                         ("?" (sub_pixel_cnt(5 downto 0) = "1") and color2) or
+                         ("?" (sub_pixel_cnt(4 downto 0) = "1") and color4) or
+                         ("?" (sub_pixel_cnt(3 downto 0) = "1") and color16) or
+                         (("?" (sub_pixel_cnt(2 downto 0) = "1") and color24) and vdtron) or
+                         (sync_pix or sync_pix1 or sync_pix2));
+                         
+            clut_mux_av(0) <= sub_pixel_cnt(3 downto 0);
+            clut_mux_av(1) <= clut_mux_av(0);
+            clut_mux_adr <= clut_mux_av(1);
+            
         end if; -- rising_edge(pixel_clk_i)
     end process p_pxl;
+    nSYNC <= '0';
     dpzf_clkena <= '1' when unsigned(vvcnt) > d"4" else '0';
     
     -- timing horizontal
@@ -672,6 +814,11 @@ begin
     rand_unten <= (vdl_vbb and acp_video_on) or
                   (("0" & std_ulogic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on))) or
                   ((std_ulogic_vector(unsigned(vdl_vbb) + 1) and vdl_vct(0)) and not(acp_video_on));
-                  
+    vs_start <= (vdl_vss and acp_video_on) or
+                ("0" & vdl_vss(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
+                (vdl_vss and vdl_vct(0) and not(acp_video_on));
+    v_total <= (vdl_vft and acp_video_on) or
+               ("0" & std_ulogic_vector(unsigned(vdl_vft(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on)) or
+               (std_ulogic_vector(unsigned(vdl_vft) + 1) and vdl_vct(0) and not(acp_video_on));
 end architecture rtl;
 		
