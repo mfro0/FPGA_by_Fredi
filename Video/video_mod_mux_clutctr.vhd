@@ -782,12 +782,12 @@ begin
     
     -- timing horizontal
     startp <= std_ulogic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
-    rand_links <= vdl_hbe when acp_video_on else
-                  vdl_hbe when mulf = 13d"1" and acp_video_on = '0' else
-                  vdl_hbe(11 downto 0) & "0" when mulf = 13d"2" and acp_video_on = '0' else
-                  vdl_hbe(10 downto 0) & "00" when mulf = 13d"4" and acp_video_on = '0' else
-                  vdl_hbe(9 downto 0) & "000" when mulf = 13d"8" and acp_video_on = '0' else
-                  vdl_hbe(8 downto 0) & "0000" when mulf = 13d"16" and acp_video_on = '0';
+    rand_links <= (vdl_hbe and acp_video_on) or
+                  (vdl_hbe and "?"(mulf = 13d"1") and not acp_video_on) or
+                  (vdl_hbe(11 downto 0) & "0" and "?"(mulf = 13d"2") and not acp_video_on) or
+                  (vdl_hbe(10 downto 0) & "00" and "?"(mulf = 13d"4") and not acp_video_on) or
+                  (vdl_hbe(9 downto 0) & "000" and "?"(mulf = 13d"8") and not acp_video_on) or
+                  (vdl_hbe(8 downto 0) & "0000" and "?"(mulf = 13d"16") and not acp_video_on);
     hdis_start <= vdl_hdb when acp_video_on else
                   std_ulogic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video_on else
                   "0" & std_ulogic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
