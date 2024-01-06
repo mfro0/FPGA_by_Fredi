@@ -798,8 +798,6 @@ set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=00
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=119" -section_id auto_signaltap_0
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_LOWORD=58413" -section_id auto_signaltap_0
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_HIWORD=50705" -section_id auto_signaltap_0
-set_global_assignment -name SLD_FILE db/firebee1_auto_stripped.stp
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name VHDL_FILE firebee_utils.vhd
 set_global_assignment -name AHDL_FILE blitter.tdf
 set_global_assignment -name SDC_FILE firebee1.sdc
@@ -913,7 +911,6 @@ set_global_assignment -name VHDL_FILE Video/lpm_ff1.vhd
 set_global_assignment -name SOURCE_FILE Video/lpm_ff2.cmp
 set_global_assignment -name SOURCE_FILE Video/lpm_ff3.cmp
 set_global_assignment -name VHDL_FILE Video/lpm_ff3.vhd
-set_global_assignment -name AHDL_FILE Video/VIDEO_MOD_MUX_CLUTCTR.tdf
 set_global_assignment -name VHDL_FILE Video/lpm_ff2.vhd
 set_global_assignment -name SOURCE_FILE Video/lpm_fifo_dc0.cmp
 set_global_assignment -name VHDL_FILE Video/lpm_fifo_dc0.vhd
@@ -989,3 +986,5 @@ set_global_assignment -name QIP_FILE Video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE Video/BLITTER/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee1.stp
 set_global_assignment -name VHDL_FILE Video/video_mod_mux_clutctr.vhd
+set_global_assignment -name SLD_FILE db/firebee1_auto_stripped.stp
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

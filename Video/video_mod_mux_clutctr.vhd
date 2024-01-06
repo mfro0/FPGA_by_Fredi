@@ -695,7 +695,7 @@ begin
             
             -- that "?" nonsense is fun - Quartus doesn't accept it without the '"' - strange.
             hsync_i <= (hsy_len and hsync_start) or 
-                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and ("?" (hsync_i /= 13x"0")));
+                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and ("?" (hsync_i /= 8x"0")));
 
             
             if vvcnt(12 downto 1) = vs_start(12 downto 1) then
@@ -717,7 +717,7 @@ begin
             else
                 verz(1)(0) <= '0';
             end if;
-            if (vdl_vct(5) = '0' and vsync_i /= 8d"0") or (vdl_vct(5) = '1' and vsync_i = 8d"0") then
+            if (vdl_vct(5) = '0' and vsync_i /= 2d"0") or (vdl_vct(5) = '1' and vsync_i = 2d"0") then
                 verz(2)(0) <= '1';
             else
                 verz(2)(0) <= '0';
@@ -742,7 +742,7 @@ begin
                 end if;
             end if;
             
-            if vvcnt = d"1" then
+            if vvcnt = 13d"1" then
                 if last then
                     start_zeile <= '1';
                 else
@@ -751,9 +751,9 @@ begin
             end if;
             
             if start_zeile then
-                if vhcnt = d"3" then sync_pix <= '1'; else sync_pix <= '0'; end if;
-                if vhcnt = d"5" then sync_pix1 <= '1'; else sync_pix1 <= '0'; end if;
-                if vhcnt = d"7" then sync_pix2 <= '1'; else sync_pix2 <= '0'; end if;
+                if vhcnt = 13d"3" then sync_pix <= '1'; else sync_pix <= '0'; end if;
+                if vhcnt = 13d"5" then sync_pix1 <= '1'; else sync_pix1 <= '0'; end if;
+                if vhcnt = 13d"7" then sync_pix2 <= '1'; else sync_pix2 <= '0'; end if;
             end if;
             
             if vdtron or sync_pix then
@@ -764,11 +764,11 @@ begin
                 end if;
             end if;
             
-            fifo_rde <= (("?" (sub_pixel_cnt(6 downto 0) = "1") and color1) or
-                         ("?" (sub_pixel_cnt(5 downto 0) = "1") and color2) or
-                         ("?" (sub_pixel_cnt(4 downto 0) = "1") and color4) or
-                         ("?" (sub_pixel_cnt(3 downto 0) = "1") and color16) or
-                         (("?" (sub_pixel_cnt(2 downto 0) = "1") and color24) and vdtron) or
+            fifo_rde <= (("?" (sub_pixel_cnt(6 downto 0) = 7d"1") and color1) or
+                         ("?" (sub_pixel_cnt(5 downto 0) = 6d"1") and color2) or
+                         ("?" (sub_pixel_cnt(4 downto 0) = 5d"1") and color4) or
+                         ("?" (sub_pixel_cnt(3 downto 0) = 4d"1") and color16) or
+                         (("?" (sub_pixel_cnt(2 downto 0) = 3d"1") and color24) and vdtron) or
                          (sync_pix or sync_pix1 or sync_pix2));
                          
             clut_mux_av(0) <= sub_pixel_cnt(3 downto 0);
