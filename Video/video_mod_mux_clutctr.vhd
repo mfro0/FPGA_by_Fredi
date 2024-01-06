@@ -717,7 +717,7 @@ begin
             else
                 verz(1)(0) <= '0';
             end if;
-            if (vdl_vct(5) = '0' and vsync_i /= 2d"0") or (vdl_vct(5) = '1' and vsync_i = 2d"0") then
+            if (vdl_vct(5) = '0' and vsync_i /= 3d"0") or (vdl_vct(5) = '1' and vsync_i = 3d"0") then
                 verz(2)(0) <= '1';
             else
                 verz(2)(0) <= '0';
