@@ -329,18 +329,20 @@ begin
             13d"2" when not st_video and (not te and not vdl_vct(0)) else
             13d"4" when st_video and te and vdl_vct(0) else
             13d"8" when st_video and ((te and not vdl_vct(0)) or (not te and vdl_vct(0))) else
-            13d"16" when st_video and not te and not vdl_vct(0);
+            13d"16" when st_video and not te and not vdl_vct(0) else
+            (others => '0');
 
     -- width in pixel
     hdis_len <= 13d"320" when te and not acp_video_on else
                 13d"640" when not te and not acp_video_on else
-                std_ulogic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video_on;
+                std_ulogic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video_on else
+                (others => '0');
 
-    wpl <= vdl_lwd when not acp_video_on else
-           7d"0" & hdis_len(12 downto 4) when color1 and acp_video_on else
-           4d"0" & hdis_len(12 downto 1) when color8 and acp_video_on else
-           3d"0" & hdis_len when color16 and acp_video_on else
-           2d"0" & hdis_len & "0" when color24 and acp_video_on;
+    wpl <= (vdl_lwd and not acp_video_on) or
+           (7d"0" & hdis_len(12 downto 4) and color1 and acp_video_on) or
+           (4d"0" & hdis_len(12 downto 1) and color8 and acp_video_on) or
+           (3d"0" & hdis_len and color16 and acp_video_on) or
+           (2d"0" & hdis_len & "0" and color24 and acp_video_on);
 
     
     -- register out
@@ -397,13 +399,13 @@ begin
     
     te <= vdl_vmd(2) and (not vdl_vct(0) or not vdl_vmd(2)) and vdl_vct(0);
     
-    pixel_clk_i <= clk13m when not acp_video_on and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and TE else
-                   clk17m when not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and TE else
-                   clk25m when not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and not TE else
-                   clk33m when not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and not TE else
-                   clk25m when ACP_VIDEO_ON = '1' and ACP_VCTR(9 downto 8) = "00" else
-                   clk33m when ACP_VIDEO_ON = '1' and ACP_VCTR(9 downto 8) = "01" else
-                   clk_video when ACP_VIDEO_ON and ACP_VCTR(9);
+    pixel_clk_i <= (clk13m and not acp_video_on and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and TE) or
+                   (clk17m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and TE) or
+                   (clk25m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and not TE) or
+                   (clk33m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and not TE) or
+                   (clk25m and ACP_VIDEO_ON and ACP_VCTR(9) and not acp_vctr(8)) or
+                   (clk33m and ACP_VIDEO_ON and "?"(ACP_VCTR(9 downto 8) = "01")) or
+                   (clk_video and ACP_VIDEO_ON and ACP_VCTR(9));
     
     p_shiftmode : process(all)
     begin
@@ -412,6 +414,7 @@ begin
         color4 <= '0';
         color8 <= '0';
         color16 <= '0';
+        color24 <= '0';
     
         if not(color8) and st_video and not(acp_video_on) then
             case st_shift_mode is
