@@ -2,6 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.firebee_utils.all;
+
 entity video_mod_mux_clutctr is
     port
     (
@@ -237,7 +239,7 @@ begin
     -- Falcon clut
     falcon_clut_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 10) = 10x"3e6" else '0';
     falcon_clut_rdh <= '1' when falcon_clut_cs and not(nFB_OE) and not(fb_adr(1)) else '0';
-    falcon_clut_rdl <= '1' when falcon_clut_cs and not(nFB_OE) and not(fb_adr(1)) else '0';
+    falcon_clut_rdl <= '1' when falcon_clut_cs and not(nFB_OE) and    (fb_adr(1)) else '0';
     falcon_clut_wr(1 downto 0) <= fb_16b when not(fb_adr(1)) and falcon_clut_cs and not(nFB_WR) else (others => '0');
     falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) and falcon_clut_cs and not(nFB_WR) else (others => '0');
     
@@ -371,6 +373,10 @@ begin
                            vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa" when video_pll_reconfig_cs else
                            (others => 'Z');
     
+    fb_ad(15 downto 0) <= acp_vctr(15 downto 0) when acp_vctr_cs and not(nFB_OE) else
+                          ccr(15 downto 0) when ccr_cs and not(nFB_OE) else
+                          (others => 'Z');
+
     video_mod_ta <= clut_ta or acp_vctr_cs or sys_ctr_cs or videl_cs;
     
     -- set video output
@@ -614,12 +620,12 @@ begin
         end function vand;
     begin
         if rising_edge(pixel_clk_i) then
-            ccsel <= vand("000", st_clut) or
-                     vand("001", falcon_clut) or
-                     vand("100", acp_clut) or
-                     vand("101", color16) or
-                     vand("110", color24) or
-                     vand("111", rand_on);
+            ccsel <= ("000" and st_clut) or
+                     ("001" and falcon_clut) or
+                     ("100" and acp_clut) or
+                     ("101" and color16) or
+                     ("110" and color24) or
+                     ("111" and rand_on);
                      
             if (vvcnt(0) /= vdis_start(0)) and dpzf_clkena = '1' then
                 inter_zei <= vdl_vmd(0) and (falcon_video or st_video);
@@ -654,6 +660,18 @@ begin
                std_ulogic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on;
                
     -- timing vertical
-    
+    rand_oben <= (vdl_vbe and acp_video_on) or
+                 ("0" & vdl_vbe(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
+                 ((vdl_vbe and vdl_vct(0)) and not(acp_video_on));
+    vdis_start <= (vdl_vdb and acp_video_on) or
+                  (("0" & std_ulogic_vector(unsigned(vdl_vdb(12 downto 1)) + 1)) and not(vdl_vct(0)) and not(acp_video_on)) or
+                  ((std_ulogic_vector(unsigned(vdl_vdb) + 1) and vdl_vct(0)) and not(acp_video_on));
+    vdis_end <= (vdl_vde and acp_video_on) or
+                ((("0" & vdl_vde(12 downto 1)) and not(vdl_vct(0))) and not(acp_video_on)) or
+                ((vdl_vde and vdl_vct(0)) and not(acp_video_on));
+    rand_unten <= (vdl_vbb and acp_video_on) or
+                  (("0" & std_ulogic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on))) or
+                  ((std_ulogic_vector(unsigned(vdl_vbb) + 1) and vdl_vct(0)) and not(acp_video_on));
+                  
 end architecture rtl;
 		
