@@ -193,7 +193,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdl_vft_cs               : std_ulogic;
     signal vdl_vct                  : std_ulogic_vector(12 downto 0);
     signal vdl_vct_cs               : std_ulogic;
-    signal vdl_vmd                  : std_ulogic_vector(12 downto 0);
+    signal vdl_vmd                  : std_ulogic_vector(3 downto 0);
     signal vdl_vmd_cs               : std_ulogic;
 
     signal vdl_bpp_cs               : std_ulogic;
@@ -368,7 +368,7 @@ begin
                            3d"0" & vdl_vss when vdl_vss_cs = '1' and nFB_OE = '0' else
                            3d"0" & vdl_vft when vdl_vft_cs = '1' and nFB_OE = '0' else
                            3d"0" & vdl_vct when vdl_vct_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vmd when vdl_vmd_cs = '1' and nFB_OE = '0' else
+                           12d"0" & vdl_vmd when vdl_vmd_cs = '1' and nFB_OE = '0' else
                            acp_vctr(31 downto 16) when acp_vctr_cs = '1' and nFB_OE = '0' else
                            8d"0" & ccr(23 downto 16) when ccr_cs = '1' and nFB_OE = '0' else
                            7d"0" & vr_dout when video_pll_config_cs = '1' and nFB_OE = '0' else
@@ -570,7 +570,7 @@ begin
             end if;
             
             if vdl_vmd_cs and not nFB_WR then
-                if fb_b(3) then vdl_vmd(3 downto 0) <= fb_ad(19 downto 16); end if;
+                if fb_b(3) then vdl_vmd <= fb_ad(19 downto 16); end if;
             end if;
 
             
@@ -650,9 +650,9 @@ begin
             
             -- display on/off
             if (unsigned(vvcnt) > unsigned(rand_oben) and unsigned(vvcnt) <  unsigned(rand_unten)) then
-                vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1);
+                dpo_zl <= '1';
             else
-                vvcnt <= (others => '0');
+                dpo_zl <= '0';
             end if;
             
             if vhcnt = std_ulogic_vector(unsigned(rand_links) - 1) then
