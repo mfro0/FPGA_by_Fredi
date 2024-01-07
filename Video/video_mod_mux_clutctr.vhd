@@ -8,62 +8,62 @@ entity video_mod_mux_clutctr is
     port
     (
         nRSTO               : in std_ulogic;
-        MAIN_CLK            : in std_ulogic;
+        main_clk            : in std_ulogic;
         nFB_CS1             : in std_ulogic;
         nFB_CS2             : in std_ulogic;
         nFB_CS3             : in std_ulogic;
         nFB_WR              : in std_ulogic;
         nFB_OE              : in std_ulogic;
-        FB_SIZE0            : in std_ulogic;
-        FB_SIZE1            : in std_ulogic;
+        fb_size0            : in std_ulogic;
+        fb_size1            : in std_ulogic;
         nFB_BURST           : in std_ulogic;
-        FB_ADR              : in std_ulogic_vector(31 downto 0);
+        fb_adr              : in std_ulogic_vector(31 downto 0);
 
-        CLK33M              : in std_ulogic;
-        CLK25M              : in std_ulogic;
+        clk33m              : in std_ulogic;
+        clk25m              : in std_ulogic;
 		
-        BLITTER_RUN         : in std_ulogic;
-        CLK_VIDEO           : in std_ulogic;
-        VR_D                : in std_ulogic_vector(8 downto 0);
-        VR_BUSY             : in std_ulogic;
+        blitter_run         : in std_ulogic;
+        clk_video           : in std_ulogic;
+        vr_d                : in std_ulogic_vector(8 downto 0);
+        vr_busy             : in std_ulogic;
 
-        COLOR8              : out std_ulogic;
-        ACP_CLUT_RD         : out std_ulogic;
-        COLOR1              : out std_ulogic;
+        color8              : out std_ulogic;
+        acp_clut_rd         : out std_ulogic;
+        color1              : out std_ulogic;
 
-        FALCON_CLUT_RDH,
-        FALCON_CLUT_RDL     : out std_ulogic;
-        FALCON_CLUT_WR      : out std_ulogic_vector(3 downto 0);
-        ST_CLUT_RD          : out std_ulogic;
-        ST_CLUT_WR          : out std_ulogic_vector(1 downto 0);
-        CLUT_MUX_ADR        : out std_ulogic_vector(3 downto 0);
+        falcon_clut_rdh,
+        falcon_clut_rdl     : out std_ulogic;
+        falcon_clut_wr      : out std_ulogic_vector(3 downto 0);
+        st_clut_rd          : out std_ulogic;
+        st_clut_wr          : out std_ulogic_vector(1 downto 0);
+        clut_mux_adr        : out std_ulogic_vector(3 downto 0);
 		
-        HSYNC,
-        VSYNC               : out std_ulogic;
+        hsync,
+        vsync               : out std_ulogic;
         nBLANK,
         nSYNC               : out std_ulogic;
         nPD_VGA             : out std_ulogic;
-        FIFO_RDE            : out std_ulogic;
-        COLOR2,
-        COLOR4              : out std_ulogic;
-        PIXEL_CLK           : out std_ulogic;
-        CLUT_OFF            : out std_ulogic_vector(3 downto 0);
-        BLITTER_ON          : out std_ulogic;
+        fifo_rde            : out std_ulogic;
+        color2,
+        color4              : out std_ulogic;
+        pixel_clk           : out std_ulogic;
+        clut_off            : out std_ulogic_vector(3 downto 0);
+        blitter_on          : out std_ulogic;
 
-        VIDEO_RAM_CTR       : out std_ulogic_vector(15 downto 0);
-        VIDEO_MOD_TA        : out std_ulogic;
+        video_ram_ctr       : out std_ulogic_vector(15 downto 0);
+        video_mod_ta        : out std_ulogic;
 		
-        CCR                 : out std_ulogic_vector(23 downto 0);
-        CCSEL               : out std_ulogic_vector(2 downto 0);
-        ACP_CLUT_WR         : out std_ulogic_vector(3 downto 0);
-        INTER_ZEI           : out std_ulogic;
-        DOP_FIFO_CLR        : out std_ulogic;
-        VIDEO_RECONFIG      : out std_ulogic;
-        VR_WR,
-        VR_RD               : out std_ulogic;
-        CLR_FIFO            : out std_ulogic;
-        DPZF_CLKENA         : out std_ulogic;
-        FB_AD               : inout std_ulogic_vector(31 downto 0)
+        ccr                 : out std_ulogic_vector(23 downto 0);
+        ccsel               : out std_ulogic_vector(2 downto 0);
+        acp_clut_wr         : out std_ulogic_vector(3 downto 0);
+        inter_zei           : out std_ulogic;
+        dop_fifo_clr        : out std_ulogic;
+        video_reconfig      : out std_ulogic;
+        vr_wr,
+        vr_rd               : out std_ulogic;
+        clr_fifo            : out std_ulogic;
+        dpzf_clkena         : out std_ulogic;
+        fb_ad               : inout std_ulogic_vector(31 downto 0)
     );
 end entity video_mod_mux_clutctr;
 
@@ -95,7 +95,6 @@ architecture rtl of video_mod_mux_clutctr is
     signal acp_vctr_cs              : std_ulogic;
     signal acp_vctr                 : std_ulogic_vector(31 downto 0);
     signal ccr_cs                   : std_ulogic;
-    -- signal ccr                      : std_ulogic_vector(23 downto 0);
     
     signal acp_video_on             : std_ulogic;
     signal sys_ctr                  : std_ulogic_vector(6 downto 0);
@@ -112,9 +111,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal hsy_len                  : std_ulogic_vector(7 downto 0);
     signal hsync_start              : std_ulogic;
     signal last                     : std_ulogic;
-    -- signal vsync                    : std_ulogic;
     signal vsync_i                  : std_ulogic_vector(2 downto 0);
-    -- signal nBLANK                   : std_ulogic;
     signal disp_on                  : std_ulogic;
     signal dpo_zl                   : std_ulogic;
     signal dpo_on                   : std_ulogic;
@@ -131,13 +128,10 @@ architecture rtl of video_mod_mux_clutctr is
     signal verz                     : verz_type;
     signal rand                     : std_ulogic_vector(6 downto 0);
     signal rand_on                  : std_ulogic;
-    -- signal fifo_rde                 : std_ulogic;
-    -- signal clr_fifo                 : std_ulogic;
     signal start_zeile              : std_ulogic;
     signal sync_pix                 : std_ulogic;
     signal sync_pix1                : std_ulogic;
     signal sync_pix2                : std_ulogic;
-    -- signal ccsel                    : std_ulogic;
     signal color16                  : std_ulogic;
     signal color24                  : std_ulogic;
     signal te                       : std_ulogic;
@@ -175,8 +169,6 @@ architecture rtl of video_mod_mux_clutctr is
     signal v_total                  : std_ulogic_vector(12 downto 0);
     signal falcon_video             : std_ulogic;
     signal st_video                 : std_ulogic;
-    -- signal inter_zei                : std_ulogic;
-    -- signal dop_fifo_clr             : std_ulogic;
     
     signal videl_cs                 : std_ulogic;
     signal vdl_vbe                  : std_ulogic_vector(12 downto 0);
@@ -262,7 +254,7 @@ begin
     -- video PLL configuration
     video_pll_config_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 9) = 19x"3" and fb_b(0) = '1' and fb_b(1) = '1' else '0';
     
-    VR_RD <= video_pll_config_cs and nFB_WR and not VR_BUSY;
+    vr_rd <= video_pll_config_cs and nFB_WR and not vr_busy;
     
     -- video PLL reconfig
     video_pll_reconfig_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 0) = 28x"800" else '0';
@@ -385,7 +377,7 @@ begin
     
     p_vclk17 : process(all)
     begin
-        if rising_edge(clk33M) then
+        if rising_edge(clk33m) then
             clk17m <= not clk17m;
         end if; -- rising_edge(clk33m)
     end process p_vclk17;
@@ -423,13 +415,13 @@ begin
                 when "000" => color4 <= '1';
                 when others => null;
             end case;
-        else
-            -- set color mode in ACP
-            color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-            color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-            color16 <=                                        acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-            color24 <=                                                            acp_vctr(2) and acp_video_on;
         end if;
+        -- set color mode in ACP
+        color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color16 <=                                        acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color24 <=                                                            acp_vctr(2) and acp_video_on;
+        
         if falcon_video and not(acp_video_on) then
             case falcon_shift_mode is
                 when 11x"400" => color1 <= '1';
@@ -470,7 +462,7 @@ begin
             acp_vctr(7) <= falcon_shift_mode_cs and not nFB_WR and not acp_video_on;
             acp_vctr(6) <= st_shift_mode_cs and not nFB_WR and not acp_video_on;
             
-            if not VR_BUSY then
+            if not vr_busy then
                 vr_dout <= vr_d;
             end if;
             
@@ -480,7 +472,7 @@ begin
                 end if;
             end if;
             
-            video_reconfig <= video_pll_reconfig_cs and not nFB_WR and not VR_BUSY and not video_reconfig;
+            video_reconfig <= video_pll_reconfig_cs and not nFB_WR and not vr_busy and not video_reconfig;
             
             if ccr_cs and not nFB_WR then
                 if fb_b(1) then ccr(23 downto 16) <= fb_ad(23 downto 16); end if;
@@ -595,32 +587,12 @@ begin
                 end if;
             end if;
             
-            vr_wr <= video_pll_config_cs and not nFB_WR and not VR_BUSY and not VR_WR;
+            vr_wr <= video_pll_config_cs and not nFB_WR and not vr_busy and not vr_wr;
         end if;  -- if rising_edge()
         
     end process p;
     
     p_pxl: process(all)
-        -- Fredi often avoids conditional logic in favour of straight boolean logic
-        -- AHDL allows logical operations between vectors and single elements which results
-        -- in having the logical operation done for each single element of the vector. The
-        -- function here does the same and Quartus infers the exact same logic than AHDL
-        --
-        -- the following is the same as
-        --
-        -- CCSEL[].CLK = PIXEL_CLK;
-        -- CCSEL[] = B"000" & ST_CLUT				-- ONLY FOR INFORMATION
-        --         # B"001" & FALCON_CLUT
-		--         # B"100" & ACP_CLUT
-		--         # B"101" & COLOR16
-		--         # B"110" & COLOR24
-		--         # B"111" & RAND_ON;
-        --
-        function vand(v : in std_ulogic_vector; e : std_ulogic) return std_ulogic_vector is
-            variable ev : std_ulogic_vector(v'range) := (others => e);
-        begin
-            return v and ev;
-        end function vand;
     begin
         if rising_edge(pixel_clk_i) then
             ccsel <= ("000" and st_clut) or
@@ -675,6 +647,7 @@ begin
             else
                 vdo_on <= '0';
             end if;
+
             if vhcnt = std_ulogic_vector(unsigned(hdis_end) - 1) then
                 vdo_off <= '1';
             else
@@ -796,13 +769,17 @@ begin
                   "0" & std_ulogic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
                   (others => '0');
     hdis_end <= vdl_hdb when acp_video_on else
-                std_ulogic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video_on;
+                std_ulogic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video_on else
+                (others => '0');
     rand_rechts <= vdl_hbb when acp_video_on else
-                std_ulogic_vector(resize(unsigned(vdl_hht) + 2 + unsigned(vdl_hbb) * unsigned(mulf) + 1, vdl_hht'length)) when not acp_video_on;
+                std_ulogic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, vdl_hht'length)) when not acp_video_on else
+                (others => '0');
     hs_start <= vdl_hss when acp_video_on else
-                std_ulogic_vector(resize(unsigned(vdl_hht) + 2 + unsigned(vdl_hss) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video_on;
+                std_ulogic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video_on else
+                (others => '0');
     h_total <= vdl_hht when acp_video_on else
-               std_ulogic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on;
+               std_ulogic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on else
+               (others => '0');
                
     -- timing vertical
     rand_oben <= (vdl_vbe and acp_video_on) or
