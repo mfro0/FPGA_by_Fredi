@@ -250,8 +250,7 @@ begin
     st_clut_wr <= fb_16b when st_clut_cs and not(nFB_WR) else (others => '0');
     
     -- ST shift mode
-    st_shift_mode_cs <= not nFB_CS1 and tr(fb_adr(19 downto 1) = 19x"7c130");               -- x"fff8240" / x"20"
-    
+    st_shift_mode_cs <= not nFB_CS1 and tr(fb_adr(19 downto 1) = 19x"7c130");                 -- x"f8260"/2    
     -- Falcon shift mode
     falcon_shift_mode_cs <= not nFB_CS1  and tr(fb_adr(19 downto 1) = 19x"7c133");
     clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');

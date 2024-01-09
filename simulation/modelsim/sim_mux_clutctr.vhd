@@ -81,25 +81,26 @@ architecture sim of video_mod_mux_clutctr_tb is
     type stim_vector_type is array (positive range <>) of stim_record;
     constant stim_vector  : stim_vector_type :=
     (
-        ("1000", x"40000000", R, 32x"ff", LONG),
-        ("1000", x"40000000", R, 32x"ff", LONG),
-        ("1000", x"40000000", R, 32x"ff", LONG),
-        ("1000", x"40000000", R, 32x"ff", LONG),
-        ("1000", x"40000000", R, 32x"ff", WORD),
-        ("1000", x"40000000", R, 32x"ff", WORD),
-        ("0100", x"ffff8240", W, 32x"ff", WORD),
-        ("0100", x"ffff8240", R, 32x"ff", WORD),
-        ("0100", x"ffff8240", W, 32x"ff", WORD),
-        ("0100", x"ffff8242", W, 32x"ff", WORD),
-        ("0100", x"ffff8242", R, 32x"ff", BYTE),
-        ("0100", x"ffff8240", R, 32x"ff", BYTE),
-        ("0100", x"ffff8240", W, 32x"ff", BYTE),
-        ("0100", x"ffff8240", R, 32x"ff", BYTE),
-        ("0100", x"ffff8240", W, 32x"ff", BYTE),
-        ("0100", x"ffff8240", R, 32x"ff", BYTE)
+        ("1101", x"ffff8240", W, 32x"ab", BYTE),
+        ("1101", x"ffff8240", R, 32x"ab", BYTE),
+        ("1101", x"ffff8260", W, 32x"ab", BYTE),
+        ("1101", x"ffff8260", W, 32x"ab", BYTE),
+        ("1101", x"ffff8266", W, 32x"ab", WORD),
+        ("1101", x"ffff8266", R, 32x"ab", WORD),
+        ("1101", x"ffff8210", W, 32x"ab", WORD),
+        ("1101", x"ffff8210", R, 32x"ab", WORD),
+        ("1101", x"ffff8212", W, 32x"ab", WORD),
+        ("1101", x"ffff8212", W, 32x"ab", WORD),
+        ("1101", x"ffff8214", R, 32x"ab", BYTE),
+        ("1101", x"ffff8214", R, 32x"ab", BYTE),
+        ("1101", x"ffff8260", W, 32x"ab", BYTE),
+        ("1101", x"ffff8260", R, 32x"ab", BYTE),
+        ("1101", x"ffff8260", W, 32x"ab", BYTE),
+        ("1101", x"ffff8260", R, 32x"ab", BYTE)
     );
 
     signal step : positive := 1;
+    signal d : std_ulogic_vector(31 downto 0);
 begin
     p_main_clk : process
     begin
@@ -125,7 +126,7 @@ begin
     end process cpu_statemachine;
 
     cpu_statemachine_worker : process(all)
-        variable d : std_ulogic_vector(31 downto 0);
+        -- variable d : std_ulogic_vector(31 downto 0);
     begin
         if step > stim_vector'high then
             std.env.stop(0);
@@ -134,10 +135,14 @@ begin
         case cpu_status is
             when S0 =>
                 fb_adr <= stim_vector(step).addr;          -- set address
+                
                 -- fb_ale <= '0';
+                
                 case stim_vector(step).operation is
                     when W => nFB_WR <= '0';
+                              nFB_OE <= '1';
                     when R => nFB_WR <= '1';
+                              nFB_OE <= '0';
                 end case;
 
             when S1 =>
@@ -151,18 +156,18 @@ begin
                     when WORD => (fb_size1, fb_size0) <= std_ulogic_vector'("10");
                     when LONG => (fb_size1, fb_size0) <= std_ulogic_vector'("00");
                     when LINE => (fb_size1, fb_size0) <= std_ulogic_vector'("11");
+
+                case stim_vector(step).operation is
+                    when W => nFB_WR <= '0';
+                              nFB_OE <= '1';
+                    when R => nFB_WR <= '1';
+                              nFB_OE <= '0';
+                end case;
                 end case;
                 
-                if stim_vector(step).operation = R then
-                    nFB_WR <= '1';
-                    nFB_OE <= '0';
-                else
-                    nFB_WR <= '0';
-                    fb_ad <= stim_vector(step).data;
-                end if;
-
             when S2 =>
-                d := fb_ad;
+                (nFB_CS1, nFB_CS2, nFB_CS3) <= std_ulogic_vector'("111");
+                
                 fb_ad <= (others => 'Z');
                 nFB_OE <= '1';
                 nFB_WR <= '1';
