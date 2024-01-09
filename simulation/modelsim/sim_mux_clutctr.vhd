@@ -68,33 +68,35 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal cpu_status       : state := S0;
 
     type operation_type is (R, W);
+    type lane_width_type is (BYTE, WORD, LONG, LINE);
+        
     type stim_record is record
         fbcs            : std_ulogic_vector(3 downto 0);
         addr            : std_ulogic_vector(31 downto 0);
         operation       : operation_type;
         data            : std_ulogic_vector(31 downto 0);
-        width           : natural;
+        width           : lane_width_type;
     end record;
 
     type stim_vector_type is array (positive range <>) of stim_record;
     constant stim_vector  : stim_vector_type :=
     (
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("1000", x"40000000", R, 32x"ff", 2),
-        ("0100", x"ffff8240", W, 32x"ff", 2),
-        ("0100", x"ffff8240", R, 32x"ff", 2),
-        ("0100", x"ffff8240", W, 32x"ff", 2),
-        ("0100", x"ffff8242", W, 32x"ff", 2),
-        ("0100", x"ffff8242", R, 32x"ff", 2),
-        ("0100", x"ffff8240", R, 32x"ff", 2),
-        ("0100", x"ffff8240", W, 32x"ff", 2),
-        ("0100", x"ffff8240", R, 32x"ff", 2),
-        ("0100", x"ffff8240", W, 32x"ff", 2),
-        ("0100", x"ffff8240", R, 32x"ff", 2)
+        ("1000", x"40000000", R, 32x"ff", LONG),
+        ("1000", x"40000000", R, 32x"ff", LONG),
+        ("1000", x"40000000", R, 32x"ff", LONG),
+        ("1000", x"40000000", R, 32x"ff", LONG),
+        ("1000", x"40000000", R, 32x"ff", WORD),
+        ("1000", x"40000000", R, 32x"ff", WORD),
+        ("0100", x"ffff8240", W, 32x"ff", WORD),
+        ("0100", x"ffff8240", R, 32x"ff", WORD),
+        ("0100", x"ffff8240", W, 32x"ff", WORD),
+        ("0100", x"ffff8242", W, 32x"ff", WORD),
+        ("0100", x"ffff8242", R, 32x"ff", BYTE),
+        ("0100", x"ffff8240", R, 32x"ff", BYTE),
+        ("0100", x"ffff8240", W, 32x"ff", BYTE),
+        ("0100", x"ffff8240", R, 32x"ff", BYTE),
+        ("0100", x"ffff8240", W, 32x"ff", BYTE),
+        ("0100", x"ffff8240", R, 32x"ff", BYTE)
     );
 
     signal step : positive := 1;
@@ -123,10 +125,12 @@ begin
     end process cpu_statemachine;
 
     cpu_statemachine_worker : process(all)
+        variable d : std_ulogic_vector(31 downto 0);
     begin
         if step > stim_vector'high then
             std.env.stop(0);
         end if;
+        
         case cpu_status is
             when S0 =>
                 fb_adr <= stim_vector(step).addr;          -- set address
@@ -141,9 +145,15 @@ begin
                 nFB_CS1 <= stim_vector(step).fbcs(1);
                 nFB_CS2 <= stim_vector(step).fbcs(2);
                 nFB_CS3 <= stim_vector(step).fbcs(3);
+                
+                case stim_vector(step).width is
+                    when BYTE => (fb_size1, fb_size0) <= std_ulogic_vector'("01");
+                    when WORD => (fb_size1, fb_size0) <= std_ulogic_vector'("10");
+                    when LONG => (fb_size1, fb_size0) <= std_ulogic_vector'("00");
+                    when LINE => (fb_size1, fb_size0) <= std_ulogic_vector'("11");
+                end case;
+                
                 if stim_vector(step).operation = R then
-                    fb_size0 <= '0';
-                    fb_size1 <= '0';
                     nFB_WR <= '1';
                     nFB_OE <= '0';
                 else
@@ -152,14 +162,18 @@ begin
                 end if;
 
             when S2 =>
+                d := fb_ad;
                 fb_ad <= (others => 'Z');
-                if stim_vector(step).operation = R then
-                    report "received " & to_hstring(fb_ad) & " from uut (stim #" & to_string(step) & ")." severity note;
-                end if;
                 nFB_OE <= '1';
                 nFB_WR <= '1';
 
             when S3 =>
+                if stim_vector(step).operation = R then
+                    report "received " & to_hstring(d) & " from uut (stim #" & to_string(step) & ")." severity note;
+                else
+                    report "sent " & to_hstring(stim_vector(step).data) & " to uut (stim #" & ")." severity note;
+                end if;
+                
                 -- invalidate address
                 -- invalidate FB_WRn
         end case;

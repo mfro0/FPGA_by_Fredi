@@ -195,15 +195,30 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdl_hbep                 : std_ulogic;
     
     signal pixel_clk_i              : std_ulogic;
+    signal tsize                    : std_ulogic_vector(1 downto 0);
     
+    type width_type is (BYTE, WORD, LONG, LINE);
+    signal w                        : width_type;
 begin
+    p_fb_b : process(all)
+    begin
+        tsize <= fb_size1 & fb_size0;
+        case tsize is
+            when "00" => w <= LONG;
+            when "01" => w <= BYTE;
+            when "10" => w <= WORD;
+            when "11" => w <= LINE;
+            when others => null;
+        end case;
+    end process p_fb_b;
+    
     -- byte select 32 bit
     fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0
     fb_b(1) <= (tr(fb_adr(1 downto 0) = "01")) or                                   -- adr = 1
                (fb_size1 and not fb_size0 and not fb_adr(1)) or                     -- high word
                ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
     fb_b(2) <= tr(fb_adr(1 downto 0) = "10") or                                     -- adr = 2
-               ((fb_size1 and fb_size0) or (fb_size1 and fb_size0));                -- long and line
+               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
     fb_b(3) <= tr(fb_adr(1 downto 0) = "11") or                                     -- adr = 3
                (fb_size1 and not fb_size0 and fb_adr(1)) or                         -- low word
                ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
