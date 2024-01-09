@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 package firebee_utils is
     function vext(e : std_ulogic; size : integer) return std_ulogic_vector;
     function "and" (v : std_ulogic_vector; s : std_ulogic) return std_ulogic_vector;
-    function "?" (b : boolean) return std_ulogic;
+    function tr(b : boolean) return std_ulogic;
 end package firebee_utils;
 
 package body firebee_utils is
@@ -23,9 +23,9 @@ package body firebee_utils is
         end loop;
         return vi;
     end function "and";
-    function "?" (b : boolean) return std_ulogic is
+    function tr(b : boolean) return std_ulogic is
     begin
         if b then return '1'; else return '0'; end if;
-    end function "?";
+    end function tr;
     
 end package body firebee_utils;

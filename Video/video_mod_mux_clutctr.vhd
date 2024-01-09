@@ -63,7 +63,7 @@ entity video_mod_mux_clutctr is
         vr_rd               : out std_ulogic;
         clr_fifo            : out std_ulogic;
         dpzf_clkena         : out std_ulogic;
-        fb_ad               : inout std_ulogic_vector(31 downto 0)
+        fb_ad               : inout std_logic_vector(31 downto 0)
     );
 end entity video_mod_mux_clutctr;
 
@@ -198,21 +198,15 @@ architecture rtl of video_mod_mux_clutctr is
     
 begin
     -- byte select 32 bit
-    fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';               -- adr = 0
-    fb_b(1) <= '1' when fb_adr(1 downto 0) = "01" else
-               '1' when fb_size1 = '1' and fb_size0 = '0' and fb_adr(1) = '0' else
-               '1' when fb_size1 = '1' and fb_size0 = '1' else
-               '1' when fb_size1 = '0' and fb_size0 = '0' else
-               '0';
-    fb_b(2) <= '1' when fb_adr(1 downto 0) = "10" else
-               '1' when fb_size1 = '1' and fb_size0 = '1' else
-               '1' when fb_size1 = '0' and fb_size0 = '0' else
-               '0';
-    fb_b(3) <= '1' when fb_adr(1 downto 0) = "11" else
-               '1' when fb_size1 = '1' and fb_size0 = '0' and fb_adr(1) = '1' else
-               '1' when fb_size1 = '1' and fb_size0 = '1' else
-               '1' when fb_size1 = '0' and fb_size0 = '0' else
-               '0';
+    fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0
+    fb_b(1) <= (tr(fb_adr(1 downto 0) = "01")) or                                   -- adr = 1
+               (fb_size1 and not fb_size0 and not fb_adr(1)) or                     -- high word
+               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
+    fb_b(2) <= tr(fb_adr(1 downto 0) = "10") or                                     -- adr = 2
+               ((fb_size1 and fb_size0) or (fb_size1 and fb_size0));                -- long and line
+    fb_b(3) <= tr(fb_adr(1 downto 0) = "11") or                                     -- adr = 3
+               (fb_size1 and not fb_size0 and fb_adr(1)) or                         -- low word
+               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
     
     -- byte select 16 bit
     fb_16b(0) <= '1' when fb_adr(0) = '0' else '0';
@@ -241,13 +235,13 @@ begin
     st_clut_wr <= fb_16b when st_clut_cs and not(nFB_WR) else (others => '0');
     
     -- ST shift mode
-    st_shift_mode_cs <= '1' when nFB_CS1 = '1' and fb_adr(19 downto 1) = 19x"7c130" else '0';
+    st_shift_mode_cs <= not nFB_CS1 and tr(fb_adr(19 downto 1) = 19x"7c130");               -- x"fff8240" / x"20"
     
     -- Falcon shift mode
-    falcon_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c133" else '0';
+    falcon_shift_mode_cs <= not nFB_CS1  and tr(fb_adr(19 downto 1) = 19x"7c133");
     clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
-    acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(23 downto 2) = 22x"100" else '0';
+    acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"100" else '0';
     acp_video_on <= acp_vctr(0);
     nPD_VGA <= acp_vctr(1);
     
@@ -389,15 +383,15 @@ begin
         end if; -- rising_edge(clk25m)
     end process p_vclk13;
     
-    te <= vdl_vmd(2) and (not vdl_vct(0) or not vdl_vmd(2)) and vdl_vct(0);
+    te <= (vdl_vmd(2) and not vdl_vct(0)) or (not vdl_vmd(2) and vdl_vct(0));
     
-    pixel_clk_i <= (clk13m and not acp_video_on and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and TE) or
-                   (clk17m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and TE) or
-                   (clk25m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and vdl_vct(2) and not TE) or
-                   (clk33m and not ACP_VIDEO_ON and (FALCON_VIDEO or ST_VIDEO) and not vdl_vct(2) and not TE) or
-                   (clk25m and ACP_VIDEO_ON and ACP_VCTR(9) and not acp_vctr(8)) or
-                   (clk33m and ACP_VIDEO_ON and "?"(ACP_VCTR(9 downto 8) = "01")) or
-                   (clk_video and ACP_VIDEO_ON and ACP_VCTR(9));
+    pixel_clk_i <= (clk13m    and not acp_video_on and falcon_video) or (st_video and     vdl_vct(2) and     te) or
+                   (clk17m    and not acp_video_on and falcon_video) or (st_video and not vdl_vct(2) and     te) or
+                   (clk25m    and not acp_video_on and falcon_video) or (st_video and     vdl_vct(2) and not te) or
+                   (clk33m    and not acp_video_on and falcon_video) or (st_video and not vdl_vct(2) and not te) or
+                   (clk25m    and     acp_video_on and acp_vctr(9) and not acp_vctr(8)) or
+                   (clk33m    and     acp_video_on and tr(acp_vctr(9 downto 8) = "01")) or
+                   (clk_video and     acp_video_on and acp_vctr(9));
     
     p_shiftmode : process(all)
     begin
@@ -613,11 +607,7 @@ begin
             if vhcnt = std_ulogic_vector(unsigned(h_total) - 1) then last <= '1'; else last <= '0'; end if;
             if not(last) then vhcnt <= std_ulogic_vector(unsigned(vhcnt) + 1); else vhcnt <= (others => '0'); end if;
             if last then
-                if vvcnt = v_total then
-                    vvcnt <= (others => '0');
-                else
-                    vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1);
-                end if;
+                if vvcnt = v_total then vvcnt <= (others => '0'); else vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1); end if;
             end if;
             
             -- display on/off
@@ -669,9 +659,8 @@ begin
                 hsync_start <= '0';
             end if;
             
-            -- that "?" nonsense is fun - Quartus doesn't accept it without the '"' - strange.
             hsync_i <= (hsy_len and hsync_start) or 
-                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and ("?" (hsync_i /= 8x"0")));
+                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and (tr(hsync_i /= 8x"0")));
 
             
             if vvcnt(12 downto 1) = vs_start(12 downto 1) then
@@ -740,11 +729,11 @@ begin
                 end if;
             end if;
             
-            fifo_rde <= (("?" (sub_pixel_cnt(6 downto 0) = 7d"1") and color1) or
-                         ("?" (sub_pixel_cnt(5 downto 0) = 6d"1") and color2) or
-                         ("?" (sub_pixel_cnt(4 downto 0) = 5d"1") and color4) or
-                         ("?" (sub_pixel_cnt(3 downto 0) = 4d"1") and color16) or
-                         (("?" (sub_pixel_cnt(2 downto 0) = 3d"1") and color24) and vdtron) or
+            fifo_rde <= ((tr(sub_pixel_cnt(6 downto 0) = 7d"1") and color1) or
+                         (tr(sub_pixel_cnt(5 downto 0) = 6d"1") and color2) or
+                         (tr(sub_pixel_cnt(4 downto 0) = 5d"1") and color4) or
+                         (tr(sub_pixel_cnt(3 downto 0) = 4d"1") and color16) or
+                         ((tr(sub_pixel_cnt(2 downto 0) = 3d"1") and color24) and vdtron) or
                          (sync_pix or sync_pix1 or sync_pix2));
                          
             clut_mux_av(0) <= sub_pixel_cnt(3 downto 0);
@@ -759,11 +748,11 @@ begin
     -- timing horizontal
     startp <= std_ulogic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
     rand_links <= (vdl_hbe and acp_video_on) or
-                  (vdl_hbe and "?"(mulf = 13d"1") and not acp_video_on) or
-                  (vdl_hbe(11 downto 0) & "0" and "?"(mulf = 13d"2") and not acp_video_on) or
-                  (vdl_hbe(10 downto 0) & "00" and "?"(mulf = 13d"4") and not acp_video_on) or
-                  (vdl_hbe(9 downto 0) & "000" and "?"(mulf = 13d"8") and not acp_video_on) or
-                  (vdl_hbe(8 downto 0) & "0000" and "?"(mulf = 13d"16") and not acp_video_on);
+                  (vdl_hbe and tr(mulf = 13d"1") and not acp_video_on) or
+                  (vdl_hbe(11 downto 0) & "0" and tr(mulf = 13d"2") and not acp_video_on) or
+                  (vdl_hbe(10 downto 0) & "00" and tr(mulf = 13d"4") and not acp_video_on) or
+                  (vdl_hbe(9 downto 0) & "000" and tr(mulf = 13d"8") and not acp_video_on) or
+                  (vdl_hbe(8 downto 0) & "0000" and tr(mulf = 13d"16") and not acp_video_on);
     hdis_start <= vdl_hdb when acp_video_on else
                   std_ulogic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video_on else
                   "0" & std_ulogic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
