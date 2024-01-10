@@ -84,6 +84,7 @@ architecture sim of video_mod_mux_clutctr_tb is
     -- signal stim_vector  : stim_vector_type(1 to 18);
     signal step : positive := 1;
     signal d : std_logic_vector(15 downto 0);
+    signal s  : string(1 to 80);
 begin    
     p_main_clk : process
     begin
@@ -140,6 +141,9 @@ begin
             std.env.stop(0);
         end if;
         fb_ad <= (others => 'Z');
+        s(1 to sv(step).desc.all'length) <= sv(step).desc.all;
+        s(sv(step).desc.all'length + 1 to s'length) <= (others => ' ');
+        
         case cpu_status is
             when S0 =>
                 fb_adr <= sv(step).addr;            -- set address
