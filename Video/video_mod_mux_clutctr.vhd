@@ -7,195 +7,195 @@ use work.firebee_utils.all;
 entity video_mod_mux_clutctr is
     port
     (
-        nRSTO               : in std_ulogic;
-        main_clk            : in std_ulogic;
-        nFB_CS1             : in std_ulogic;
-        nFB_CS2             : in std_ulogic;
-        nFB_CS3             : in std_ulogic;
-        nFB_WR              : in std_ulogic;
-        nFB_OE              : in std_ulogic;
-        fb_size0            : in std_ulogic;
-        fb_size1            : in std_ulogic;
-        nFB_BURST           : in std_ulogic;
-        fb_adr              : in std_ulogic_vector(31 downto 0);
+        nRSTO               : in std_logic;
+        main_clk            : in std_logic;
+        nFB_CS1             : in std_logic;
+        nFB_CS2             : in std_logic;
+        nFB_CS3             : in std_logic;
+        nFB_WR              : in std_logic;
+        nFB_OE              : in std_logic;
+        fb_size0            : in std_logic;
+        fb_size1            : in std_logic;
+        nFB_BURST           : in std_logic;
+        fb_adr              : in std_logic_vector(31 downto 0);
 
-        clk33m              : in std_ulogic;
-        clk25m              : in std_ulogic;
+        clk33m              : in std_logic;
+        clk25m              : in std_logic;
 		
-        blitter_run         : in std_ulogic;
-        clk_video           : in std_ulogic;
-        vr_d                : in std_ulogic_vector(8 downto 0);
-        vr_busy             : in std_ulogic;
+        blitter_run         : in std_logic;
+        clk_video           : in std_logic;
+        vr_d                : in std_logic_vector(8 downto 0);
+        vr_busy             : in std_logic;
 
-        color8              : out std_ulogic;
-        acp_clut_rd         : out std_ulogic;
-        color1              : out std_ulogic;
+        color8              : out std_logic;
+        acp_clut_rd         : out std_logic;
+        color1              : out std_logic;
 
         falcon_clut_rdh,
-        falcon_clut_rdl     : out std_ulogic;
-        falcon_clut_wr      : out std_ulogic_vector(3 downto 0);
-        st_clut_rd          : out std_ulogic;
-        st_clut_wr          : out std_ulogic_vector(1 downto 0);
-        clut_mux_adr        : out std_ulogic_vector(3 downto 0);
+        falcon_clut_rdl     : out std_logic;
+        falcon_clut_wr      : out std_logic_vector(3 downto 0);
+        st_clut_rd          : out std_logic;
+        st_clut_wr          : out std_logic_vector(1 downto 0);
+        clut_mux_adr        : out std_logic_vector(3 downto 0);
 		
         hsync,
-        vsync               : out std_ulogic;
+        vsync               : out std_logic;
         nBLANK,
-        nSYNC               : out std_ulogic;
-        nPD_VGA             : out std_ulogic;
-        fifo_rde            : out std_ulogic;
+        nSYNC               : out std_logic;
+        nPD_VGA             : out std_logic;
+        fifo_rde            : out std_logic;
         color2,
-        color4              : out std_ulogic;
-        pixel_clk           : out std_ulogic;
-        clut_off            : out std_ulogic_vector(3 downto 0);
-        blitter_on          : out std_ulogic;
+        color4              : out std_logic;
+        pixel_clk           : out std_logic;
+        clut_off            : out std_logic_vector(3 downto 0);
+        blitter_on          : out std_logic;
 
-        video_ram_ctr       : out std_ulogic_vector(15 downto 0);
-        video_mod_ta        : out std_ulogic;
+        video_ram_ctr       : out std_logic_vector(15 downto 0);
+        video_mod_ta        : out std_logic;
 		
-        ccr                 : out std_ulogic_vector(23 downto 0);
-        ccsel               : out std_ulogic_vector(2 downto 0);
-        acp_clut_wr         : out std_ulogic_vector(3 downto 0);
-        inter_zei           : out std_ulogic;
-        dop_fifo_clr        : out std_ulogic;
-        video_reconfig      : out std_ulogic;
+        ccr                 : out std_logic_vector(23 downto 0);
+        ccsel               : out std_logic_vector(2 downto 0);
+        acp_clut_wr         : out std_logic_vector(3 downto 0);
+        inter_zei           : out std_logic;
+        dop_fifo_clr        : out std_logic;
+        video_reconfig      : out std_logic;
         vr_wr,
-        vr_rd               : out std_ulogic;
-        clr_fifo            : out std_ulogic;
-        dpzf_clkena         : out std_ulogic;
+        vr_rd               : out std_logic;
+        clr_fifo            : out std_logic;
+        dpzf_clkena         : out std_logic;
         fb_ad               : inout std_logic_vector(31 downto 0)
     );
 end entity video_mod_mux_clutctr;
 
 architecture rtl of video_mod_mux_clutctr is
-    signal clk17m                   : std_ulogic;
-    signal clk13m                   : std_ulogic;
-    signal acp_clut_cs              : std_ulogic;
-    signal acp_clut                 : std_ulogic;
-    signal video_pll_config_cs      : std_ulogic;
-    signal vr_dout                  : std_ulogic_vector(8 downto 0);
-    signal vr_frq                   : std_ulogic_vector(7 downto 0);
-    signal video_pll_reconfig_cs    : std_ulogic;
+    signal clk17m                   : std_logic;
+    signal clk13m                   : std_logic;
+    signal acp_clut_cs              : std_logic;
+    signal acp_clut                 : std_logic;
+    signal video_pll_config_cs      : std_logic;
+    signal vr_dout                  : std_logic_vector(8 downto 0);
+    signal vr_frq                   : std_logic_vector(7 downto 0);
+    signal video_pll_reconfig_cs    : std_logic;
     signal falcon_clut_cs,
-           falcon_clut              : std_ulogic;
+           falcon_clut              : std_logic;
     signal st_clut_cs,
-           st_clut                  : std_ulogic;
-    signal fb_b                     : std_ulogic_vector(3 downto 0);
-    signal fb_16b                   : std_ulogic_vector(1 downto 0);
+           st_clut                  : std_logic;
+    signal fb_b                     : std_logic_vector(3 downto 0);
+    signal fb_16b                   : std_logic_vector(1 downto 0);
     
-    signal st_shift_mode            : std_ulogic_vector(2 downto 0);
-    signal st_shift_mode_cs         : std_ulogic;
+    signal st_shift_mode            : std_logic_vector(2 downto 0);
+    signal st_shift_mode_cs         : std_logic;
     
-    signal falcon_shift_mode        : std_ulogic_vector(10 downto 0);
-    signal falcon_shift_mode_cs     : std_ulogic;
+    signal falcon_shift_mode        : std_logic_vector(10 downto 0);
+    signal falcon_shift_mode_cs     : std_logic;
     
-    type clut_mux_av_type is array(1 downto 0) of std_ulogic_vector(3 downto 0);
+    type clut_mux_av_type is array(1 downto 0) of std_logic_vector(3 downto 0);
     signal clut_mux_av              : clut_mux_av_type;
     
-    signal acp_vctr_cs              : std_ulogic;
-    signal acp_vctr                 : std_ulogic_vector(31 downto 0);
-    signal ccr_cs                   : std_ulogic;
+    signal acp_vctr_cs              : std_logic;
+    signal acp_vctr                 : std_logic_vector(31 downto 0);
+    signal ccr_cs                   : std_logic;
     
-    signal acp_video_on             : std_ulogic;
-    signal sys_ctr                  : std_ulogic_vector(6 downto 0);
-    signal sys_ctr_cs               : std_ulogic;
+    signal acp_video_on             : std_logic;
+    signal sys_ctr                  : std_logic_vector(6 downto 0);
+    signal sys_ctr_cs               : std_logic;
     
-    signal vdl_lof                  : std_ulogic_vector(15 downto 0);
-    signal vdl_lof_cs               : std_ulogic;
-    signal vdl_lwd                  : std_ulogic_vector(15 downto 0);
-    signal vdl_lwd_cs               : std_ulogic;
+    signal vdl_lof                  : std_logic_vector(15 downto 0);
+    signal vdl_lof_cs               : std_logic;
+    signal vdl_lwd                  : std_logic_vector(15 downto 0);
+    signal vdl_lwd_cs               : std_logic;
     
     -- control registers
-    signal clut_ta                  : std_ulogic;
-    signal hsync_i                  : std_ulogic_vector(7 downto 0);
-    signal hsy_len                  : std_ulogic_vector(7 downto 0);
-    signal hsync_start              : std_ulogic;
-    signal last                     : std_ulogic;
-    signal vsync_i                  : std_ulogic_vector(2 downto 0);
-    signal disp_on                  : std_ulogic;
-    signal dpo_zl                   : std_ulogic;
-    signal dpo_on                   : std_ulogic;
-    signal dpo_off                  : std_ulogic;
-    signal vdtron                   : std_ulogic;
-    signal vdo_zl                   : std_ulogic;
-    signal vdo_on                   : std_ulogic;
-    signal vdo_off                  : std_ulogic;
-    signal vhcnt                    : std_ulogic_vector(12 downto 0);
-    signal sub_pixel_cnt            : std_ulogic_vector(6 downto 0);
-    signal vvcnt                    : std_ulogic_vector(12 downto 0);
+    signal clut_ta                  : std_logic;
+    signal hsync_i                  : std_logic_vector(7 downto 0);
+    signal hsy_len                  : std_logic_vector(7 downto 0);
+    signal hsync_start              : std_logic;
+    signal last                     : std_logic;
+    signal vsync_i                  : std_logic_vector(2 downto 0);
+    signal disp_on                  : std_logic;
+    signal dpo_zl                   : std_logic;
+    signal dpo_on                   : std_logic;
+    signal dpo_off                  : std_logic;
+    signal vdtron                   : std_logic;
+    signal vdo_zl                   : std_logic;
+    signal vdo_on                   : std_logic;
+    signal vdo_off                  : std_logic;
+    signal vhcnt                    : std_logic_vector(12 downto 0);
+    signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
+    signal vvcnt                    : std_logic_vector(12 downto 0);
     
-    type verz_type is array(2 downto 0) of std_ulogic_vector(9 downto 0);
+    type verz_type is array(2 downto 0) of std_logic_vector(9 downto 0);
     signal verz                     : verz_type;
-    signal rand                     : std_ulogic_vector(6 downto 0);
-    signal rand_on                  : std_ulogic;
-    signal start_zeile              : std_ulogic;
-    signal sync_pix                 : std_ulogic;
-    signal sync_pix1                : std_ulogic;
-    signal sync_pix2                : std_ulogic;
-    signal color16                  : std_ulogic;
-    signal color24                  : std_ulogic;
-    signal te                       : std_ulogic;
+    signal rand                     : std_logic_vector(6 downto 0);
+    signal rand_on                  : std_logic;
+    signal start_zeile              : std_logic;
+    signal sync_pix                 : std_logic;
+    signal sync_pix1                : std_logic;
+    signal sync_pix2                : std_logic;
+    signal color16                  : std_logic;
+    signal color24                  : std_logic;
+    signal te                       : std_logic;
     
     -- horizontal
-    signal rand_links               : std_ulogic_vector(12 downto 0);
-    signal hdis_start               : std_ulogic_vector(12 downto 0);
-    signal startp                   : std_ulogic_vector(12 downto 0);
-    signal hdis_end                 : std_ulogic_vector(12 downto 0);
-    signal rand_rechts              : std_ulogic_vector(12 downto 0);
-    signal mulf                     : std_ulogic_vector(12 downto 0);
-    signal hs_start                 : std_ulogic_vector(12 downto 0);
-    signal h_total                  : std_ulogic_vector(12 downto 0);
-    signal hdis_len                 : std_ulogic_vector(12 downto 0);
-    signal wpl                      : std_ulogic_vector(15 downto 0);
-    signal vdl_hht                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hht_cs               : std_ulogic;
-    signal vdl_hbe                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hbe_cs               : std_ulogic;
-    signal vdl_hdb                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hdb_cs               : std_ulogic;
-    signal vdl_hde                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hde_cs               : std_ulogic;
-    signal vdl_hbb                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hbb_cs               : std_ulogic;
-    signal vdl_hss                  : std_ulogic_vector(12 downto 0);
-    signal vdl_hss_cs               : std_ulogic;
+    signal rand_links               : std_logic_vector(12 downto 0);
+    signal hdis_start               : std_logic_vector(12 downto 0);
+    signal startp                   : std_logic_vector(12 downto 0);
+    signal hdis_end                 : std_logic_vector(12 downto 0);
+    signal rand_rechts              : std_logic_vector(12 downto 0);
+    signal mulf                     : std_logic_vector(12 downto 0);
+    signal hs_start                 : std_logic_vector(12 downto 0);
+    signal h_total                  : std_logic_vector(12 downto 0);
+    signal hdis_len                 : std_logic_vector(12 downto 0);
+    signal wpl                      : std_logic_vector(15 downto 0);
+    signal vdl_hht                  : std_logic_vector(12 downto 0);
+    signal vdl_hht_cs               : std_logic;
+    signal vdl_hbe                  : std_logic_vector(12 downto 0);
+    signal vdl_hbe_cs               : std_logic;
+    signal vdl_hdb                  : std_logic_vector(12 downto 0);
+    signal vdl_hdb_cs               : std_logic;
+    signal vdl_hde                  : std_logic_vector(12 downto 0);
+    signal vdl_hde_cs               : std_logic;
+    signal vdl_hbb                  : std_logic_vector(12 downto 0);
+    signal vdl_hbb_cs               : std_logic;
+    signal vdl_hss                  : std_logic_vector(12 downto 0);
+    signal vdl_hss_cs               : std_logic;
 
     -- vertical
-    signal rand_oben                : std_ulogic_vector(12 downto 0);
-    signal vdis_start               : std_ulogic_vector(12 downto 0);
-    signal vdis_end                 : std_ulogic_vector(12 downto 0);
-    signal rand_unten               : std_ulogic_vector(12 downto 0);
-    signal vs_start                 : std_ulogic_vector(12 downto 0);
-    signal v_total                  : std_ulogic_vector(12 downto 0);
-    signal falcon_video             : std_ulogic;
-    signal st_video                 : std_ulogic;
+    signal rand_oben                : std_logic_vector(12 downto 0);
+    signal vdis_start               : std_logic_vector(12 downto 0);
+    signal vdis_end                 : std_logic_vector(12 downto 0);
+    signal rand_unten               : std_logic_vector(12 downto 0);
+    signal vs_start                 : std_logic_vector(12 downto 0);
+    signal v_total                  : std_logic_vector(12 downto 0);
+    signal falcon_video             : std_logic;
+    signal st_video                 : std_logic;
     
-    signal videl_cs                 : std_ulogic;
-    signal vdl_vbe                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vbe_cs               : std_ulogic;
-    signal vdl_vdb                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vdb_cs               : std_ulogic;
-    signal vdl_vde                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vde_cs               : std_ulogic;
-    signal vdl_vbb                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vbb_cs               : std_ulogic;
-    signal vdl_vss                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vss_cs               : std_ulogic;
-    signal vdl_vft                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vft_cs               : std_ulogic;
-    signal vdl_vct                  : std_ulogic_vector(12 downto 0);
-    signal vdl_vct_cs               : std_ulogic;
-    signal vdl_vmd                  : std_ulogic_vector(3 downto 0);
-    signal vdl_vmd_cs               : std_ulogic;
+    signal videl_cs                 : std_logic;
+    signal vdl_vbe                  : std_logic_vector(12 downto 0);
+    signal vdl_vbe_cs               : std_logic;
+    signal vdl_vdb                  : std_logic_vector(12 downto 0);
+    signal vdl_vdb_cs               : std_logic;
+    signal vdl_vde                  : std_logic_vector(12 downto 0);
+    signal vdl_vde_cs               : std_logic;
+    signal vdl_vbb                  : std_logic_vector(12 downto 0);
+    signal vdl_vbb_cs               : std_logic;
+    signal vdl_vss                  : std_logic_vector(12 downto 0);
+    signal vdl_vss_cs               : std_logic;
+    signal vdl_vft                  : std_logic_vector(12 downto 0);
+    signal vdl_vft_cs               : std_logic;
+    signal vdl_vct                  : std_logic_vector(12 downto 0);
+    signal vdl_vct_cs               : std_logic;
+    signal vdl_vmd                  : std_logic_vector(3 downto 0);
+    signal vdl_vmd_cs               : std_logic;
 
-    signal vdl_bpp_cs               : std_ulogic;
-    signal vdl_ph_cs                : std_ulogic;
-    signal vdl_pv_cs                : std_ulogic;
+    signal vdl_bpp_cs               : std_logic;
+    signal vdl_ph_cs                : std_logic;
+    signal vdl_pv_cs                : std_logic;
     
-    signal vdl_hbep                 : std_ulogic;
+    signal vdl_hbep                 : std_logic;
     
-    signal pixel_clk_i              : std_ulogic;
-    signal tsize                    : std_ulogic_vector(1 downto 0);
+    signal pixel_clk_i              : std_logic;
+    signal tsize                    : std_logic_vector(1 downto 0);
     
     type width_type is (BYTE, WORD, LONG, LINE);
     signal w                        : width_type;
@@ -213,10 +213,11 @@ begin
     end process p_fb_b;
     
     -- byte select 32 bit
-    fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0
-    fb_b(1) <= (tr(fb_adr(1 downto 0) = "01")) or                                   -- adr = 1
-               (fb_size1 and not fb_size0 and not fb_adr(1)) or                     -- high word
-               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
+    fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0              
+    fb_b(1) <= '1' when fb_adr(1 downto 0) = "01" else                              -- adr = 1
+               '1' when fb_size1 and not fb_size0 and not fb_adr(1) else            -- high word
+               '1' when ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0)) else
+               '0';                                                                 -- long and line
     fb_b(2) <= tr(fb_adr(1 downto 0) = "10") or                                     -- adr = 2
                ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
     fb_b(3) <= tr(fb_adr(1 downto 0) = "11") or                                     -- adr = 3
@@ -335,7 +336,7 @@ begin
     -- width in pixel
     hdis_len <= 13d"320" when te and not acp_video_on else
                 13d"640" when not te and not acp_video_on else
-                std_ulogic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video_on else
+                std_logic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video_on else
                 (others => '0');
 
     wpl <= (vdl_lwd and not acp_video_on) or
@@ -346,39 +347,41 @@ begin
 
     
     -- register out
+    register_out_p : process(all)
+    begin
+        if (acp_vctr_cs or ccr_cs or video_pll_config_cs or videl_cs or sys_ctr_cs) and not nFB_OE then
+            fb_ad(31 downto 16) <= 5d"0" & st_shift_mode & 8x"ff" when st_shift_mode_cs = '1' else
+                                   5d"0" & falcon_shift_mode when falcon_shift_mode_cs = '1' else
+                                   "100000000" & sys_ctr(6 downto 4) & blitter_run & sys_ctr(2 downto 0) when sys_ctr_cs = '1' else
+                                   vdl_lof when vdl_lof_cs = '1' else
+                                   wpl when vdl_lwd_cs = '1' and nFB_OE = '0' else
+                                   11d"0" & color24 & color16 & color8 & color4 & color1 when vdl_bpp_cs = '1' else
+                                   3d"0" & hdis_len when vdl_ph_cs = '1' else
+                                   3d"0" & std_logic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1) when vdl_pv_cs = '1' else
+                                   3d"0" & vdl_hbe when vdl_hbe_cs = '1' else
+                                   3d"0" & vdl_hdb when vdl_hdb_cs = '1' else
+                                   3d"0" & vdl_hde when vdl_hde_cs = '1' else
+                                   3d"0" & vdl_hbb when vdl_hbb_cs = '1' else
+                                   3d"0" & vdl_hss when vdl_hss_cs = '1' else
+                                   3d"0" & vdl_hht when vdl_hht_cs = '1' else
+                                   3d"0" & vdl_vbe when vdl_vbe_cs = '1' else
+                                   3d"0" & vdl_vdb when vdl_vdb_cs = '1' else
+                                   3d"0" & vdl_vde when vdl_vde_cs = '1' else
+                                   3d"0" & vdl_vbb when vdl_vbb_cs = '1' else
+                                   3d"0" & vdl_vss when vdl_vss_cs = '1' else
+                                   3d"0" & vdl_vft when vdl_vft_cs = '1' else
+                                   3d"0" & vdl_vct when vdl_vct_cs = '1' else
+                                   12d"0" & vdl_vmd when vdl_vmd_cs = '1' else
+                                   acp_vctr(31 downto 16) when acp_vctr_cs = '1' else
+                                   8d"0" & ccr(23 downto 16) when ccr_cs = '1' else
+                                   7d"0" & vr_dout when video_pll_config_cs = '1' else
+                                   vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa" when video_pll_reconfig_cs;
+        elsif not nFB_OE and (acp_vctr_cs or ccr_cs) then
+            fb_ad(15 downto 0) <= acp_vctr(15 downto 0) when acp_vctr_cs else
+                                  ccr(15 downto 0) when ccr_cs;
+        end if;
+    end process register_out_p;
     
-    fb_ad(31 downto 16) <= 5d"0" & st_shift_mode & 8x"ff" when st_shift_mode_cs = '1' and nFB_OE = '0' else
-                           5d"0" & falcon_shift_mode when falcon_shift_mode_cs = '1' and nFB_OE = '0' else
-                           "100000000" & sys_ctr(6 downto 4) & blitter_run & sys_ctr(2 downto 0) when sys_ctr_cs = '1' and nFB_OE = '0' else
-                           vdl_lof when vdl_lof_cs = '1' and nFB_OE = '0' else
-                           wpl when vdl_lwd_cs = '1' and nFB_OE = '0' else
-                           "00000000000" & color24 & color16 & color8 & color4 & color1 when vdl_bpp_cs = '1' and nFB_OE = '0' else
-                           3d"0" & hdis_len when vdl_ph_cs = '1' and nFB_OE = '0' else
-                           3d"0" & std_ulogic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1) when vdl_pv_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hbe when vdl_hbe_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hdb when vdl_hdb_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hde when vdl_hde_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hbb when vdl_hbb_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hss when vdl_hss_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_hht when vdl_hht_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vbe when vdl_vbe_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vdb when vdl_vdb_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vde when vdl_vde_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vbb when vdl_vbb_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vss when vdl_vss_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vft when vdl_vft_cs = '1' and nFB_OE = '0' else
-                           3d"0" & vdl_vct when vdl_vct_cs = '1' and nFB_OE = '0' else
-                           12d"0" & vdl_vmd when vdl_vmd_cs = '1' and nFB_OE = '0' else
-                           acp_vctr(31 downto 16) when acp_vctr_cs = '1' and nFB_OE = '0' else
-                           8d"0" & ccr(23 downto 16) when ccr_cs = '1' and nFB_OE = '0' else
-                           7d"0" & vr_dout when video_pll_config_cs = '1' and nFB_OE = '0' else
-                           vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa" when video_pll_reconfig_cs else
-                           (others => 'Z');
-    
-    fb_ad(15 downto 0) <= acp_vctr(15 downto 0) when acp_vctr_cs and not(nFB_OE) else
-                          ccr(15 downto 0) when ccr_cs and not(nFB_OE) else
-                          (others => 'Z');
-
     video_mod_ta <= clut_ta or acp_vctr_cs or sys_ctr_cs or videl_cs;
     
     -- set video output
@@ -618,10 +621,10 @@ begin
             if vhcnt = hs_start and inter_zei = '1' then dop_fifo_clr <= '1'; else dop_fifo_clr <= '0';  end if; -- delete fifo at end of odd lines
             
             -- counters
-            if vhcnt = std_ulogic_vector(unsigned(h_total) - 1) then last <= '1'; else last <= '0'; end if;
-            if not(last) then vhcnt <= std_ulogic_vector(unsigned(vhcnt) + 1); else vhcnt <= (others => '0'); end if;
+            if vhcnt = std_logic_vector(unsigned(h_total) - 1) then last <= '1'; else last <= '0'; end if;
+            if not(last) then vhcnt <= std_logic_vector(unsigned(vhcnt) + 1); else vhcnt <= (others => '0'); end if;
             if last then
-                if vvcnt = v_total then vvcnt <= (others => '0'); else vvcnt <= std_ulogic_vector(unsigned(vvcnt) + 1); end if;
+                if vvcnt = v_total then vvcnt <= (others => '0'); else vvcnt <= std_logic_vector(unsigned(vvcnt) + 1); end if;
             end if;
             
             -- display on/off
@@ -631,13 +634,13 @@ begin
                 dpo_zl <= '0';
             end if;
             
-            if vhcnt = std_ulogic_vector(unsigned(rand_links) - 1) then
+            if vhcnt = std_logic_vector(unsigned(rand_links) - 1) then
                 dpo_on <= '1';
             else
                 dpo_on <= '0';
             end if;
             
-            if vhcnt = std_ulogic_vector(unsigned(rand_rechts) - 2) then
+            if vhcnt = std_logic_vector(unsigned(rand_rechts) - 2) then
                 dpo_off <= '1';
             else
                 dpo_off <= '0';
@@ -646,13 +649,13 @@ begin
             disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
             
             -- data transfer on/off
-            if vhcnt = std_ulogic_vector(unsigned(hdis_start) - 2) then 
+            if vhcnt = std_logic_vector(unsigned(hdis_start) - 2) then 
                 vdo_on <= '1';
             else
                 vdo_on <= '0';
             end if;
 
-            if vhcnt = std_ulogic_vector(unsigned(hdis_end) - 1) then
+            if vhcnt = std_logic_vector(unsigned(hdis_end) - 1) then
                 vdo_off <= '1';
             else
                 vdo_off <= '0';
@@ -667,14 +670,14 @@ begin
             vdtron <= (vdtron and not(vdo_off)) or (vdo_on and vdo_zl);
             
             -- delay and sync
-            if vhcnt = std_ulogic_vector(unsigned(hs_start) - 2) then
+            if vhcnt = std_logic_vector(unsigned(hs_start) - 2) then
                 hsync_start <= '1';
             else
                 hsync_start <= '0';
             end if;
             
             hsync_i <= (hsy_len and hsync_start) or 
-                       (std_ulogic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and (tr(hsync_i /= 8x"0")));
+                       (std_logic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and (tr(hsync_i /= 8x"0")));
 
             
             if vvcnt(12 downto 1) = vs_start(12 downto 1) then
@@ -714,7 +717,7 @@ begin
             
             -- fifo clr
             if last then
-                if vvcnt = std_ulogic_vector(unsigned(vdis_end) + 2) then
+                if vvcnt = std_logic_vector(unsigned(vdis_end) + 2) then
                     clr_fifo <= '1';
                 else
                     clr_fifo <= '0';
@@ -737,7 +740,7 @@ begin
             
             if vdtron or sync_pix then
                 if not sync_pix then
-                    sub_pixel_cnt <= std_ulogic_vector(unsigned(sub_pixel_cnt) + 1);
+                    sub_pixel_cnt <= std_logic_vector(unsigned(sub_pixel_cnt) + 1);
                 else
                     sub_pixel_cnt <= (others => '0');
                 end if;
@@ -760,7 +763,7 @@ begin
     dpzf_clkena <= '1' when unsigned(vvcnt) > d"4" else '0';
     
     -- timing horizontal
-    startp <= std_ulogic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
+    startp <= std_logic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
     rand_links <= (vdl_hbe and acp_video_on) or
                   (vdl_hbe and tr(mulf = 13d"1") and not acp_video_on) or
                   (vdl_hbe(11 downto 0) & "0" and tr(mulf = 13d"2") and not acp_video_on) or
@@ -768,20 +771,20 @@ begin
                   (vdl_hbe(9 downto 0) & "000" and tr(mulf = 13d"8") and not acp_video_on) or
                   (vdl_hbe(8 downto 0) & "0000" and tr(mulf = 13d"16") and not acp_video_on);
     hdis_start <= vdl_hdb when acp_video_on else
-                  std_ulogic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video_on else
-                  "0" & std_ulogic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
+                  std_logic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video_on else
+                  "0" & std_logic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
                   (others => '0');
-    hdis_end <= vdl_hdb when acp_video_on else
-                std_ulogic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video_on else
+    hdis_end <= vdl_hde when acp_video_on else
+                std_logic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video_on else
                 (others => '0');
     rand_rechts <= vdl_hbb when acp_video_on else
-                std_ulogic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, vdl_hht'length)) when not acp_video_on else
+                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, vdl_hht'length)) when not acp_video_on else
                 (others => '0');
     hs_start <= vdl_hss when acp_video_on else
-                std_ulogic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video_on else
+                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video_on else
                 (others => '0');
     h_total <= vdl_hht when acp_video_on else
-               std_ulogic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on else
+               std_logic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on else
                (others => '0');
                
     -- timing vertical
@@ -789,19 +792,19 @@ begin
                  ("0" & vdl_vbe(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
                  ((vdl_vbe and vdl_vct(0)) and not(acp_video_on));
     vdis_start <= (vdl_vdb and acp_video_on) or
-                  (("0" & std_ulogic_vector(unsigned(vdl_vdb(12 downto 1)) + 1)) and not(vdl_vct(0)) and not(acp_video_on)) or
-                  ((std_ulogic_vector(unsigned(vdl_vdb) + 1) and vdl_vct(0)) and not(acp_video_on));
+                  (("0" & std_logic_vector(unsigned(vdl_vdb(12 downto 1)) + 1)) and not(vdl_vct(0)) and not(acp_video_on)) or
+                  ((std_logic_vector(unsigned(vdl_vdb) + 1) and vdl_vct(0)) and not(acp_video_on));
     vdis_end <= (vdl_vde and acp_video_on) or
                 ((("0" & vdl_vde(12 downto 1)) and not(vdl_vct(0))) and not(acp_video_on)) or
                 ((vdl_vde and vdl_vct(0)) and not(acp_video_on));
     rand_unten <= (vdl_vbb and acp_video_on) or
-                  (("0" & std_ulogic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on))) or
-                  ((std_ulogic_vector(unsigned(vdl_vbb) + 1) and vdl_vct(0)) and not(acp_video_on));
+                  (("0" & std_logic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on))) or
+                  ((std_logic_vector(unsigned(vdl_vbb) + 1) and vdl_vct(0)) and not(acp_video_on));
     vs_start <= (vdl_vss and acp_video_on) or
                 ("0" & vdl_vss(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
                 (vdl_vss and vdl_vct(0) and not(acp_video_on));
     v_total <= (vdl_vft and acp_video_on) or
-               ("0" & std_ulogic_vector(unsigned(vdl_vft(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on)) or
-               (std_ulogic_vector(unsigned(vdl_vft) + 1) and vdl_vct(0) and not(acp_video_on));
+               ("0" & std_logic_vector(unsigned(vdl_vft(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on)) or
+               (std_logic_vector(unsigned(vdl_vft) + 1) and vdl_vct(0) and not(acp_video_on));
 end architecture rtl;
 		

@@ -1,67 +1,68 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use std.textio.all;
 
 entity video_mod_mux_clutctr_tb is
 end entity video_mod_mux_clutctr_tb;
 
 architecture sim of video_mod_mux_clutctr_tb is
-    -- module inputs/outputs
-    signal nRSTO            : std_ulogic;
-    signal main_clk         : std_ulogic := '0';
-    signal nFB_CS1          : std_ulogic;
-    signal nFB_CS2          : std_ulogic;
-    signal nFB_CS3          : std_ulogic;
-    signal nFB_WR           : std_ulogic;
-    signal nFB_OE           : std_ulogic;
-    signal fb_size0         : std_ulogic;
-    signal fb_size1         : std_ulogic;
-    signal nFB_BURST        : std_ulogic;
-    signal fb_adr           : std_ulogic_vector(31 downto 0);
+    -- video_mod_mux_clutctr module's inputs/outputs
+    signal nRSTO            : std_logic;
+    signal main_clk         : std_logic := '0';
+    signal nFB_CS1          : std_logic;
+    signal nFB_CS2          : std_logic;
+    signal nFB_CS3          : std_logic;
+    signal nFB_WR           : std_logic;
+    signal nFB_OE           : std_logic;
+    signal fb_size0         : std_logic;
+    signal fb_size1         : std_logic;
+    signal nFB_BURST        : std_logic;
+    signal fb_adr           : std_logic_vector(31 downto 0);
 
-    signal clk33m           : std_ulogic;
-    signal clk25m           : std_ulogic;
+    signal clk33m           : std_logic;
+    signal clk25m           : std_logic;
 		
-    signal blitter_run      : std_ulogic;
-    signal clk_video        : std_ulogic;
-    signal vr_d             : std_ulogic_vector(8 downto 0);
-    signal vr_busy          : std_ulogic;
+    signal blitter_run      : std_logic;
+    signal clk_video        : std_logic;
+    signal vr_d             : std_logic_vector(8 downto 0);
+    signal vr_busy          : std_logic;
 
-    signal color8           : std_ulogic;
-    signal acp_clut_rd      : std_ulogic;
-    signal color1           : std_ulogic;
+    signal color8           : std_logic;
+    signal acp_clut_rd      : std_logic;
+    signal color1           : std_logic;
 
     signal falcon_clut_rdh,
-           falcon_clut_rdl  : std_ulogic;
-    signal falcon_clut_wr   : std_ulogic_vector(3 downto 0);
-    signal st_clut_rd       : std_ulogic;
-    signal st_clut_wr       : std_ulogic_vector(1 downto 0);
-    signal clut_mux_adr     : std_ulogic_vector(3 downto 0);
+           falcon_clut_rdl  : std_logic;
+    signal falcon_clut_wr   : std_logic_vector(3 downto 0);
+    signal st_clut_rd       : std_logic;
+    signal st_clut_wr       : std_logic_vector(1 downto 0);
+    signal clut_mux_adr     : std_logic_vector(3 downto 0);
 		
     signal hsync,
-           vsync            : std_ulogic;
+           vsync            : std_logic;
     signal nBLANK,
-           nSYNC            : std_ulogic;
-    signal nPD_VGA          : std_ulogic;
-    signal fifo_rde         : std_ulogic;
+           nSYNC            : std_logic;
+    signal nPD_VGA          : std_logic;
+    signal fifo_rde         : std_logic;
     signal color2,
-           color4           : std_ulogic;
-    signal pixel_clk        : std_ulogic;
-    signal clut_off         : std_ulogic_vector(3 downto 0);
-    signal blitter_on       : std_ulogic;
+           color4           : std_logic;
+    signal pixel_clk        : std_logic;
+    signal clut_off         : std_logic_vector(3 downto 0);
+    signal blitter_on       : std_logic;
 
-    signal video_ram_ctr    : std_ulogic_vector(15 downto 0);
-    signal video_mod_ta     : std_ulogic;
+    signal video_ram_ctr    : std_logic_vector(15 downto 0);
+    signal video_mod_ta     : std_logic;
 		
-    signal ccr              : std_ulogic_vector(23 downto 0);
-    signal ccsel            : std_ulogic_vector(2 downto 0);
-    signal acp_clut_wr      : std_ulogic_vector(3 downto 0);
-    signal inter_zei        : std_ulogic;
-    signal dop_fifo_clr     : std_ulogic;
-    signal video_reconfig   : std_ulogic;
+    signal ccr              : std_logic_vector(23 downto 0);
+    signal ccsel            : std_logic_vector(2 downto 0);
+    signal acp_clut_wr      : std_logic_vector(3 downto 0);
+    signal inter_zei        : std_logic;
+    signal dop_fifo_clr     : std_logic;
+    signal video_reconfig   : std_logic;
     signal vr_wr,
-           vr_rd            : std_ulogic;
-    signal clr_fifo         : std_ulogic;
-    signal dpzf_clkena      : std_ulogic;
+           vr_rd            : std_logic;
+    signal clr_fifo         : std_logic;
+    signal dpzf_clkena      : std_logic;
     signal fb_ad            : std_logic_vector(31 downto 0);
 
     type state is (S0, S1, S2, S3);
@@ -69,39 +70,21 @@ architecture sim of video_mod_mux_clutctr_tb is
 
     type operation_type is (R, W);
     type lane_width_type is (BYTE, WORD, LONG, LINE);
-        
+    type str is access string;
     type stim_record is record
-        fbcs            : std_ulogic_vector(3 downto 0);
-        addr            : std_ulogic_vector(31 downto 0);
+        fbcs            : std_logic_vector(3 downto 0);
+        addr            : std_logic_vector(31 downto 0);
         operation       : operation_type;
-        data            : std_ulogic_vector(31 downto 0);
+        data            : std_logic_vector(31 downto 0);
         width           : lane_width_type;
+        desc            : str;
     end record;
 
     type stim_vector_type is array (positive range <>) of stim_record;
-    constant stim_vector  : stim_vector_type :=
-    (
-        ("1101", x"ffff8240", W, 32x"ab", BYTE),
-        ("1101", x"ffff8240", R, 32x"ab", BYTE),
-        ("1101", x"ffff8260", W, 32x"ab", BYTE),
-        ("1101", x"ffff8260", W, 32x"ab", BYTE),
-        ("1101", x"ffff8266", W, 32x"ab", WORD),
-        ("1101", x"ffff8266", R, 32x"ab", WORD),
-        ("1101", x"ffff8210", W, 32x"ab", WORD),
-        ("1101", x"ffff8210", R, 32x"ab", WORD),
-        ("1101", x"ffff8212", W, 32x"ab", WORD),
-        ("1101", x"ffff8212", R, 32x"ab", WORD),
-        ("1101", x"ffff8214", W, 32x"ab", BYTE),
-        ("1101", x"ffff8214", R, 32x"ab", BYTE),
-        ("1101", x"ffff8260", W, 32x"ab", BYTE),
-        ("1101", x"ffff8260", R, 32x"ab", BYTE),
-        ("1101", x"ffff8260", W, 32x"ab", BYTE),
-        ("1101", x"ffff8260", R, 32x"ab", BYTE)
-    );
-
+    -- signal stim_vector  : stim_vector_type(1 to 18);
     signal step : positive := 1;
-    signal d : std_ulogic_vector(31 downto 0);
-begin
+    signal d : std_logic_vector(15 downto 0);
+begin    
     p_main_clk : process
     begin
         main_clk <= not main_clk;
@@ -114,7 +97,7 @@ begin
             case cpu_status is
                 when S0 => cpu_status <= S1;
                 when S1 => 
-                    if video_mod_ta = '1' then
+                    if video_mod_ta = '1' or fb_adr = x"40000000" then  -- avoid waiting for TA if uut isn't meant
                         cpu_status <= S2;
                     end if;
                 when S2 => cpu_status <= S3;
@@ -126,57 +109,99 @@ begin
     end process cpu_statemachine;
 
     cpu_statemachine_worker : process(all)
-        -- variable d : std_ulogic_vector(31 downto 0);
+        -- variable d : std_logic_vector(31 downto 0);
+        variable sv : stim_vector_type(1 to 18);
     begin
-        if step > stim_vector'high then
+        sv :=
+        (
+            -- first do a few cycles of nothing relevant to the controller
+            ("0111", x"40000000", W, 32x"ff", WORD, new string'("DUMMY")),
+            ("0111", x"40000000", W, 32x"ff", WORD, new string'("DUMMY")),
+            -- then address our module's components
+            ("1101", x"ffff8240", W, 32x"ab", WORD, new string'("ST CLUT")),            -- write to ST CLUT
+            ("1101", x"ffff8240", W, 32x"ab", WORD, new string'("ST CLUT")),            -- read ST CLUT
+            ("1101", x"ffff8260", W, 32x"cd", WORD, new string'("ST SHIFT MODE")),      -- write ST SHIFT MODE register
+            ("1101", x"ffff8260", W, 32x"cd", WORD, new string'("ST SHIFT MODE")),      -- read ST SHIFT MODE register
+            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),  -- write Falcon SHIFT MODE register
+            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),  -- read Falcon SHIFT MODE register
+            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),   -- write Falcon Videl LWD register
+            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),   -- read Falcon Videl LWD register
+            ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),            -- vdl_hde     
+            ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),
+            ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),            -- vdl_hht
+            ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),
+            ("1101", x"ffff8286", W, 32x"56", WORD, new string'("vdl_hbe")),            -- vdl_hbe
+            ("1101", x"ffff8286", R, 32x"56", WORD, new string'("vdl_hbe")),
+            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb")),            -- vdh_hdb
+            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb"))
+        );
+             
+        if step > sv'high then                      -- stop if stim vector exhausted
             std.env.stop(0);
         end if;
-        
+        fb_ad <= (others => 'Z');
         case cpu_status is
             when S0 =>
-                fb_adr <= stim_vector(step).addr;          -- set address
+                fb_adr <= sv(step).addr;            -- set address
                 
-                -- fb_ale <= '0';
+                -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
                 
-                case stim_vector(step).operation is
-                    when W => nFB_WR <= '0';
-                              nFB_OE <= '1';
-                    when R => nFB_WR <= '1';
-                              nFB_OE <= '0';
+                case sv(step).operation is
+                    when W => 
+                        nFB_WR <= '0';
+                        nFB_OE <= '1';
+                    when R => 
+                        nFB_WR <= '1';
+                        nFB_OE <= '0';
+                        fb_ad(31 downto 16) <= (others => 'Z'); -- stop driving upper word to allow the uut driving it
                 end case;
 
             when S1 =>
                 -- fb_ale <= '1';
-                nFB_CS1 <= stim_vector(step).fbcs(1);
-                nFB_CS2 <= stim_vector(step).fbcs(2);
-                nFB_CS3 <= stim_vector(step).fbcs(3);
+                nFB_CS1 <= sv(step).fbcs(1);
+                nFB_CS2 <= sv(step).fbcs(2);
+                nFB_CS3 <= sv(step).fbcs(3);
                 
-                case stim_vector(step).width is
-                    when BYTE => (fb_size1, fb_size0) <= std_ulogic_vector'("01");
-                    when WORD => (fb_size1, fb_size0) <= std_ulogic_vector'("10");
-                    when LONG => (fb_size1, fb_size0) <= std_ulogic_vector'("00");
-                    when LINE => (fb_size1, fb_size0) <= std_ulogic_vector'("11");
+                case sv(step).width is
+                    when BYTE => (fb_size1, fb_size0) <= std_logic_vector'("01");
+                    when WORD => (fb_size1, fb_size0) <= std_logic_vector'("10");
+                    when LONG => (fb_size1, fb_size0) <= std_logic_vector'("00");
+                    when LINE => (fb_size1, fb_size0) <= std_logic_vector'("11");
                 end case;
                 
-                case stim_vector(step).operation is
-                    when W => nFB_WR <= '0';
-                              nFB_OE <= '1';
+                case sv(step).operation is
+                    when W => 
+                        nFB_WR <= '0';
+                        nFB_OE <= '1';
+                        case sv(step).width is
+                            when BYTE => 
+                                fb_ad <= (31 downto 24 => sv(step).data(7 downto 0), others => 'Z');
+                            when WORD =>
+                                fb_ad <= (31 downto 16 => sv(step).data(15 downto 0), others => 'Z');
+                            when LONG | LINE =>
+                                fb_ad <= sv(step).data;
+                        end case;
+                    
                     when R => nFB_WR <= '1';
                               nFB_OE <= '0';
                 end case;
                 
             when S2 =>
-                (nFB_CS1, nFB_CS2, nFB_CS3) <= std_ulogic_vector'("111");
+                (nFB_CS1, nFB_CS2, nFB_CS3) <= std_logic_vector'("111");
+
+                if sv(step).operation = R then
+                    d <= fb_ad(31 downto 16);
+                end if;
                 
-                fb_ad <= (others => 'Z');
                 nFB_OE <= '1';
                 nFB_WR <= '1';
 
             when S3 =>
-                if stim_vector(step).operation = R then
-                    report "received " & to_hstring(d) & " from uut (stim #" & to_string(step) & ")." severity note;
+                if sv(step).operation = R then
+                    report "received " & sv(step).desc.all & ": " & justify(to_hstring(d), field => 4) & " from uut (stim #" & to_string(step) & ")." severity note;
                 else
-                    report "sent " & to_hstring(stim_vector(step).data) & " to uut (stim #" & ")." severity note;
+                    report "sent (" & lane_width_type'image(sv(step).width) & ") " & sv(step).desc.all & ": " &
+                           justify(to_hstring(sv(step).data(15 downto 0)), field => 4) & " to uut (stim #" & to_string(step) & ")." severity note;
                 end if;
                 
                 -- invalidate address

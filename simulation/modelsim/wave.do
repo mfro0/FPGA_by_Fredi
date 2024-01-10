@@ -4,7 +4,7 @@ add wave -noupdate /video_mod_mux_clutctr_tb/main_clk
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/cpu_status
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_ad
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_adr
-add wave -noupdate -format Literal /video_mod_mux_clutctr_tb/nFB_WR
+add wave -noupdate /video_mod_mux_clutctr_tb/nFB_WR
 add wave -noupdate /video_mod_mux_clutctr_tb/nFB_OE
 add wave -noupdate -divider uut
 add wave -noupdate /video_mod_mux_clutctr_tb/uut/fb_b
@@ -31,4 +31,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {2790815 ps} {3585185 ps}
+WaveRestoreZoom {2031824 ps} {2826194 ps}
