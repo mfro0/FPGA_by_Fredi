@@ -90,8 +90,8 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", x"ffff8210", W, 32x"ab", WORD),
         ("1101", x"ffff8210", R, 32x"ab", WORD),
         ("1101", x"ffff8212", W, 32x"ab", WORD),
-        ("1101", x"ffff8212", W, 32x"ab", WORD),
-        ("1101", x"ffff8214", R, 32x"ab", BYTE),
+        ("1101", x"ffff8212", R, 32x"ab", WORD),
+        ("1101", x"ffff8214", W, 32x"ab", BYTE),
         ("1101", x"ffff8214", R, 32x"ab", BYTE),
         ("1101", x"ffff8260", W, 32x"ab", BYTE),
         ("1101", x"ffff8260", R, 32x"ab", BYTE),
@@ -156,13 +156,13 @@ begin
                     when WORD => (fb_size1, fb_size0) <= std_ulogic_vector'("10");
                     when LONG => (fb_size1, fb_size0) <= std_ulogic_vector'("00");
                     when LINE => (fb_size1, fb_size0) <= std_ulogic_vector'("11");
-
+                end case;
+                
                 case stim_vector(step).operation is
                     when W => nFB_WR <= '0';
                               nFB_OE <= '1';
                     when R => nFB_WR <= '1';
                               nFB_OE <= '0';
-                end case;
                 end case;
                 
             when S2 =>

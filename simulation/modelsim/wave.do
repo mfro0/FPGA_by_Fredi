@@ -4,7 +4,7 @@ add wave -noupdate /video_mod_mux_clutctr_tb/main_clk
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/cpu_status
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_ad
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_adr
-add wave -noupdate /video_mod_mux_clutctr_tb/nFB_WR
+add wave -noupdate -format Literal /video_mod_mux_clutctr_tb/nFB_WR
 add wave -noupdate /video_mod_mux_clutctr_tb/nFB_OE
 add wave -noupdate -divider uut
 add wave -noupdate /video_mod_mux_clutctr_tb/uut/fb_b
@@ -15,7 +15,7 @@ add wave -noupdate /video_mod_mux_clutctr_tb/uut/st_shift_mode
 add wave -noupdate /video_mod_mux_clutctr_tb/uut/falcon_shift_mode_cs
 add wave -noupdate /video_mod_mux_clutctr_tb/uut/falcon_shift_mode
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {408385 ps} 0}
+WaveRestoreCursors {{Cursor 1} {3179043 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 399
 configure wave -valuecolwidth 90
@@ -31,4 +31,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {794370 ps}
+WaveRestoreZoom {2790815 ps} {3585185 ps}
