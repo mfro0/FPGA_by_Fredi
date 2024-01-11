@@ -122,27 +122,27 @@ begin
         sv :=
         (
             -- first do a few cycles of nothing relevant to the controller
-            ("0111", x"40000000", W, 32x"ff", WORD, new string'("DUMMY")),
-            ("0111", x"40000000", R, 32x"ff", WORD, new string'("DUMMY")),
+            ("0111", x"40000000", W, 32x"ff", LONG, new string'("DUMMY")),
             -- then address our module's components
-            ("1011", x"f0000100", W, 32x"12345678", LONG, new string'("ACP vctr")),
-            ("1011", x"f0000100", R, 32x"12345678", LONG, new string'("ACP vctr")),
+            ("1011", x"f0000400", W, 32x"1070082", LONG, new string'("ACP vctr")),
             ("1101", x"ffff8260", W, 32x"ab", WORD, new string'("ST Shift Mode")),
-            ("1101", x"ffff8260", R, 32x"ab", WORD, new string'("ST Shift Mode")),
             ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),
-            ("1101", x"ffff8266", R, 32x"ef", WORD, new string'("Falcon Shift MODE")),
             ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),
-            ("1101", x"ffff8210", R, 32x"01", WORD, new string'("Falcon Videl LWD")),
             ("1101", x"ffff82C2", W, 32x"cdef", WORD, new string'("vdl_vmd")),
-            ("1101", x"ffff82C2", R, 32x"cd", WORD, new string'("vdl_vmd")),
             ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),
-            ("1101", x"ffff828a", R, 32x"23", WORD, new string'("vdl_hde")),
             ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),
-            ("1101", x"ffff8282", R, 32x"34", WORD, new string'("vdl_hht")),
             ("1101", x"ffff8286", W, 32x"56", WORD, new string'("vdl_hbe")),
-            ("1101", x"ffff8286", R, 32x"56", WORD, new string'("vdl_hbe")),
             ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb")),
-            ("1101", x"ffff8288", R, 32x"78", WORD, new string'("vdl_hdb"))
+            ("1101", x"ffff8288", R, 32x"78", WORD, new string'("vdl_hdb")),
+            ("0111", x"40000000", R, 32x"ff", LONG, new string'("DUMMY")),
+            ("1011", x"f0000400", R, 32x"1070082", LONG, new string'("ACP vctr")),
+            ("1101", x"ffff8260", R, 32x"ab", WORD, new string'("ST Shift Mode")),
+            ("1101", x"ffff8210", R, 32x"01", WORD, new string'("Falcon Videl LWD")),
+            ("1101", x"ffff8266", R, 32x"ef", WORD, new string'("Falcon Shift MODE")),
+            ("1101", x"ffff82C2", R, 32x"cd", WORD, new string'("vdl_vmd")),
+            ("1101", x"ffff828a", R, 32x"23", WORD, new string'("vdl_hde")),
+            ("1101", x"ffff8282", R, 32x"34", WORD, new string'("vdl_hht")),
+            ("1101", x"ffff8286", R, 32x"56", WORD, new string'("vdl_hbe"))
         );
 
         if step > sv'high then                      -- stop if stim vector exhausted
@@ -195,18 +195,23 @@ begin
                         case sv(step).width is
                             when BYTE => 
                                 fb_ad <= (31 downto 24 => sv(step).data(7 downto 0), others => 'Z');
-                                d <= (7 downto 0 => fb_ad(31 downto 24), others => '0');
                             when WORD =>
                                 fb_ad <= (31 downto 16 => sv(step).data(15 downto 0), others => 'Z');
-                                d <= (15 downto 0 => fb_ad(31 downto 16), others => '0');
                             when LONG | LINE =>
                                 fb_ad <= sv(step).data;
-                                d <= fb_ad;
                         end case;
                    
                     when R =>
                         nFB_WR <= '1';
                         nFB_OE <= '0';
+                        case sv(step).width is
+                            when BYTE =>
+                                d <= (7 downto 0 => fb_ad(31 downto 24), others => '0');
+                            when WORD =>
+                                d <= (15 downto 0 => fb_ad(31 downto 16), others => '0');
+                            when LONG | LINE =>
+                                d <= fb_ad;
+                        end case;
                 end case;
                     
 

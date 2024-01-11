@@ -218,11 +218,11 @@ begin
                '1' when w = WORD and fb_adr(1) = '0' else                           -- high word
                '1' when w = LINE or w = LONG else
                '0';                                                                 -- long and line
-    fb_b(2) <= '1' when fb_adr(1 downto 0) = "10" else                                     -- adr = 2
+    fb_b(2) <= '1' when fb_adr(1 downto 0) = "10" else                              -- adr = 2
                '1' when w = LONG or w = LINE else        -- long and line
                '0';
-    fb_b(3) <= '1' when fb_adr(1 downto 0) = "11" else                                     -- adr = 3
-               '1' when w = WORD and fb_adr(1) = '1' else                         -- low word
+    fb_b(3) <= '1' when fb_adr(1 downto 0) = "11" else                              -- adr = 3
+               '1' when w = WORD and fb_adr(1) = '1' else                           -- low word
                '1' when w = LONG or w = LINE else        -- long and line
                '0';
     
@@ -814,7 +814,7 @@ begin
     -- timing horizontal
     startp <= std_logic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
     
-    rand_links <= vdl_hbe                      when acp_video_on else
+    rand_links <= vdl_hbe                      when                   acp_video_on = '1' else
                   vdl_hbe                      when mulf = 13d"1" and acp_video_on = '0' else
                   vdl_hbe(11 downto 0) & "0"   when mulf = 13d"2" and acp_video_on = '0' else
                   vdl_hbe(10 downto 0) & "00"  when mulf = 13d"4" and acp_video_on = '0' else
