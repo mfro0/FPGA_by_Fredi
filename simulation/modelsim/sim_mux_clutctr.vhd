@@ -66,7 +66,7 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal fb_ad            : std_logic_vector(31 downto 0);
 
     type state is (S0, S1, S2, S3);
-    signal cpu_status       : state := S0;
+    signal cpu_status       : state := S3;
 
     type operation_type is (R, W);
     type lane_width_type is (BYTE, WORD, LONG, LINE);
@@ -83,8 +83,9 @@ architecture sim of video_mod_mux_clutctr_tb is
     type stim_vector_type is array (positive range <>) of stim_record;
     -- signal stim_vector  : stim_vector_type(1 to 18);
     signal step : positive := 1;
-    signal d : std_logic_vector(15 downto 0);
-    signal s  : string(1 to 80);
+    signal d : std_logic_vector(31 downto 0);
+    signal s  : string(1 to 40);
+        
 begin    
     p_main_clk : process
     begin
@@ -92,64 +93,73 @@ begin
         wait for 30.03 ns;
     end process p_main_clk;
 
-    cpu_statemachine : process(all)
+    cpu_nextstate : process(all)
     begin
         if rising_edge(main_clk) then
             case cpu_status is
-                when S0 => cpu_status <= S1;
-                when S1 => 
+                when S0 =>
+                    cpu_status <= S1;
+    
+                when S1 =>
                     if video_mod_ta = '1' or fb_adr = x"40000000" then  -- avoid waiting for TA if uut isn't meant
                         cpu_status <= S2;
                     end if;
-                when S2 => cpu_status <= S3;
+
+                when S2 =>
+                    cpu_status <= S3;
+
                 when S3 =>
                     cpu_status <= S0;
                     step <= step + 1;
-            end case;
+            end case;         
         end if;
-    end process cpu_statemachine;
-
-    cpu_statemachine_worker : process(all)
+    end process cpu_nextstate;
+    
+    cpu_statemachine : process(all)
         -- variable d : std_logic_vector(31 downto 0);
-        variable sv : stim_vector_type(1 to 18);
+        variable sv : stim_vector_type(1 to 20);
     begin
         sv :=
         (
             -- first do a few cycles of nothing relevant to the controller
             ("0111", x"40000000", W, 32x"ff", WORD, new string'("DUMMY")),
-            ("0111", x"40000000", W, 32x"ff", WORD, new string'("DUMMY")),
+            ("0111", x"40000000", R, 32x"ff", WORD, new string'("DUMMY")),
             -- then address our module's components
-            ("1101", x"ffff8240", W, 32x"ab", WORD, new string'("ST CLUT")),            -- write to ST CLUT
-            ("1101", x"ffff8240", W, 32x"ab", WORD, new string'("ST CLUT")),            -- read ST CLUT
-            ("1101", x"ffff8260", W, 32x"cd", WORD, new string'("ST SHIFT MODE")),      -- write ST SHIFT MODE register
-            ("1101", x"ffff8260", W, 32x"cd", WORD, new string'("ST SHIFT MODE")),      -- read ST SHIFT MODE register
-            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),  -- write Falcon SHIFT MODE register
-            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),  -- read Falcon SHIFT MODE register
-            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),   -- write Falcon Videl LWD register
-            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),   -- read Falcon Videl LWD register
-            ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),            -- vdl_hde     
+            ("1011", x"f0000100", W, 32x"12345678", LONG, new string'("ACP vctr")),
+            ("1011", x"f0000100", R, 32x"12345678", LONG, new string'("ACP vctr")),
+            ("1101", x"ffff8260", W, 32x"ab", WORD, new string'("ST Shift Mode")),
+            ("1101", x"ffff8260", R, 32x"ab", WORD, new string'("ST Shift Mode")),
+            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),
+            ("1101", x"ffff8266", R, 32x"ef", WORD, new string'("Falcon Shift MODE")),
+            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),
+            ("1101", x"ffff8210", R, 32x"01", WORD, new string'("Falcon Videl LWD")),
+            ("1101", x"ffff82C2", W, 32x"cdef", WORD, new string'("vdl_vmd")),
+            ("1101", x"ffff82C2", R, 32x"cd", WORD, new string'("vdl_vmd")),
             ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),
-            ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),            -- vdl_hht
+            ("1101", x"ffff828a", R, 32x"23", WORD, new string'("vdl_hde")),
             ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),
-            ("1101", x"ffff8286", W, 32x"56", WORD, new string'("vdl_hbe")),            -- vdl_hbe
+            ("1101", x"ffff8282", R, 32x"34", WORD, new string'("vdl_hht")),
+            ("1101", x"ffff8286", W, 32x"56", WORD, new string'("vdl_hbe")),
             ("1101", x"ffff8286", R, 32x"56", WORD, new string'("vdl_hbe")),
-            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb")),            -- vdh_hdb
-            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb"))
+            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb")),
+            ("1101", x"ffff8288", R, 32x"78", WORD, new string'("vdl_hdb"))
         );
-             
+
         if step > sv'high then                      -- stop if stim vector exhausted
             std.env.stop(0);
         end if;
-        fb_ad <= (others => 'Z');
+
         s(1 to sv(step).desc.all'length) <= sv(step).desc.all;
         s(sv(step).desc.all'length + 1 to s'length) <= (others => ' ');
+             
+        -- fb_ad <= (others => 'Z');
         
         case cpu_status is
             when S0 =>
                 fb_adr <= sv(step).addr;            -- set address
                 
                 -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
-                
+               
                 case sv(step).operation is
                     when W => 
                         nFB_WR <= '0';
@@ -157,22 +167,27 @@ begin
                     when R => 
                         nFB_WR <= '1';
                         nFB_OE <= '0';
-                        fb_ad(31 downto 16) <= (others => 'Z'); -- stop driving upper word to allow the uut driving it
+                        -- tristate bits that we want the other end of the bus writing
+                        case sv(step).width is
+                            when BYTE => fb_ad(31 downto 24) <= (others => 'Z');
+                            when WORD => fb_ad(31 downto 16) <= (others => 'Z');
+                            when LONG | LINE => fb_ad <= (others => 'Z');
+                        end case;
                 end case;
 
             when S1 =>
-                -- fb_ale <= '1';
+                -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
                 nFB_CS1 <= sv(step).fbcs(1);
                 nFB_CS2 <= sv(step).fbcs(2);
                 nFB_CS3 <= sv(step).fbcs(3);
-                
+              
                 case sv(step).width is
                     when BYTE => (fb_size1, fb_size0) <= std_logic_vector'("01");
                     when WORD => (fb_size1, fb_size0) <= std_logic_vector'("10");
                     when LONG => (fb_size1, fb_size0) <= std_logic_vector'("00");
                     when LINE => (fb_size1, fb_size0) <= std_logic_vector'("11");
                 end case;
-                
+               
                 case sv(step).operation is
                     when W => 
                         nFB_WR <= '0';
@@ -180,38 +195,39 @@ begin
                         case sv(step).width is
                             when BYTE => 
                                 fb_ad <= (31 downto 24 => sv(step).data(7 downto 0), others => 'Z');
+                                d <= (7 downto 0 => fb_ad(31 downto 24), others => '0');
                             when WORD =>
                                 fb_ad <= (31 downto 16 => sv(step).data(15 downto 0), others => 'Z');
+                                d <= (15 downto 0 => fb_ad(31 downto 16), others => '0');
                             when LONG | LINE =>
                                 fb_ad <= sv(step).data;
+                                d <= fb_ad;
                         end case;
-                    
-                    when R => nFB_WR <= '1';
-                              nFB_OE <= '0';
+                   
+                    when R =>
+                        nFB_WR <= '1';
+                        nFB_OE <= '0';
                 end case;
-                
+                    
+
             when S2 =>
                 (nFB_CS1, nFB_CS2, nFB_CS3) <= std_logic_vector'("111");
-
-                if sv(step).operation = R then
-                    d <= fb_ad(31 downto 16);
-                end if;
                 
                 nFB_OE <= '1';
                 nFB_WR <= '1';
-
+            
             when S3 =>
                 if sv(step).operation = R then
-                    report "received " & sv(step).desc.all & ": " & justify(to_hstring(d), field => 4) & " from uut (stim #" & to_string(step) & ")." severity note;
+                    report "received " & sv(step).desc.all & ": " & to_hstring(d) & " from uut (stim #" & to_string(step) & ")." severity note;
                 else
                     report "sent (" & lane_width_type'image(sv(step).width) & ") " & sv(step).desc.all & ": " &
-                           justify(to_hstring(sv(step).data(15 downto 0)), field => 4) & " to uut (stim #" & to_string(step) & ")." severity note;
+                           to_hstring(sv(step).data) & " to uut (stim #" & to_string(step) & ")." severity note;
                 end if;
                 
                 -- invalidate address
                 -- invalidate FB_WRn
         end case;
-    end process cpu_statemachine_worker;
+    end process cpu_statemachine;
 
     uut : entity work.video_mod_mux_clutctr
         port map

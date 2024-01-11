@@ -215,19 +215,21 @@ begin
     -- byte select 32 bit
     fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0              
     fb_b(1) <= '1' when fb_adr(1 downto 0) = "01" else                              -- adr = 1
-               '1' when fb_size1 and not fb_size0 and not fb_adr(1) else            -- high word
-               '1' when ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0)) else
+               '1' when w = WORD and fb_adr(1) = '0' else                           -- high word
+               '1' when w = LINE or w = LONG else
                '0';                                                                 -- long and line
-    fb_b(2) <= tr(fb_adr(1 downto 0) = "10") or                                     -- adr = 2
-               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
-    fb_b(3) <= tr(fb_adr(1 downto 0) = "11") or                                     -- adr = 3
-               (fb_size1 and not fb_size0 and fb_adr(1)) or                         -- low word
-               ((fb_size1 and fb_size0) or (not fb_size1 and not fb_size0));        -- long and line
+    fb_b(2) <= '1' when fb_adr(1 downto 0) = "10" else                                     -- adr = 2
+               '1' when w = LONG or w = LINE else        -- long and line
+               '0';
+    fb_b(3) <= '1' when fb_adr(1 downto 0) = "11" else                                     -- adr = 3
+               '1' when w = WORD and fb_adr(1) = '1' else                         -- low word
+               '1' when w = LONG or w = LINE else        -- long and line
+               '0';
     
     -- byte select 16 bit
     fb_16b(0) <= '1' when fb_adr(0) = '0' else '0';
     fb_16b(1) <= '1' when fb_adr(0) = '1' else
-                 '1' when not(fb_size1 = '0' and fb_size0 = '1') else
+                 '1' when w /= BYTE else
                  '0';
 
     -- VIDEL cs
@@ -246,14 +248,14 @@ begin
     falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) and falcon_clut_cs and not(nFB_WR) else (others => '0');
     
     -- ST clut
-    st_clut_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 5) = 15x"7c12" else '0';
-    st_clut_rd <= '1' when st_clut_cs and not(nFB_OE) else '0';
+    st_clut_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 5) = 15x"7c12" else '0';              -- x"8240" / x"20"
+    st_clut_rd <= '1' when st_clut_cs = '1' and nFB_OE = '0' else '0';
     st_clut_wr <= fb_16b when st_clut_cs and not(nFB_WR) else (others => '0');
     
     -- ST shift mode
-    st_shift_mode_cs <= not nFB_CS1 and tr(fb_adr(19 downto 1) = 19x"7c130");                 -- x"f8260"/2    
+    st_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c130" else '0';      -- x"f8260"/2    
     -- Falcon shift mode
-    falcon_shift_mode_cs <= not nFB_CS1  and tr(fb_adr(19 downto 1) = 19x"7c133");
+    falcon_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c133" else '0';   -- x"f8266" / 2
     clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
     acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"100" else '0';
@@ -339,46 +341,88 @@ begin
                 std_logic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video_on else
                 (others => '0');
 
-    wpl <= (vdl_lwd and not acp_video_on) or
-           (7d"0" & hdis_len(12 downto 4) and color1 and acp_video_on) or
-           (4d"0" & hdis_len(12 downto 1) and color8 and acp_video_on) or
-           (3d"0" & hdis_len and color16 and acp_video_on) or
-           (2d"0" & hdis_len & "0" and color24 and acp_video_on);
+    wpl <= vdl_lwd when not acp_video_on else
+           (7d"0" & hdis_len(12 downto 4)) when color1 and acp_video_on else
+           (4d"0" & hdis_len(12 downto 1)) when color8 and acp_video_on else
+           (3d"0" & hdis_len) when color16 and acp_video_on else
+           (2d"0" & hdis_len & "0") when color24 and acp_video_on else
+           (others => '0');
 
     
     -- register out
     register_out_p : process(all)
     begin
-        if (acp_vctr_cs or ccr_cs or video_pll_config_cs or videl_cs or sys_ctr_cs) and not nFB_OE then
-            fb_ad(31 downto 16) <= 5d"0" & st_shift_mode & 8x"ff" when st_shift_mode_cs = '1' else
-                                   5d"0" & falcon_shift_mode when falcon_shift_mode_cs = '1' else
-                                   "100000000" & sys_ctr(6 downto 4) & blitter_run & sys_ctr(2 downto 0) when sys_ctr_cs = '1' else
-                                   vdl_lof when vdl_lof_cs = '1' else
-                                   wpl when vdl_lwd_cs = '1' and nFB_OE = '0' else
-                                   11d"0" & color24 & color16 & color8 & color4 & color1 when vdl_bpp_cs = '1' else
-                                   3d"0" & hdis_len when vdl_ph_cs = '1' else
-                                   3d"0" & std_logic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1) when vdl_pv_cs = '1' else
-                                   3d"0" & vdl_hbe when vdl_hbe_cs = '1' else
-                                   3d"0" & vdl_hdb when vdl_hdb_cs = '1' else
-                                   3d"0" & vdl_hde when vdl_hde_cs = '1' else
-                                   3d"0" & vdl_hbb when vdl_hbb_cs = '1' else
-                                   3d"0" & vdl_hss when vdl_hss_cs = '1' else
-                                   3d"0" & vdl_hht when vdl_hht_cs = '1' else
-                                   3d"0" & vdl_vbe when vdl_vbe_cs = '1' else
-                                   3d"0" & vdl_vdb when vdl_vdb_cs = '1' else
-                                   3d"0" & vdl_vde when vdl_vde_cs = '1' else
-                                   3d"0" & vdl_vbb when vdl_vbb_cs = '1' else
-                                   3d"0" & vdl_vss when vdl_vss_cs = '1' else
-                                   3d"0" & vdl_vft when vdl_vft_cs = '1' else
-                                   3d"0" & vdl_vct when vdl_vct_cs = '1' else
-                                   12d"0" & vdl_vmd when vdl_vmd_cs = '1' else
-                                   acp_vctr(31 downto 16) when acp_vctr_cs = '1' else
-                                   8d"0" & ccr(23 downto 16) when ccr_cs = '1' else
-                                   7d"0" & vr_dout when video_pll_config_cs = '1' else
-                                   vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa" when video_pll_reconfig_cs;
-        elsif not nFB_OE and (acp_vctr_cs or ccr_cs) then
-            fb_ad(15 downto 0) <= acp_vctr(15 downto 0) when acp_vctr_cs else
-                                  ccr(15 downto 0) when ccr_cs;
+        -- assert false report "FB_AD = " & to_hstring(fb_ad) severity note;
+        if (acp_vctr_cs = '1' or ccr_cs = '1' or video_pll_config_cs = '1' or videl_cs = '1' or sys_ctr_cs = '1') and nFB_OE = '0' then
+            if st_shift_mode_cs = '1' then
+                fb_ad(31 downto 16) <= 5d"0" & st_shift_mode & 8x"ff";
+            elsif falcon_shift_mode_cs then
+                fb_ad(31 downto 16) <= 5d"0" & falcon_shift_mode;
+            elsif sys_ctr_cs = '1' then
+                fb_ad(31 downto 16) <= "100000000" & sys_ctr(6 downto 4) & blitter_run & sys_ctr(2 downto 0);
+            elsif vdl_lof_cs = '1' then
+                fb_ad(31 downto 16) <= vdl_lof;
+            elsif vdl_lwd_cs = '1' then
+                fb_ad(31 downto 16) <= wpl;
+            elsif vdl_bpp_cs = '1' then
+                fb_ad(31 downto 16) <= 11d"0" & color24 & color16 & color8 & color4 & color1;
+            elsif vdl_ph_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & hdis_len;
+            elsif vdl_pv_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & std_logic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1);
+            elsif vdl_hbe_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hbe;
+            elsif vdl_hdb_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hdb;
+            elsif vdl_hde_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hde;
+            elsif vdl_hbb_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hbb;
+            elsif vdl_hss_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hss;
+            elsif vdl_hht_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_hht;
+            elsif vdl_vbe_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vbe;
+            elsif vdl_vdb_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vdb;
+            elsif vdl_vde_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vde;
+            elsif vdl_vbb_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vbb;
+            elsif vdl_vss_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vss;
+            elsif vdl_vft_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vft;
+            elsif vdl_vct_cs = '1' then
+                fb_ad(31 downto 16) <= 3d"0" & vdl_vct;
+            elsif vdl_vmd_cs = '1' then
+                fb_ad(31 downto 16) <= 12d"0" & vdl_vmd;
+            elsif acp_vctr_cs = '1' then
+                fb_ad(31 downto 16) <= acp_vctr(31 downto 16);
+            elsif ccr_cs = '1' then
+                fb_ad(31 downto 16) <= 8d"0" & ccr(23 downto 16);
+            elsif video_pll_config_cs = '1' then
+                fb_ad(31 downto 16) <= 7d"0" & vr_dout;
+            elsif video_pll_reconfig_cs = '1' then
+                fb_ad(31 downto 16) <= vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa";
+            else
+                fb_ad(31 downto 16) <= (others => 'Z');
+            end if;
+        else
+            fb_ad(31 downto 16) <= (others => 'Z');
+        end if;
+        
+        if nFB_OE = '0' and (acp_vctr_cs = '1' or ccr_cs = '1') then
+            if acp_vctr_cs = '1' then
+                fb_ad(15 downto 0) <= acp_vctr(15 downto 0);
+            elsif ccr_cs = '1' then
+                fb_ad(15 downto 0) <= ccr(15 downto 0);
+            else
+                fb_ad(15 downto 0) <= (others => 'Z');
+            end if;
+        else
+            fb_ad(15 downto 0) <= (others => 'Z');
         end if;
     end process register_out_p;
     
@@ -606,13 +650,14 @@ begin
     p_pxl: process(all)
     begin
         if rising_edge(pixel_clk_i) then
-            ccsel <= ("000" and st_clut) or
-                     ("001" and falcon_clut) or
-                     ("100" and acp_clut) or
-                     ("101" and color16) or
-                     ("110" and color24) or
-                     ("111" and rand_on);
-                     
+            if st_clut then ccsel <= "000";
+            elsif falcon_clut then ccsel <= "001";
+            elsif acp_clut then ccsel <= "100";
+            elsif color16 then ccsel <= "101";
+            elsif color24 then ccsel <= "110";
+            elsif rand_on then ccsel <= "111";
+            end if;
+            
             if (vvcnt(0) /= vdis_start(0)) and dpzf_clkena = '1' then
                 inter_zei <= vdl_vmd(0) and (falcon_video or st_video);
             else
@@ -676,9 +721,13 @@ begin
                 hsync_start <= '0';
             end if;
             
-            hsync_i <= (hsy_len and hsync_start) or 
-                       (std_logic_vector(unsigned(hsync_i) - 1) and not(hsync_start) and (tr(hsync_i /= 8x"0")));
-
+            if hsync_start then
+                hsync_i <= hsy_len;
+            else
+                if hsync_i /= 8x"0" then
+                    hsync_i <= std_logic_vector(unsigned(hsync_i) - 1);
+                end if;
+            end if;
             
             if vvcnt(12 downto 1) = vs_start(12 downto 1) then
                 vsync_i <= (others => '1');
@@ -764,12 +813,15 @@ begin
     
     -- timing horizontal
     startp <= std_logic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
-    rand_links <= (vdl_hbe and acp_video_on) or
-                  (vdl_hbe and tr(mulf = 13d"1") and not acp_video_on) or
-                  (vdl_hbe(11 downto 0) & "0" and tr(mulf = 13d"2") and not acp_video_on) or
-                  (vdl_hbe(10 downto 0) & "00" and tr(mulf = 13d"4") and not acp_video_on) or
-                  (vdl_hbe(9 downto 0) & "000" and tr(mulf = 13d"8") and not acp_video_on) or
-                  (vdl_hbe(8 downto 0) & "0000" and tr(mulf = 13d"16") and not acp_video_on);
+    
+    rand_links <= vdl_hbe                      when acp_video_on else
+                  vdl_hbe                      when mulf = 13d"1" and acp_video_on = '0' else
+                  vdl_hbe(11 downto 0) & "0"   when mulf = 13d"2" and acp_video_on = '0' else
+                  vdl_hbe(10 downto 0) & "00"  when mulf = 13d"4" and acp_video_on = '0' else
+                  vdl_hbe(9 downto 0) & "000"  when mulf = 13d"8" and acp_video_on = '0' else
+                  vdl_hbe(8 downto 0) & "0000" when mulf = 13d"16" and acp_video_on = '0' else
+                  (others => '0');
+                  
     hdis_start <= vdl_hdb when acp_video_on else
                   std_logic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video_on else
                   "0" & std_logic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video_on else
@@ -788,23 +840,33 @@ begin
                (others => '0');
                
     -- timing vertical
-    rand_oben <= (vdl_vbe and acp_video_on) or
-                 ("0" & vdl_vbe(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
-                 ((vdl_vbe and vdl_vct(0)) and not(acp_video_on));
-    vdis_start <= (vdl_vdb and acp_video_on) or
-                  (("0" & std_logic_vector(unsigned(vdl_vdb(12 downto 1)) + 1)) and not(vdl_vct(0)) and not(acp_video_on)) or
-                  ((std_logic_vector(unsigned(vdl_vdb) + 1) and vdl_vct(0)) and not(acp_video_on));
-    vdis_end <= (vdl_vde and acp_video_on) or
-                ((("0" & vdl_vde(12 downto 1)) and not(vdl_vct(0))) and not(acp_video_on)) or
-                ((vdl_vde and vdl_vct(0)) and not(acp_video_on));
-    rand_unten <= (vdl_vbb and acp_video_on) or
-                  (("0" & std_logic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on))) or
-                  ((std_logic_vector(unsigned(vdl_vbb) + 1) and vdl_vct(0)) and not(acp_video_on));
-    vs_start <= (vdl_vss and acp_video_on) or
-                ("0" & vdl_vss(12 downto 1) and not(vdl_vct(0)) and not(acp_video_on)) or
-                (vdl_vss and vdl_vct(0) and not(acp_video_on));
-    v_total <= (vdl_vft and acp_video_on) or
-               ("0" & std_logic_vector(unsigned(vdl_vft(12 downto 1)) + 1) and not(vdl_vct(0)) and not(acp_video_on)) or
-               (std_logic_vector(unsigned(vdl_vft) + 1) and vdl_vct(0) and not(acp_video_on));
+    rand_oben <= vdl_vbe                    when acp_video_on = '1' else
+                 "0" & vdl_vbe(12 downto 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+                 vdl_vbe                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+                 (others => '0');
+                 
+    vdis_start <= vdl_vdb                                                    when                      acp_video_on = '1' else
+                  "0" & std_logic_vector(unsigned(vdl_vdb(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+                  std_logic_vector(unsigned(vdl_vdb) + 1)                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+                  (others => '0');
+                  
+    vdis_end <= vdl_vde                    when                      acp_video_on = '1' else
+                "0" & vdl_vde(12 downto 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+                vdl_vde                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+                (others => '0');
+                
+    rand_unten <= vdl_vbb                                                                         when acp_video_on = '1' else
+                  "0" & std_logic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+                  std_logic_vector(unsigned(vdl_vbb) + 1)                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+                  (others => '0');
+    vs_start <= vdl_vss                    when                      acp_video_on = '1' else
+                "0" & vdl_vss(12 downto 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+                vdl_vss                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+                (others => '0');
+                
+    v_total <= vdl_vft                                                    when                      acp_video_on = '1' else
+               "0" & std_logic_vector(unsigned(vdl_vft(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video_on = '0' else
+               std_logic_vector(unsigned(vdl_vft) + 1)                    when vdl_vct(0) = '1' and acp_video_on = '0' else
+               (others => '0');
 end architecture rtl;
 		
