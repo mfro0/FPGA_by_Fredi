@@ -20,7 +20,7 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal fb_adr           : std_logic_vector(31 downto 0);
 
     signal clk33m           : std_logic;
-    signal clk25m           : std_logic;
+    signal clk25m           : std_logic := '0';
 		
     signal blitter_run      : std_logic;
     signal clk_video        : std_logic;
@@ -92,7 +92,15 @@ begin
         main_clk <= not main_clk;
         wait for 30.03 ns;
     end process p_main_clk;
+    
+    clk33m <= main_clk;
 
+    p_clk25m : process
+    begin
+        clk25m <= not clk25m;
+        wait for 40 ns;
+    end process p_clk25m;
+    
     cpu_nextstate : process(all)
     begin
         if rising_edge(main_clk) then
