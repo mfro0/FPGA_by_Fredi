@@ -1,6 +1,10 @@
 onerror {resume}
+quietly virtual function -install /video_mod_mux_clutctr_tb -env /video_mod_mux_clutctr_tb { (40)} virtual_000001
 quietly WaveActivateNextPane {} 0
 add wave -noupdate /video_mod_mux_clutctr_tb/main_clk
+add wave -noupdate /video_mod_mux_clutctr_tb/clk33m
+add wave -noupdate /video_mod_mux_clutctr_tb/clk25m
+add wave -noupdate /video_mod_mux_clutctr_tb/clk_video
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/cpu_status
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_ad
 add wave -noupdate -radix hexadecimal /video_mod_mux_clutctr_tb/fb_adr
@@ -63,4 +67,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {145994 ps} {483579 ps}
+WaveRestoreZoom {0 ps} {337585 ps}
