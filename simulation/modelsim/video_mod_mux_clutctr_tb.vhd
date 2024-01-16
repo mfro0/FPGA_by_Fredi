@@ -92,8 +92,6 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal step : positive := 1;
     signal d : std_logic_vector(31 downto 0);
     signal s  : string(1 to 40);
-    
-    alias vdl_hht is << signal uut.vdl_htt : videl_reg_t >>;
 begin    
     p_main_clk : process
     begin
