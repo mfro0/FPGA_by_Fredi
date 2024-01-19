@@ -4,6 +4,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use std.textio.all;
 
+use work.video_regs.all;
+
 library vunit_lib;
 context vunit_lib.vunit_context;
 
@@ -71,8 +73,8 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal dpzf_clkena      : std_logic;
     signal fb_ad            : std_logic_vector(31 downto 0);
 
-    type state is (S0, S1, S2, S3);
-    signal cpu_status       : state := S3;
+    type cpu_state_t is (S0, S1, S2, S3);
+    signal cpu_status       : cpu_state_t := S3;
 
     type operation_type is (R, W);
     type lane_width_type is (BYTE, WORD, LONG, LINE);
@@ -107,6 +109,7 @@ begin
         wait for 40 ns;
     end process p_clk25m;
     
+    /*
     cpu_nextstate : process(all)
     begin
         if rising_edge(main_clk) then
@@ -128,9 +131,9 @@ begin
             end case;         
         end if;
     end process cpu_nextstate;
+    */
     
     main : process
-        -- variable d : std_logic_vector(31 downto 0);
         variable sv : stim_vector_type(1 to 20);
     begin
         test_runner_setup(runner, runner_cfg);
@@ -138,27 +141,27 @@ begin
         sv :=
         (
             -- first do a few cycles of nothing relevant to the controller
-            ("0111", x"40000000", W, 32x"ff", LONG, new string'("DUMMY")),
+            ("0111", x"40000000", W, 32x"bcd", LONG, new string'("DUMMY")),
             -- then address our module's components
-            ("1011", x"f0000400", W, 32x"1070082", LONG, new string'("ACP vctr")),
-            ("1101", x"ffff8260", W, 32x"ab", WORD, new string'("ST Shift Mode")),
-            ("1101", x"ffff8266", W, 32x"ef", WORD, new string'("Falcon Shift MODE")),
-            ("1101", x"ffff8210", W, 32x"01", WORD, new string'("Falcon Videl LWD")),
-            ("1101", x"ffff82C2", W, 32x"cdef", WORD, new string'("vdl_vmd")),
-            ("1101", x"ffff828a", W, 32x"23", WORD, new string'("vdl_hde")),
-            ("1101", x"ffff8282", W, 32x"34", WORD, new string'("vdl_hht")),
-            ("1101", x"ffff8286", W, 32x"56", WORD, new string'("vdl_hbe")),
-            ("1101", x"ffff8288", W, 32x"78", WORD, new string'("vdl_hdb")),
-            ("1101", x"ffff8288", R, 32x"78", WORD, new string'("vdl_hdb")),
-            ("0111", x"40000000", R, 32x"ff", LONG, new string'("DUMMY")),
-            ("1011", x"f0000400", R, 32x"1070082", LONG, new string'("ACP vctr")),
-            ("1101", x"ffff8260", R, 32x"ab", WORD, new string'("ST Shift Mode")),
-            ("1101", x"ffff8210", R, 32x"01", WORD, new string'("Falcon Videl LWD")),
-            ("1101", x"ffff8266", R, 32x"ef", WORD, new string'("Falcon Shift MODE")),
-            ("1101", x"ffff82C2", R, 32x"cd", WORD, new string'("vdl_vmd")),
-            ("1101", x"ffff828a", R, 32x"23", WORD, new string'("vdl_hde")),
-            ("1101", x"ffff8282", R, 32x"34", WORD, new string'("vdl_hht")),
-            ("1101", x"ffff8286", R, 32x"56", WORD, new string'("vdl_hbe"))
+            ("1011", VDL_HHT, W, 32x"bcd", LONG, new string'("ACP vctr")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("ST Shift Mode")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("Falcon Shift MODE")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("Falcon Videl LWD")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("vdl_vmd")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("vdl_hde")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("vdl_hht")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("vdl_hbe")),
+            ("1101", VDL_HHT, W, 32x"bcd", WORD, new string'("vdl_hdb")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("vdl_hdb")),
+            ("0111", x"40000000", R, 32x"bcd", WORD, new string'("DUMMY")),
+            ("1011", VDL_HHT, R, 32x"bcd", WORD, new string'("ACP vctr")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("ST Shift Mode")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("Falcon Videl LWD")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("Falcon Shift MODE")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("vdl_vmd")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("vdl_hde")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("vdl_hht")),
+            ("1101", VDL_HHT, R, 32x"bcd", WORD, new string'("vdl_hbe"))
         );
 
         s(1 to sv(step).desc.all'length) <= sv(step).desc.all;
@@ -167,94 +170,119 @@ begin
         -- fb_ad <= (others => 'Z');
         
         while test_suite loop
-            case cpu_status is
-                when S0 =>
-                    fb_adr <= sv(step).addr;            -- set address
-                    
-                    -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
-                
-                    case sv(step).operation is
-                        when W => 
-                            nFB_WR <= '0';
-                            nFB_OE <= '1';
-                        when R => 
-                            nFB_WR <= '1';
-                            nFB_OE <= '0';
-                            -- tristate bits that we want the other end of the bus writing
-                            case sv(step).width is
-                                when BYTE => fb_ad(31 downto 24) <= (others => 'Z');
-                                when WORD => fb_ad(31 downto 16) <= (others => 'Z');
-                                when LONG | LINE => fb_ad <= (others => 'Z');
-                            end case;
-                    end case;
-    
-                when S1 =>
-                    -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
-                    nFB_CS1 <= sv(step).fbcs(1);
-                    nFB_CS2 <= sv(step).fbcs(2);
-                    nFB_CS3 <= sv(step).fbcs(3);
-                
-                    case sv(step).width is
-                        when BYTE => (fb_size1, fb_size0) <= std_logic_vector'("01");
-                        when WORD => (fb_size1, fb_size0) <= std_logic_vector'("10");
-                        when LONG => (fb_size1, fb_size0) <= std_logic_vector'("00");
-                        when LINE => (fb_size1, fb_size0) <= std_logic_vector'("11");
-                    end case;
-                
-                    case sv(step).operation is
-                        when W => 
-                            nFB_WR <= '0';
-                            nFB_OE <= '1';
-                            case sv(step).width is
-                                when BYTE => 
-                                    fb_ad <= (31 downto 24 => sv(step).data(7 downto 0), others => 'Z');
-                                when WORD =>
-                                    fb_ad <= (31 downto 16 => sv(step).data(15 downto 0), others => 'Z');
-                                when LONG | LINE =>
-                                    fb_ad <= sv(step).data;
-                            end case;
-                    
-                        when R =>
-                            nFB_WR <= '1';
-                            nFB_OE <= '0';
-                            case sv(step).width is
-                                when BYTE =>
-                                    d <= (7 downto 0 => fb_ad(31 downto 24), others => '0');
-                                when WORD =>
-                                    d <= (15 downto 0 => fb_ad(31 downto 16), others => '0');
-                                when LONG | LINE =>
-                                    d <= fb_ad;
-                            end case;
-                    end case;
+            if run("check Videl registers read/write") then
+                report "Videl registers read/write";
+
+                while step < sv'high + 1 loop
+                    report "step = " & integer'image(step) & " cpu_status=" & cpu_state_t'image(cpu_status);
+                    case cpu_status is
+                        when S0 =>
+                            report "S0 handling";
+                            fb_adr <= sv(step).addr;            -- set address
                         
-
-                when S2 =>
-
-                    if sv(step).addr /= x"40000000" then
-                        check(sv(step).data = <<signal uut.vdl_hht : videl_reg_t>>, "check failed");
-                    end if;
-
-                    (nFB_CS1, nFB_CS2, nFB_CS3) <= std_logic_vector'("111");
+                            -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
                     
-                    nFB_OE <= '1';
-                    nFB_WR <= '1';
-                
-                when S3 =>
-                    if sv(step).operation = R then
-                        report "received " & sv(step).desc.all & ": " & to_hstring(d) &
-                               " from uut (stim #" & to_string(step) & ")." severity note;
-                    else
-                        report "sent (" & lane_width_type'image(sv(step).width) & ") " &
-                               sv(step).desc.all & ": " &
-                               to_hstring(sv(step).data) & " to uut (stim #" & to_string(step) & ")."
-                               severity note;
-                    end if;
+                            case sv(step).operation is
+                                when W => 
+                                    nFB_WR <= '0';
+                                    nFB_OE <= '1';
+                                when R => 
+                                    nFB_WR <= '1';
+                                    nFB_OE <= '0';
+                                    -- tristate bits that we want the other end of the bus writing
+                                    case sv(step).width is
+                                        when BYTE => fb_ad(31 downto 24) <= (others => 'Z');
+                                        when WORD => fb_ad(31 downto 16) <= (others => 'Z');
+                                        when LONG | LINE => fb_ad <= (others => 'Z');
+                                    end case;
+                            end case;
+                            wait until rising_edge(main_clk);
+                            cpu_status <= S1;
+        
+                        when S1 =>
+                            report "S1 handling";
+                            -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
+                            nFB_CS1 <= sv(step).fbcs(1);
+                            nFB_CS2 <= sv(step).fbcs(2);
+                            nFB_CS3 <= sv(step).fbcs(3);
+                        
+                            case sv(step).width is
+                                when BYTE => (fb_size1, fb_size0) <= std_logic_vector'("01");
+                                when WORD => (fb_size1, fb_size0) <= std_logic_vector'("10");
+                                when LONG => (fb_size1, fb_size0) <= std_logic_vector'("00");
+                                when LINE => (fb_size1, fb_size0) <= std_logic_vector'("11");
+                            end case;
+                        
+                            case sv(step).operation is
+                                when W => 
+                                    nFB_WR <= '0';
+                                    nFB_OE <= '1';
+                                    case sv(step).width is
+                                        when BYTE => 
+                                            fb_ad <= (31 downto 24 => sv(step).data(7 downto 0), others => 'Z');
+                                        when WORD =>
+                                            fb_ad <= (31 downto 16 => sv(step).data(15 downto 0), others => 'Z');
+                                        when LONG | LINE =>
+                                            fb_ad <= sv(step).data;
+                                    end case;
+                            
+                                when R =>
+                                    nFB_WR <= '1';
+                                    nFB_OE <= '0';
+                                    case sv(step).width is
+                                        when BYTE =>
+                                            d <= (7 downto 0 => fb_ad(31 downto 24), others => '0');
+                                        when WORD =>
+                                            d <= (15 downto 0 => fb_ad(31 downto 16), others => '0');
+                                        when LONG | LINE =>
+                                            d <= fb_ad;
+                                    end case;
+                            end case;
+                            wait until rising_edge(main_clk);
+                            report "video_mod_ta=" & to_string(video_mod_ta);
+                            if video_mod_ta = '1' or sv(step).addr = x"40000000" then
+                                cpu_status <= S2;
+                            end if;
+                            
+
+                        when S2 =>
+                            report "S2 handling";
+        
+                            if sv(step).addr /= x"40000000" and sv(step).operation = R then
+                                report "vdl_hht=" & to_hstring(<<signal uut.vdl_hht : videl_reg_t>>);
+                                report "sv(step).data=" & to_hstring(sv(step).data);
+                                check(sv(step).data = <<signal uut.vdl_hht : videl_reg_t>>, "check failed");
+                            end if;
+        
+                            (nFB_CS1, nFB_CS2, nFB_CS3) <= std_logic_vector'("111");
+                            
+                            nFB_OE <= '1';
+                            nFB_WR <= '1';
+                            wait until rising_edge(main_clk);
+                            cpu_status <= S3;
                     
-                    -- invalidate address
-                    -- invalidate FB_WRn
-            end case;
+                        when S3 =>
+                            report "S3 handling";
+                            if sv(step).operation = R then
+                                report "received " & sv(step).desc.all & ": " & to_hstring(d) &
+                                    " from uut (stim #" & to_string(step) & ")." severity note;
+                            else
+                                report "sent (" & lane_width_type'image(sv(step).width) & ") " &
+                                    sv(step).desc.all & ": " &
+                                    to_hstring(sv(step).data) & " to uut (stim #" & to_string(step) & ")."
+                                    severity note;
+                            end if;
+                            wait until rising_edge(main_clk);
+                            step <= step + 1;
+                            cpu_status <= S0;
+                            
+                            -- invalidate address
+                            -- invalidate FB_WRn
+                    end case;
+                end loop; -- while sv ...
+            end if; -- if (run...)
         end loop;
-        test_runner_cleanup(runner);
+    test_runner_cleanup(runner);
     end process main;
 
     uut : entity work.video_mod_mux_clutctr
