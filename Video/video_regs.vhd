@@ -42,12 +42,14 @@ package video_regs is
 
     constant VDL_VCO    : addr_t := x"ffff82c2";   -- Falcon Video Control
 
-    type fb_cs_t is record
+    subtype fbcs_t is std_ulogic_vector(5 downto 0);
+
+    type fb_cs_rec_t is record
         base_address            : addr_t;
         address_mask            : addr_t;
         control_reg             : addr_t;
     end record;
-    type fb_cs_array_t is array (natural range <>) of fb_cs_t;
+    type fb_cs_array_t is array (natural range <>) of fb_cs_rec_t;
 
     -- Bit definitions and macros for MCF_FBCS_CSMR 
     --
@@ -79,7 +81,7 @@ package video_regs is
     --
     constant fb_cs_fb           : fb_cs_array_t :=
     (
-        (base_address => x"E0000000", address_mask => x"3fff0000", control_reg => (others => '0')),
+        (base_address => x"E0000000", address_mask => x"3FFF0000", control_reg => (others => '0')),
         (base_address => x"FFF80000", address_mask => CSMR_BAM_512K, control_reg => (others => '0')),
         (base_address => x"F0000000", address_mask => CSMR_BAM_128M, control_reg => (others => '0')),
         (base_address => x"FFF00000", address_mask => CSMR_BAM_512K, control_reg => (others => '0')),
@@ -88,7 +90,7 @@ package video_regs is
     );
 
 
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive) return boolean;
+    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive; fbcs : fbcs_t) return boolean;
 end package video_regs;
 
 
@@ -101,7 +103,7 @@ end package video_regs;
 -- result: true when check is a match, false otherwise
 --
 package body video_regs is
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive) return boolean is
+    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive; fbcs : fbcs_t) return boolean is
         variable res : boolean;
     begin
         return res;
