@@ -17,7 +17,7 @@ package video_regs is
 
     constant SPSHIFT    : addr_t := x"ffff8266";   -- Falcon shift register
 
-    constant VDL_HHC    : addr_t := x"ffff8280";   -- horizontal hold counter
+    constant VDL_HHC    : addr_t := x"ffff8280";   -- horizontal hold counterA (read only)
     constant VDL_HHT    : addr_t := x"ffff8282";   -- horizontal half line total
     constant VDL_HBB    : addr_t := x"ffff8284";   -- horizontal blank begin
     constant VDL_HBE    : addr_t := x"ffff8286";   -- horizontal blank end
@@ -32,7 +32,7 @@ package video_regs is
     constant NUMREQ     : addr_t := x"ffff8294";   -- video data transfers
     constant VDL_HWC    : addr_t := x"ffff8296";   -- horizontal word count
 
-    constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter
+    constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter (read only)
     constant VDL_VFT    : addr_t := x"ffff82a2";   -- vertical field total
     constant VDL_VBB    : addr_t := x"ffff82a4";   -- vertical blank begin
     constant VDL_VBE    : addr_t := x"ffff82a6";   -- vertical blank end
