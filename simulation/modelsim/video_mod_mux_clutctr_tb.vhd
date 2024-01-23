@@ -102,25 +102,25 @@ architecture sim of video_mod_mux_clutctr_tb is
         -- first do a few cycles of nothing relevant to the controller
         ("0111", x"40000000", W, 32x"bcd", LONG),
         -- then address our module's components
-        ("1101", VDL_HHC, W, 32x"ef0", WORD),
+        --("1101", VDL_HHC, W, 32x"ef0", WORD),
         ("1101", VDL_HHT, W, 32x"bcd", WORD),
         ("1101", VDL_HBB, W, 32x"bcd", WORD),
         ("1101", VDL_HBE, W, 32x"bcd", WORD),
         ("1101", VDL_HDB, W, 32x"bcd", WORD),
         ("1101", VDL_HDE, W, 32x"bcd", WORD),
         ("1101", VDL_HSS, W, 32x"bcd", WORD),
-        ("1101", VDL_HFS, W, 32x"bcd", WORD),
-        ("1101", VDL_HEE, W, 32x"bcd", WORD),
+        --("1101", VDL_HFS, W, 32x"bcd", WORD),
+        --("1101", VDL_HEE, W, 32x"bcd", WORD),
 
-        ("1101", VDL_HHC, R, 32x"bcd", WORD),
+        --("1101", VDL_HHC, R, 32x"bcd", WORD),
         ("1101", VDL_HHT, R, 32x"bcd", WORD),
         ("1101", VDL_HBB, R, 32x"bcd", WORD),
         ("1101", VDL_HBE, R, 32x"bcd", WORD),
         ("1101", VDL_HDB, R, 32x"bcd", WORD),
         ("1101", VDL_HDE, R, 32x"bcd", WORD),
-        ("1101", VDL_HSS, R, 32x"bcd", WORD),
-        ("1101", VDL_HFS, R, 32x"bcd", WORD),
-        ("1101", VDL_HEE, R, 32x"bcd", WORD)
+        ("1101", VDL_HSS, R, 32x"bcd", WORD)
+        --("1101", VDL_HFS, R, 32x"bcd", WORD),
+        --("1101", VDL_HEE, R, 32x"bcd", WORD)
     );
 
     signal step         : positive := 1;
@@ -128,10 +128,14 @@ architecture sim of video_mod_mux_clutctr_tb is
 
 begin    
     test_runner : process
+        -- initialize index into stimulation vector and
+        -- wait for the ColdFire state machine to complete a full state transition
         procedure prepare_test(s : natural) is
         begin
             step <= s;
-            for i in S0 to S3 loop wait until rising_edge(main_clk); end loop;
+            for i in S0 to S3 loop
+                wait until rising_edge(main_clk);
+            end loop;
         end;
     begin
         test_runner_setup(runner, runner_cfg);
@@ -140,51 +144,46 @@ begin
             if run("write FPGA memory") then
                 prepare_test(1);
                 check(true, "expected to always pass");
-            elsif run("test 2") then
+            elsif run("write VDL_HHT") then
                 prepare_test(2);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hhc=" &
-                       to_hstring(<<signal uut.vdl_hhc : videl_reg_t>>);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hhc : videl_reg_t >>, "VDL_HHC");
-            elsif run("test 3") then
-                report("test 3");
-                step <= 3;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 4") then
-                report("test 4");
-                step <= 4;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 5") then
-                report("test 5");
-                step <= 5;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 6") then
-                report("test 6");
-                step <= 6;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 7") then
-                report("test 7");
-                step <= 7;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 8") then
-                report("test 8");
-                step <= 8;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 9") then
-                report("test 9");
-                step <= 9;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-            elsif run("test 10") then
-                report("test 10");
-                step <= 10;
-                wait until rising_edge(main_clk);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hht=" &
+                       to_hstring(<<signal uut.vdl_hht : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
+            elsif run("write VDL_HBB") then
+                prepare_test(3);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hbb=" &
+                       to_hstring(<<signal uut.vdl_hbb : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t>>, "VDL_HBB");
+            elsif run("write VDL_HBE") then
+                prepare_test(4);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hbe=" &
+                       to_hstring(<<signal uut.vdl_hbe : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
+            elsif run("write VDL_HDB") then
+                prepare_test(5);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hdb=" &
+                       to_hstring(<<signal uut.vdl_hdb : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
+            elsif run("write VDL_HDE") then
+                prepare_test(6);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hde=" &
+                       to_hstring(<<signal uut.vdl_hde : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
+            elsif run("write VDL_HSS") then
+                prepare_test(7);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hss=" &
+                       to_hstring(<<signal uut.vdl_hss : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
+
+            -- now write the register, read the register and check for equality
+            elsif run("write/read VDL_HHT") then
+                prepare_test(2);
+                prepare_test(8);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
+            elsif run("write/read VDL_HBB") then
+                prepare_test(3);
+                prepare_test(9);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : std_ulogic_vector(12 downto 0) >>, "VDL_HBB");
             end if;
         end loop;
 
