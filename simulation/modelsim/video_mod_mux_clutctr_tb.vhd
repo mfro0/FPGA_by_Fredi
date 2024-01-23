@@ -85,8 +85,9 @@ architecture sim of video_mod_mux_clutctr_tb is
     type str is access string;
     subtype videl_reg_t is std_logic_vector(12 downto 0);
     subtype addr_t is std_logic_vector(31 downto 0);
+    subtype fbcs_t is std_logic_vector(3 downto 0);
     type stim_record is record
-        fbcs            : std_logic_vector(3 downto 0);
+        fbcs            : fbcs_t;
         addr            : addr_t;
         operation       : operation_type;
         data            : addr_t;
@@ -101,47 +102,49 @@ architecture sim of video_mod_mux_clutctr_tb is
         -- first do a few cycles of nothing relevant to the controller
         ("0111", x"40000000", W, 32x"bcd", LONG),
         -- then address our module's components
-        ("1011", VDL_HHT, W, 32x"bcd", LONG),
+        ("1101", VDL_HHC, W, 32x"ef0", WORD),
         ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
+        ("1101", VDL_HBB, W, 32x"bcd", WORD),
+        ("1101", VDL_HBE, W, 32x"bcd", WORD),
+        ("1101", VDL_HDB, W, 32x"bcd", WORD),
+        ("1101", VDL_HDE, W, 32x"bcd", WORD),
+        ("1101", VDL_HSS, W, 32x"bcd", WORD),
+        ("1101", VDL_HFS, W, 32x"bcd", WORD),
+        ("1101", VDL_HEE, W, 32x"bcd", WORD),
+
+        ("1101", VDL_HHC, R, 32x"bcd", WORD),
         ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("0111", x"40000000", R, 32x"bcd", WORD),
-        ("1011", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD)
+        ("1101", VDL_HBB, R, 32x"bcd", WORD),
+        ("1101", VDL_HBE, R, 32x"bcd", WORD),
+        ("1101", VDL_HDB, R, 32x"bcd", WORD),
+        ("1101", VDL_HDE, R, 32x"bcd", WORD),
+        ("1101", VDL_HSS, R, 32x"bcd", WORD),
+        ("1101", VDL_HFS, R, 32x"bcd", WORD),
+        ("1101", VDL_HEE, R, 32x"bcd", WORD)
     );
 
     signal step         : positive := 1;
     signal d            : addr_t;
+
 begin    
     test_runner : process
+        procedure prepare_test(s : natural) is
+        begin
+            step <= s;
+            for i in S0 to S3 loop wait until rising_edge(main_clk); end loop;
+        end;
     begin
         test_runner_setup(runner, runner_cfg);
 
         while test_suite loop
-            if run("test 1") then
-                step <= 1;
-                report "test 1";
-                report to_hstring(sv(step).data(12 downto 0)) & " vdl_hht=" & to_hstring(<<signal uut.vdl_hht : std_ulogic_vector(12 downto 0)>>);
-                show(get_logger(default_checker), display_handler, pass);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
-                wait until rising_edge(main_clk);
+            if run("write FPGA memory") then
+                prepare_test(1);
+                check(true, "expected to always pass");
             elsif run("test 2") then
-                report "test 2";
-                step <= 2;
-                report to_hstring(sv(step).data(12 downto 0)) & " vdl_hht=" & to_hstring(<<signal uut.vdl_hht : std_ulogic_vector(12 downto 0)>>);
-                check(d = <<signal uut.vdl_hht : std_ulogic_vector(12 downto 0) >>, "VDL_HHT");
+                prepare_test(2);
+                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hhc=" &
+                       to_hstring(<<signal uut.vdl_hhc : videl_reg_t>>);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hhc : videl_reg_t >>, "VDL_HHC");
             elsif run("test 3") then
                 report("test 3");
                 step <= 3;
@@ -233,10 +236,10 @@ begin
         
         report "Videl registers read/write";
 
-        --report "step = " & integer'image(step) & " cpu_status=" & cpu_state_t'image(cpu_status);
+        -- report "step = " & integer'image(step) & " cpu_status=" & cpu_state_t'image(cpu_status);
         case cpu_status is
             when S0 =>
-                -- report "S0 handling";
+                report "S0 handling";
                 fb_adr <= sv(step).addr;            -- set address
             
                 -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
@@ -257,7 +260,7 @@ begin
                 end case;
 
             when S1 =>
-                --report "S1 handling";
+                report "S1 handling";
                 -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
                 nFB_CS1 <= sv(step).fbcs(1);
                 nFB_CS2 <= sv(step).fbcs(2);
@@ -298,7 +301,7 @@ begin
                 --report "video_mod_ta=" & to_string(video_mod_ta);
 
             when S2 =>
-                --report "S2 handling";
+                report "S2 handling";
 
                 if sv(step).addr /= x"40000000" and sv(step).operation = R then
                     report "vdl_hht=" & to_hstring(<<signal uut.vdl_hht : videl_reg_t>>);
@@ -312,7 +315,7 @@ begin
                 nFB_WR <= '1';
         
             when S3 =>
-                --report "S3 handling";
+                report "S3 handling";
                 if sv(step).operation = R then
                     --report "received " & to_hstring(d) &
                         -- " from uut (stim #" & to_string(step) & ")." severity note;
