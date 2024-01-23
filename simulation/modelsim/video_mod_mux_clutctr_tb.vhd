@@ -1,6 +1,4 @@
 -- vunit: run_all_in_same_sim
--- 
--- vunit runner is at the very end of this file
 
 
 library ieee;
@@ -102,23 +100,23 @@ architecture sim of video_mod_mux_clutctr_tb is
         -- first do a few cycles of nothing relevant to the controller
         ("0111", x"40000000", W, 32x"bcd", LONG),
         -- then address our module's components
-        --("1101", VDL_HHC, W, 32x"ef0", WORD),
-        ("1101", VDL_HHT, W, 32x"bcd", WORD),
-        ("1101", VDL_HBB, W, 32x"bcd", WORD),
-        ("1101", VDL_HBE, W, 32x"bcd", WORD),
-        ("1101", VDL_HDB, W, 32x"bcd", WORD),
-        ("1101", VDL_HDE, W, 32x"bcd", WORD),
-        ("1101", VDL_HSS, W, 32x"bcd", WORD),
-        --("1101", VDL_HFS, W, 32x"bcd", WORD),
+        --("1101", VDL_HHC, W, 32x"ef0", WORD), -- does not exist
+        ("1101", VDL_HHT, W, 32x"123", WORD),
+        ("1101", VDL_HBB, W, 32x"456", WORD),
+        ("1101", VDL_HBE, W, 32x"789", WORD),
+        ("1101", VDL_HDB, W, 32x"abc", WORD),
+        ("1101", VDL_HDE, W, 32x"def", WORD),
+        ("1101", VDL_HSS, W, 32x"123", WORD),
+        --("1101", VDL_HFS, W, 32x"bcd", WORD), -- these do not exist either
         --("1101", VDL_HEE, W, 32x"bcd", WORD),
 
         --("1101", VDL_HHC, R, 32x"bcd", WORD),
-        ("1101", VDL_HHT, R, 32x"bcd", WORD),
-        ("1101", VDL_HBB, R, 32x"bcd", WORD),
-        ("1101", VDL_HBE, R, 32x"bcd", WORD),
-        ("1101", VDL_HDB, R, 32x"bcd", WORD),
-        ("1101", VDL_HDE, R, 32x"bcd", WORD),
-        ("1101", VDL_HSS, R, 32x"bcd", WORD)
+        ("1101", VDL_HHT, R, 32x"123", WORD),
+        ("1101", VDL_HBB, R, 32x"456", WORD),
+        ("1101", VDL_HBE, R, 32x"789", WORD),
+        ("1101", VDL_HDB, R, 32x"abc", WORD),
+        ("1101", VDL_HDE, R, 32x"def", WORD),
+        ("1101", VDL_HSS, R, 32x"123", WORD)
         --("1101", VDL_HFS, R, 32x"bcd", WORD),
         --("1101", VDL_HEE, R, 32x"bcd", WORD)
     );
@@ -129,7 +127,7 @@ architecture sim of video_mod_mux_clutctr_tb is
 begin    
     test_runner : process
         -- initialize index into stimulation vector and
-        -- wait for the ColdFire state machine to complete a full state transition
+        -- wait for the ColdFire state machine to complete a full circle state transition
         procedure prepare_test(s : natural) is
         begin
             step <= s;
@@ -183,7 +181,23 @@ begin
             elsif run("write/read VDL_HBB") then
                 prepare_test(3);
                 prepare_test(9);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : std_ulogic_vector(12 downto 0) >>, "VDL_HBB");
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t >>, "VDL_HBB");
+            elsif run("write/read VDL_HBE") then
+                prepare_test(4);
+                prepare_test(10);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
+            elsif run("write/read VDL_HDB") then
+                prepare_test(5);
+                prepare_test(11);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
+            elsif run("write/read VDL_HDE") then
+                prepare_test(6);
+                prepare_test(12);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
+            elsif run("write/read VDL_HSS") then
+                prepare_test(7);
+                prepare_test(13);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
             end if;
         end loop;
 
@@ -240,6 +254,7 @@ begin
             when S0 =>
                 report "S0 handling";
                 fb_adr <= sv(step).addr;            -- set address
+                fb_ad <= sv(step).addr;
             
                 -- fb_ale <= '0';                   -- assert FB_ALE (not done here as we already get the address in FB_ADR)
         
@@ -250,7 +265,8 @@ begin
                     when R => 
                         nFB_WR <= '1';
                         nFB_OE <= '0';
-                        -- tristate bits that we want the other end of the bus writing
+                        -- tristate bits that we want the other end of the bus writing,
+                        -- leave the others still driven with the address
                         case sv(step).width is
                             when BYTE => fb_ad(31 downto 24) <= (others => 'Z');
                             when WORD => fb_ad(31 downto 16) <= (others => 'Z');
@@ -261,9 +277,7 @@ begin
             when S1 =>
                 report "S1 handling";
                 -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
-                nFB_CS1 <= sv(step).fbcs(1);
-                nFB_CS2 <= sv(step).fbcs(2);
-                nFB_CS3 <= sv(step).fbcs(3);
+                (nFB_CS3, nFB_CS2, nFB_CS1) <= sv(step).fbcs(3 downto 1);
             
                 case sv(step).width is
                     when BYTE => (fb_size1, fb_size0) <= std_logic_vector'("01");
