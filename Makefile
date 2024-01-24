@@ -4,7 +4,7 @@ ifeq ($(OS),Windows_NT)
 	ALTPATH=c:/opt/altera/9.1sp2/quartus/bin64
 else
 	ALTPATH=/opt/altera/13.1/quartus/bin
-	LD_LIBRARY_PATH=$(ALTPATH):$(LD_LIBRARY_PATH)
+	export LD_LIBRARY_PATH:=$(ALTPATH):$(LD_LIBRARY_PATH)
 endif
 BITSTREAM=$(PROJ).sof
 BUILD_DIR=.
