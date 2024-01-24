@@ -10,7 +10,7 @@ package video_regs is
     constant VWRAP      : addr_t := x"ffff8210";   -- linewidth in words
 
     constant STE_PAL    : addr_t := x"ffff8240";   -- STE compatible palette registers 0-15
-                        -- ends at  x"ffff825e"
+                                                   -- ends at  x"ffff825e"
     constant STSHIFT    : addr_t := x"ffff8260";   -- ST compatible shifter control register
 
     constant HSCROLL    : addr_t := x"ffff8265";   -- STE compatible horizontal scroll register
@@ -29,8 +29,8 @@ package video_regs is
     constant VDL_VBT    : addr_t := x"ffff8292";   -- video burst time
 
     -- the next two registers appear to be only in the specs ???
-    constant NUMREQ     : addr_t := x"ffff8294";   -- video data transfers
-    constant VDL_HWC    : addr_t := x"ffff8296";   -- horizontal word count
+    -- constant NUMREQ     : addr_t := x"ffff8294";   -- video data transfers
+    -- constant VDL_HWC    : addr_t := x"ffff8296";   -- horizontal word count
 
     constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter (read only)
     constant VDL_VFT    : addr_t := x"ffff82a2";   -- vertical field total
@@ -90,7 +90,8 @@ package video_regs is
     );
 
 
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive; fbcs : fbcs_t) return boolean;
+    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector;
+                       width : positive; fbcs : fbcs_t) return boolean;
 end package video_regs;
 
 
@@ -103,7 +104,8 @@ end package video_regs;
 -- result: true when check is a match, false otherwise
 --
 package body video_regs is
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector; width : positive; fbcs : fbcs_t) return boolean is
+    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector;
+                       width : positive; fbcs : fbcs_t) return boolean is
         variable res : boolean;
     begin
         return res;
