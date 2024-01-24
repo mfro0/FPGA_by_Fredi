@@ -95,23 +95,42 @@ architecture sim of video_mod_mux_clutctr_tb is
     constant sv : stim_vector_t :=
     (
         -- first do a few cycles of nothing relevant to the controller
-        ("0111", x"40000000", W, 32x"bcd", LONG),
+        ("0111", x"40000000", W, 32x"bcd", LONG),       -- 1
         -- then address our module's components
-        ("1101", VDL_HHT, W, 32x"123", WORD),
-        ("1101", VDL_HBB, W, 32x"456", WORD),
-        ("1101", VDL_HBE, W, 32x"789", WORD),
-        ("1101", VDL_HDB, W, 32x"abc", WORD),
-        ("1101", VDL_HDE, W, 32x"def", WORD),
-        ("1101", VDL_HSS, W, 32x"123", WORD),
-        ("1101", VDL_VFT, W, 32x"456", WORD),
+        
+        -- write Videl registers
+        -- horizontal
+        ("1101", VDL_HHT, W, 32x"123", WORD),           -- 2
+        ("1101", VDL_HBB, W, 32x"234", WORD),           -- 3
+        ("1101", VDL_HBE, W, 32x"345", WORD),           -- 4
+        ("1101", VDL_HDB, W, 32x"567", WORD),           -- 5
+        ("1101", VDL_HDE, W, 32x"678", WORD),           -- 6
+        ("1101", VDL_HSS, W, 32x"789", WORD),           -- 7
+        -- vertical
+        ("1101", VDL_VFT, W, 32x"89A", WORD),           -- 8
+        ("1101", VDL_VBB, W, 32x"9AB", WORD),           -- 9
+        ("1101", VDL_VBE, W, 32x"ABC", WORD),           -- 10
+        ("1101", VDL_VDB, W, 32x"BCD", WORD),           -- 11
+        ("1101", VDL_VDE, W, 32x"CDE", WORD),           -- 12
+        ("1101", VDL_VSS, W, 32x"DEF", WORD),           -- 13
+        ("1101", VDL_VMD, W, 32x"EF1", WORD),           -- 14
 
-        ("1101", VDL_HHT, R, 32x"123", WORD),
-        ("1101", VDL_HBB, R, 32x"456", WORD),
-        ("1101", VDL_HBE, R, 32x"789", WORD),
-        ("1101", VDL_HDB, R, 32x"abc", WORD),
-        ("1101", VDL_HDE, R, 32x"def", WORD),
-        ("1101", VDL_HSS, R, 32x"123", WORD),
-        ("1101", VDL_VFT, R, 32x"456", WORD)
+        -- read Videl registers
+        -- horizontal
+        ("1101", VDL_HHT, R, 32x"123", WORD),           -- 15
+        ("1101", VDL_HBB, R, 32x"234", WORD),           -- 16
+        ("1101", VDL_HBE, R, 32x"345", WORD),           -- 17
+        ("1101", VDL_HDB, R, 32x"567", WORD),           -- 18
+        ("1101", VDL_HDE, R, 32x"678", WORD),           -- 19
+        ("1101", VDL_HSS, R, 32x"789", WORD),           -- 20
+        -- vertical
+        ("1101", VDL_VFT, R, 32x"89A", WORD),           -- 21
+        ("1101", VDL_VBB, R, 32x"9AB", WORD),           -- 22
+        ("1101", VDL_VBE, R, 32x"ABC", WORD),           -- 23
+        ("1101", VDL_VDB, R, 32x"BCD", WORD),           -- 24
+        ("1101", VDL_VDE, R, 32x"CDE", WORD),           -- 25
+        ("1101", VDL_VSS, R, 32x"DEF", WORD),           -- 26
+        ("1101", VDL_VMD, R, 32x"EF1", WORD)            -- 27
     );
 
     signal step         : positive := 1;
@@ -134,58 +153,102 @@ begin
         while test_suite loop
             if run("write FPGA memory") then
                 prepare_test(1);
-                check(true, "expected to always pass");
+                check(true, "FPGA memory: expected to always pass");
             elsif run("write VDL_HHT") then
                 prepare_test(2);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "write VDL_HHT");
             elsif run("write VDL_HBB") then
                 prepare_test(3);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t>>, "VDL_HBB");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t>>, "write VDL_HBB");
             elsif run("write VDL_HBE") then
                 prepare_test(4);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "write VDL_HBE");
             elsif run("write VDL_HDB") then
                 prepare_test(5);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "write VDL_HDB");
             elsif run("write VDL_HDE") then
                 prepare_test(6);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "write VDL_HDE");
             elsif run("write VDL_HSS") then
                 prepare_test(7);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "write VDL_HSS");
             elsif run("write VDL_VFT") then
                 prepare_test(8);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "VDL_VFT");
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "write VDL_VFT");
+            elsif run("write VDL_VBB") then
+                prepare_test(9);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vbb : videl_reg_t >>, "write VDL_VBB");
+            elsif run("write VDL_VBE") then
+                prepare_test(10);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vbe : videl_reg_t >>, "write VDL_VBE");
+            elsif run("write VDL_VDB") then
+                prepare_test(11);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vdb : videl_reg_t >>, "write VDL_VDB");
+            elsif run("write VDL_VDE") then
+                prepare_test(12);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vde : videl_reg_t >>, "write VDL_VDE");
+            elsif run("write VDL_VSS") then
+                prepare_test(13);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vss : videl_reg_t >>, "write VDL_VSS");
+            elsif run("write VDL_VMD") then
+                prepare_test(14);
+                check(sv(step).data(3 downto 0) = <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>, "write VDL_VMD");
 
             -- now write the register, read the register and check for equality
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
-                prepare_test(9);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
+                prepare_test(15);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "write/read VDL_HHT");
             elsif run("write/read VDL_HBB") then
                 prepare_test(3);
-                prepare_test(10);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t >>, "VDL_HBB");
+                prepare_test(16);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t >>, "write/read VDL_HBB");
             elsif run("write/read VDL_HBE") then
                 prepare_test(4);
-                prepare_test(11);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
+                prepare_test(17);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "write/read VDL_HBE");
             elsif run("write/read VDL_HDB") then
                 prepare_test(5);
-                prepare_test(12);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
+                prepare_test(18);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "write/read VDL_HDB");
             elsif run("write/read VDL_HDE") then
                 prepare_test(6);
-                prepare_test(13);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
+                prepare_test(19);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "write/read VDL_HDE");
             elsif run("write/read VDL_HSS") then
                 prepare_test(7);
-                prepare_test(14);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
+                prepare_test(20);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "write/read VDL_HSS");
             elsif run("write/read VDL_VFT") then
                 prepare_test(8);
-                prepare_test(15);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "VDL_VFT");
+                prepare_test(21);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "write/read VDL_VFT");
+            elsif run("write/read VDL_VBB") then
+                prepare_test(9);
+                prepare_test(22);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vbb : videl_reg_t >>, "write/read VDL_VBB");
+            elsif run("write/read VDL_VBE") then
+                prepare_test(10);
+                prepare_test(23);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vbe : videl_reg_t >>, "write/read VDL_VBE");
+            elsif run("write/read VDL_VDB") then
+                prepare_test(11);
+                prepare_test(24);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vdb : videl_reg_t >>, "write/read VDL_VDB");
+            elsif run("write/read VDL_VDE") then
+                prepare_test(12);
+                prepare_test(25);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vde : videl_reg_t >>, "write/read VDL_VDE");
+            elsif run("write/read VDL_VSS") then
+                prepare_test(13);
+                prepare_test(26);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vss : videl_reg_t >>, "write/read VDL_VSS");
+            elsif run("write/read VDL_VMD") then
+                prepare_test(14);
+                prepare_test(27);
+                report "written: " & to_hstring(sv(step).data(3 downto 0)) &
+                       " stored: " & to_string(<<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>);
+                check(d(3 downto 0) = <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>, "write/read VDL_VMD");
             end if;
         end loop;
 
