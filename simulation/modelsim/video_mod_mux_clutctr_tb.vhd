@@ -1,6 +1,3 @@
--- vunit: run_all_in_same_sim
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use std.textio.all;
@@ -100,25 +97,21 @@ architecture sim of video_mod_mux_clutctr_tb is
         -- first do a few cycles of nothing relevant to the controller
         ("0111", x"40000000", W, 32x"bcd", LONG),
         -- then address our module's components
-        --("1101", VDL_HHC, W, 32x"ef0", WORD), -- does not exist
         ("1101", VDL_HHT, W, 32x"123", WORD),
         ("1101", VDL_HBB, W, 32x"456", WORD),
         ("1101", VDL_HBE, W, 32x"789", WORD),
         ("1101", VDL_HDB, W, 32x"abc", WORD),
         ("1101", VDL_HDE, W, 32x"def", WORD),
         ("1101", VDL_HSS, W, 32x"123", WORD),
-        --("1101", VDL_HFS, W, 32x"bcd", WORD), -- these do not exist either
-        --("1101", VDL_HEE, W, 32x"bcd", WORD),
+        ("1101", VDL_VFT, W, 32x"456", WORD),
 
-        --("1101", VDL_HHC, R, 32x"bcd", WORD),
         ("1101", VDL_HHT, R, 32x"123", WORD),
         ("1101", VDL_HBB, R, 32x"456", WORD),
         ("1101", VDL_HBE, R, 32x"789", WORD),
         ("1101", VDL_HDB, R, 32x"abc", WORD),
         ("1101", VDL_HDE, R, 32x"def", WORD),
-        ("1101", VDL_HSS, R, 32x"123", WORD)
-        --("1101", VDL_HFS, R, 32x"bcd", WORD),
-        --("1101", VDL_HEE, R, 32x"bcd", WORD)
+        ("1101", VDL_HSS, R, 32x"123", WORD),
+        ("1101", VDL_VFT, R, 32x"456", WORD)
     );
 
     signal step         : positive := 1;
@@ -144,60 +137,55 @@ begin
                 check(true, "expected to always pass");
             elsif run("write VDL_HHT") then
                 prepare_test(2);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hht=" &
-                       to_hstring(<<signal uut.vdl_hht : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
             elsif run("write VDL_HBB") then
                 prepare_test(3);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hbb=" &
-                       to_hstring(<<signal uut.vdl_hbb : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t>>, "VDL_HBB");
             elsif run("write VDL_HBE") then
                 prepare_test(4);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hbe=" &
-                       to_hstring(<<signal uut.vdl_hbe : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
             elsif run("write VDL_HDB") then
                 prepare_test(5);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hdb=" &
-                       to_hstring(<<signal uut.vdl_hdb : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
             elsif run("write VDL_HDE") then
                 prepare_test(6);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hde=" &
-                       to_hstring(<<signal uut.vdl_hde : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
             elsif run("write VDL_HSS") then
                 prepare_test(7);
-                report to_hstring(sv(step).data(videl_reg_t'range)) & " vdl_hss=" &
-                       to_hstring(<<signal uut.vdl_hss : videl_reg_t>>);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
+            elsif run("write VDL_VFT") then
+                prepare_test(8);
+                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "VDL_VFT");
 
             -- now write the register, read the register and check for equality
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
-                prepare_test(8);
+                prepare_test(9);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "VDL_HHT");
             elsif run("write/read VDL_HBB") then
                 prepare_test(3);
-                prepare_test(9);
+                prepare_test(10);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t >>, "VDL_HBB");
             elsif run("write/read VDL_HBE") then
                 prepare_test(4);
-                prepare_test(10);
+                prepare_test(11);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "VDL_HBE");
             elsif run("write/read VDL_HDB") then
                 prepare_test(5);
-                prepare_test(11);
+                prepare_test(12);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "VDL_HDB");
             elsif run("write/read VDL_HDE") then
                 prepare_test(6);
-                prepare_test(12);
+                prepare_test(13);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "VDL_HDE");
             elsif run("write/read VDL_HSS") then
                 prepare_test(7);
-                prepare_test(13);
+                prepare_test(14);
                 check(d(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "VDL_HSS");
+            elsif run("write/read VDL_VFT") then
+                prepare_test(8);
+                prepare_test(15);
+                check(d(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "VDL_VFT");
             end if;
         end loop;
 
@@ -221,7 +209,6 @@ begin
     cpu_nextstate : process(all)
     begin
         if rising_edge(main_clk) then
-            report "change cpu_status to " & cpu_state_t'image(cpu_status);
             case cpu_status is
                 when S0 =>
                     cpu_status <= S1;
@@ -242,17 +229,8 @@ begin
 
     stimulate : process(all)
     begin
-        -- s(1 to sv(step).desc.all'length) <= sv(step).desc.all;
-        -- s(sv(step).desc.all'length + 1 to s'length) <= (others => ' ');
-             
-        -- fb_ad <= (others => 'Z');
-        
-        report "Videl registers read/write";
-
-        -- report "step = " & integer'image(step) & " cpu_status=" & cpu_state_t'image(cpu_status);
         case cpu_status is
             when S0 =>
-                report "S0 handling";
                 fb_adr <= sv(step).addr;            -- set address
                 fb_ad <= sv(step).addr;
             
@@ -275,7 +253,6 @@ begin
                 end case;
 
             when S1 =>
-                report "S1 handling";
                 -- fb_ale <= '1';                       -- negate FB_ALE (not done here because it's in one of the upstream modules)
                 (nFB_CS3, nFB_CS2, nFB_CS1) <= sv(step).fbcs(3 downto 1);
             
@@ -311,33 +288,14 @@ begin
                                 d <= fb_ad;
                         end case;
                 end case;
-                --report "video_mod_ta=" & to_string(video_mod_ta);
 
             when S2 =>
-                report "S2 handling";
-
-                if sv(step).addr /= x"40000000" and sv(step).operation = R then
-                    report "vdl_hht=" & to_hstring(<<signal uut.vdl_hht : videl_reg_t>>);
-                    report "sv(step).data=" & to_hstring(sv(step).data);
-                    -- check(sv(step).data = <<signal uut.vdl_hht : videl_reg_t>>, "check failed");
-                end if;
-
                 (nFB_CS1, nFB_CS2, nFB_CS3) <= std_logic_vector'("111");
                 
                 nFB_OE <= '1';
                 nFB_WR <= '1';
         
             when S3 =>
-                report "S3 handling";
-                if sv(step).operation = R then
-                    --report "received " & to_hstring(d) &
-                        -- " from uut (stim #" & to_string(step) & ")." severity note;
-                else
-                    --report "sent (" & lane_width_type'image(sv(step).width) & ") " &
-                        -- to_hstring(sv(step).data) & " to uut (stim #" & to_string(step) & ")."
-                        -- severity note;
-                end if;
-                
                 -- invalidate address
                 -- invalidate FB_WRn
         end case;
