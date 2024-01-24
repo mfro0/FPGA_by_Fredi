@@ -156,7 +156,7 @@ begin
                 check(true, "FPGA memory: expected to always pass");
             elsif run("write VDL_HHT") then
                 prepare_test(2);
-                check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "write VDL_HHT");
+                check_equal(sv(step).data(videl_reg_t'range), <<signal uut.vdl_hht : videl_reg_t >>, "write VDL_HHT");
             elsif run("write VDL_HBB") then
                 prepare_test(3);
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t>>, "write VDL_HBB");
