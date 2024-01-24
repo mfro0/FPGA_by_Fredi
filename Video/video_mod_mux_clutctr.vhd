@@ -321,11 +321,11 @@ begin
     
     vdl_vss_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c156" else '0';
     
-    vdl_vft_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c151" else '0';
+    vdl_vft_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c151" else '0';         -- x"F82A2" / 2
     
-    vdl_vct_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c160" else '0';
+    vdl_vct_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c160" else '0';         -- x"F92C0" / 2
     
-    vdl_vmd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c161" else '0';
+    vdl_vmd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c161" else '0';         -- x"F82C2" / 2
     
     -- multiplication factor (not really, anymore)
     mulf <= 13d"1" when not st_video and (te or vdl_vct(0)) else
