@@ -17,22 +17,22 @@ package video_regs is
 
     constant SPSHIFT    : addr_t := x"ffff8266";   -- Falcon shift register
 
-    constant VDL_HHC    : addr_t := x"ffff8280";   -- horizontal hold counterA (read only)
+    -- constant VDL_HHC    : addr_t := x"ffff8280";   -- horizontal hold counterA (read only) -- not impelemented in VHDL
     constant VDL_HHT    : addr_t := x"ffff8282";   -- horizontal half line total
     constant VDL_HBB    : addr_t := x"ffff8284";   -- horizontal blank begin
     constant VDL_HBE    : addr_t := x"ffff8286";   -- horizontal blank end
     constant VDL_HDB    : addr_t := x"ffff8288";   -- horizontal display begin
     constant VDL_HDE    : addr_t := x"ffff828a";   -- horizontal display end
     constant VDL_HSS    : addr_t := x"ffff828c";   -- horizontal sync start
-    constant VDL_HFS    : addr_t := x"ffff828e";   -- horizontal field sync
-    constant VDL_HEE    : addr_t := x"ffff8290";   -- horizontal equalization end
-    constant VDL_VBT    : addr_t := x"ffff8292";   -- video burst time
 
-    -- the next two registers appear to be only in the specs ???
+    -- constant VDL_HFS    : addr_t := x"ffff828e";   -- horizontal field sync                  -- not implemented in HDL
+    -- constant VDL_HEE    : addr_t := x"ffff8290";   -- horizontal equalization end
+    -- constant VDL_VBT    : addr_t := x"ffff8292";   -- video burst time
     -- constant NUMREQ     : addr_t := x"ffff8294";   -- video data transfers
     -- constant VDL_HWC    : addr_t := x"ffff8296";   -- horizontal word count
 
-    constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter (read only)
+    -- constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter (read only) -- not implemented in HDL
+
     constant VDL_VFT    : addr_t := x"ffff82a2";   -- vertical field total
     constant VDL_VBB    : addr_t := x"ffff82a4";   -- vertical blank begin
     constant VDL_VBE    : addr_t := x"ffff82a6";   -- vertical blank end
@@ -40,7 +40,7 @@ package video_regs is
     constant VDL_VDE    : addr_t := x"ffff82aa";   -- vertical display end 0 and 1
     constant VDL_VSS    : addr_t := x"ffff82ac";   -- vertical sync start
 
-    constant VDL_VCO    : addr_t := x"ffff82c2";   -- Falcon Video Control
+    constant VDL_VMD    : addr_t := x"ffff82c2";   -- Falcon Video Control
 
     subtype fbcs_t is std_ulogic_vector(5 downto 0);
 
