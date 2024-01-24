@@ -6,6 +6,8 @@ else
 	ALTPATH=/opt/altera/13.1/quartus/bin
 	export LD_LIBRARY_PATH:=$(ALTPATH):$(LD_LIBRARY_PATH)
 endif
+ALTOPT = --64bit
+
 BITSTREAM=$(PROJ).sof
 BUILD_DIR=.
 
