@@ -132,8 +132,12 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_VSS, R, 32x"DEF", WORD),           -- 26
         ("1101", VDL_VMD, R, 32x"EF1", WORD),           -- 27
 
-        ("1011", VCTR, W, 32x"11223344", LONG),
-        ("1011", VCTR, R, 32x"11223344", LONG)
+        -- ACP Vctr register
+        ("1011", VCTR, W, 32x"11223344", LONG),         -- 28
+        ("1011", VCTR, R, 32x"11223344", LONG),         -- 29
+
+        -- ST Shifter
+        ("1101", STSHIFT, W, 32x"00000001", BYTE)
     );
 
     signal step         : positive := 1;
@@ -254,11 +258,20 @@ begin
                             "write/read VDL_VMD");
             elsif run("write ACP_VCTR") then
                 prepare_test(28);
-                check_equal(sv(step).data, <<signal uut.acp_vctr : addr_t>>, "write ACP_VCTR");
+                -- this would fail if we would not mask out the ST/Falcon mode bits as 
+                -- ACP VCTR bits 6 & 7 are read only and cannot be written (only through ST Shift & Falcon Shift registers)
+                check_equal(sv(step).data and B"1111_1111_1111_1111_1111_1111_0011_1111",
+                            <<signal uut.acp_vctr : addr_t>> and B"1111_1111_1111_1111_1111_1111_0011_1111", "write ACP_VCTR");
             elsif run("write/read ACP_VCTR") then
                 prepare_test(28);
                 prepare_test(29);
-                check_equal(d, <<signal uut.acp_vctr : addr_t>>, "write/read ACP_VCTR");
+                check_equal(sv(step).data and B"1111_1111_1111_1111_1111_1111_0011_1111",
+                            <<signal uut.acp_vctr : addr_t>> and B"1111_1111_1111_1111_1111_1111_0011_1111", "write/read ACP_VCTR");
+            elsif run("write ST Shifter register") then
+                prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(30);       -- write ST SHIFT MODE
+                check_equal(sv(step).data(2 downto 0), <<signal uut.st_shift_mode : std_logic_vector(2 downto 0)>>,
+                            "write ST shifter register");
             end if;
         end loop;
 
