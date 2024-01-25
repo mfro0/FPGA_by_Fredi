@@ -76,6 +76,7 @@ package video_regs is
     constant CSMR_BAM_128K      : addr_t := x"00010000";
     constant CSMR_BAM_64K       : addr_t := x"00000000";
 
+    constant VCTR               : addr_t := x"F0000400";
     --
     -- these must match settings in sysinit.c (FireBee ColdFire firmware)
     --
