@@ -130,7 +130,10 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_VDB, R, 32x"BCD", WORD),           -- 24
         ("1101", VDL_VDE, R, 32x"CDE", WORD),           -- 25
         ("1101", VDL_VSS, R, 32x"DEF", WORD),           -- 26
-        ("1101", VDL_VMD, R, 32x"EF1", WORD)            -- 27
+        ("1101", VDL_VMD, R, 32x"EF1", WORD),           -- 27
+
+        ("1011", VCTR, W, 32x"11223344", LONG),
+        ("1011", VCTR, R, 32x"11223344", LONG)
     );
 
     signal step         : positive := 1;
@@ -192,63 +195,70 @@ begin
                 check(sv(step).data(videl_reg_t'range) = <<signal uut.vdl_vss : videl_reg_t >>, "write VDL_VSS");
             elsif run("write VDL_VMD") then
                 prepare_test(14);
-                check(sv(step).data(3 downto 0) = <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>, "write VDL_VMD");
+                check_equal(sv(step).data(3 downto 0), <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>,
+                            "write VDL_VMD");
 
             -- now write the register, read the register and check for equality
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
                 prepare_test(15);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hht : videl_reg_t >>, "write/read VDL_HHT");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hht : videl_reg_t >>, "write/read VDL_HHT");
             elsif run("write/read VDL_HBB") then
                 prepare_test(3);
                 prepare_test(16);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hbb : videl_reg_t >>, "write/read VDL_HBB");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hbb : videl_reg_t >>, "write/read VDL_HBB");
             elsif run("write/read VDL_HBE") then
                 prepare_test(4);
                 prepare_test(17);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hbe : videl_reg_t >>, "write/read VDL_HBE");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hbe : videl_reg_t >>, "write/read VDL_HBE");
             elsif run("write/read VDL_HDB") then
                 prepare_test(5);
                 prepare_test(18);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hdb : videl_reg_t >>, "write/read VDL_HDB");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hdb : videl_reg_t >>, "write/read VDL_HDB");
             elsif run("write/read VDL_HDE") then
                 prepare_test(6);
                 prepare_test(19);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hde : videl_reg_t >>, "write/read VDL_HDE");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hde : videl_reg_t >>, "write/read VDL_HDE");
             elsif run("write/read VDL_HSS") then
                 prepare_test(7);
                 prepare_test(20);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_hss : videl_reg_t >>, "write/read VDL_HSS");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hss : videl_reg_t >>, "write/read VDL_HSS");
             elsif run("write/read VDL_VFT") then
                 prepare_test(8);
                 prepare_test(21);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vft : videl_reg_t >>, "write/read VDL_VFT");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vft : videl_reg_t >>, "write/read VDL_VFT");
             elsif run("write/read VDL_VBB") then
                 prepare_test(9);
                 prepare_test(22);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vbb : videl_reg_t >>, "write/read VDL_VBB");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vbb : videl_reg_t >>, "write/read VDL_VBB");
             elsif run("write/read VDL_VBE") then
                 prepare_test(10);
                 prepare_test(23);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vbe : videl_reg_t >>, "write/read VDL_VBE");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vbe : videl_reg_t >>, "write/read VDL_VBE");
             elsif run("write/read VDL_VDB") then
                 prepare_test(11);
                 prepare_test(24);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vdb : videl_reg_t >>, "write/read VDL_VDB");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vdb : videl_reg_t >>, "write/read VDL_VDB");
             elsif run("write/read VDL_VDE") then
                 prepare_test(12);
                 prepare_test(25);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vde : videl_reg_t >>, "write/read VDL_VDE");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vde : videl_reg_t >>, "write/read VDL_VDE");
             elsif run("write/read VDL_VSS") then
                 prepare_test(13);
                 prepare_test(26);
-                check(d(videl_reg_t'range) = <<signal uut.vdl_vss : videl_reg_t >>, "write/read VDL_VSS");
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vss : videl_reg_t >>, "write/read VDL_VSS");
             elsif run("write/read VDL_VMD") then
                 prepare_test(14);
                 prepare_test(27);
-                report "written: " & to_hstring(sv(step).data(3 downto 0)) &
-                       " stored: " & to_string(<<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>);
-                check(d(3 downto 0) = <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>, "write/read VDL_VMD");
+                check_equal(d(3 downto 0), <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>,
+                            "write/read VDL_VMD");
+            elsif run("write ACP_VCTR") then
+                prepare_test(28);
+                check_equal(sv(step).data, <<signal uut.acp_vctr : addr_t>>, "write ACP_VCTR");
+            elsif run("write/read ACP_VCTR") then
+                prepare_test(28);
+                prepare_test(29);
+                check_equal(d, <<signal uut.acp_vctr : addr_t>>, "write/read ACP_VCTR");
             end if;
         end loop;
 
