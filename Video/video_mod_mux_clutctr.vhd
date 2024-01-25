@@ -457,18 +457,11 @@ begin
 
     p_shiftmode : process(all)
     begin
-        color1 <= '0';
-        color2 <= '0';
-        color4 <= '0';
-        color8 <= '0';
-        color16 <= '0';
-        color24 <= '0';
-    
         if not(color8) and st_video and not(acp_video_on) then
             case st_shift_mode is
-                when "010" => color1 <= '1';
-                when "001" => color2 <= '1';
-                when "000" => color4 <= '1';
+                when "010" => color1 <= '1'; color2 <= '0'; color4 <= '0';
+                when "001" => color2 <= '1'; color1 <= '0'; color4 <= '0';
+                when "000" => color4 <= '1'; color1 <= '0'; color2 <= '0';
                 when others => null;
             end case;
         end if;
@@ -480,14 +473,13 @@ begin
         
         if falcon_video and not(acp_video_on) then
             case falcon_shift_mode is
-                when 11x"400" => color1 <= '1';
-                when 11x"000" => color4 <= '1';
-                when 11x"010" => color8 <= '1';
-                when 11x"100" => color16 <= '1';
+                when 11x"400" => color1 <= '1'; color4 <= '0'; color8 <= '0'; color16 <= '0';
+                when 11x"000" => color4 <= '1'; color1 <= '0'; color8 <= '0'; color16 <= '0';
+                when 11x"010" => color8 <= '1'; color1 <= '0'; color4 <= '0'; color16 <= '0';
+                when 11x"100" => color16 <= '1'; color1 <= '0'; color4 <= '0'; color8 <= '0';
                 when others => null;
             end case;
         end if;
-        
     end process p_shiftmode;
     
     p : process(all)
@@ -514,9 +506,12 @@ begin
                 if fb_b(2) then acp_vctr(15 downto 8) <= fb_ad(15 downto 8); end if;
                 if fb_b(3) then acp_vctr(5 downto 0) <= fb_ad(5 downto 0); end if;
             end if;
+
             -- set ST or Falcon shift mode when write x..shift registers
-            acp_vctr(7) <= falcon_shift_mode_cs and not nFB_WR and not acp_video_on;
-            acp_vctr(6) <= st_shift_mode_cs and not nFB_WR and not acp_video_on;
+            if (falcon_shift_mode_cs or st_shift_mode_cs) and not nFB_WR then
+                acp_vctr(7) <= falcon_shift_mode_cs and not nFB_WR and not acp_video_on;
+                acp_vctr(6) <= st_shift_mode_cs and not nFB_WR and not acp_video_on;
+            end if;
             
             if not vr_busy then
                 vr_dout <= vr_d;
