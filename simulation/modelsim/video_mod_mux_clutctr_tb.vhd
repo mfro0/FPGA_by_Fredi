@@ -137,7 +137,11 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1011", VCTR, R, 32x"11223344", LONG),         -- 29
 
         -- ST Shifter
-        ("1101", STSHIFT, W, 32x"00000001", BYTE)
+        ("1101", STSHIFT, W, 32x"00000001", BYTE),
+
+        -- VDL_VCT
+        ("1101", VDL_VCT, W, 32x"00000182", WORD),
+        ("1101", VDL_VCT, R, 32x"00000182", WORD)
     );
 
     signal step         : positive := 1;
@@ -201,6 +205,14 @@ begin
                 prepare_test(14);
                 check_equal(sv(step).data(3 downto 0), <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>,
                             "write VDL_VMD");
+            elsif run("write VDL_VCT") then
+                prepare_test(31);
+                check_equal(sv(step).data(videl_reg_t'range), <<signal uut.vdl_vct : videl_reg_t >>, "write VDL_VCT");
+            elsif run("write/read VDL_VCT") then
+                prepare_test(31);
+                prepare_test(32);
+                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vct : videl_reg_t >>, "write/read VDL_VCT");
+
 
             -- now write the register, read the register and check for equality
             elsif run("write/read VDL_HHT") then
@@ -269,9 +281,10 @@ begin
                             <<signal uut.acp_vctr : addr_t>> and B"1111_1111_1111_1111_1111_1111_0011_1111", "write/read ACP_VCTR");
             elsif run("write ST Shifter register") then
                 prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(14);       -- write VDL_VMD
+                prepare_test(31);       -- write VDL_VCT
                 prepare_test(30);       -- write ST SHIFT MODE
-                check_equal(sv(step).data(2 downto 0), <<signal uut.st_shift_mode : std_logic_vector(2 downto 0)>>,
-                            "write ST shifter register");
+                check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             end if;
         end loop;
 

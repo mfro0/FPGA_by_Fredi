@@ -40,6 +40,7 @@ package video_regs is
     constant VDL_VDE    : addr_t := x"ffff82aa";   -- vertical display end 0 and 1
     constant VDL_VSS    : addr_t := x"ffff82ac";   -- vertical sync start
 
+    constant VDL_VCT    : addr_t := x"ffff82c0";   -- Video Master Control
     constant VDL_VMD    : addr_t := x"ffff82c2";   -- Falcon Video Control
 
     subtype fbcs_t is std_ulogic_vector(5 downto 0);
