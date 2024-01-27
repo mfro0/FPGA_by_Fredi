@@ -271,19 +271,28 @@ begin
             elsif run("write ACP_VCTR") then
                 prepare_test(28);
                 -- this would fail if we would not mask out the ST/Falcon mode bits as 
-                -- ACP VCTR bits 6 & 7 are read only and cannot be written (only through ST Shift & Falcon Shift registers)
-                check_equal(sv(step).data and B"1111_1111_1111_1111_1111_1111_0011_1111",
-                            <<signal uut.acp_vctr : addr_t>> and B"1111_1111_1111_1111_1111_1111_0011_1111", "write ACP_VCTR");
+                -- ACP VCTR bits 6 & 7 are read only and cannot be written (only indirectly with writing
+                -- to the ST Shift or Falcon Shifter registers)
+                check_equal(sv(step).data and x"FFFFFF3F",
+                            <<signal uut.acp_vctr : addr_t>> and x"FFFFFF3F", "write ACP_VCTR");
             elsif run("write/read ACP_VCTR") then
                 prepare_test(28);
                 prepare_test(29);
-                check_equal(sv(step).data and B"1111_1111_1111_1111_1111_1111_0011_1111",
-                            <<signal uut.acp_vctr : addr_t>> and B"1111_1111_1111_1111_1111_1111_0011_1111", "write/read ACP_VCTR");
+                check_equal(sv(step).data and x"FFFFFF3F",
+                            <<signal uut.acp_vctr : addr_t>> and x"FFFFFF3F", "write/read ACP_VCTR");
             elsif run("write ST Shifter register") then
                 prepare_test(28);       -- write ACP_VCTR first
                 prepare_test(14);       -- write VDL_VMD
                 prepare_test(31);       -- write VDL_VCT
                 prepare_test(30);       -- write ST SHIFT MODE
+                -- check if pixel_clk does something now
+                check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
+            elsif run("write Falcon Shifter register") then
+                prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(14);       -- write VDL_VMD
+                prepare_test(31);       -- write VDL_VCT
+                prepare_test(30);       -- write ST SHIFT MODE
+                prepare_test(31);
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             end if;
         end loop;
