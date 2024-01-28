@@ -446,13 +446,13 @@ begin
     
     te <= (vdl_vmd(2) and not vdl_vct(0)) or (not vdl_vmd(2) and vdl_vct(0));
     
-    pixel_clk_i <= clk13m    when (acp_video_on = '0' and falcon_video = '1') or (st_video = '1' and vdl_vct(2) = '1' and te = '1') else
-                   clk17m    when (acp_video_on = '0' and falcon_video = '1') or (st_video = '1' and vdl_vct(2) = '0' and te = '1') else
-                   clk25m    when (acp_video_on = '0' and falcon_video = '1') or (st_video = '1' and vdl_vct(2) = '1' and te = '0') else
-                   clk33m    when (acp_video_on = '0' and falcon_video = '1') or (st_video = '1' and vdl_vct(2) = '0' and te = '0') else 
-                   clk25m    when (acp_video_on = '1' and acp_vctr(9) = '1' and acp_vctr(8) = '1') else
-                   clk33m    when (acp_video_on = '1' and acp_vctr(9 downto 8) = "01") else
-                   clk_video when (acp_video_on = '1' and acp_vctr(9) = '1') else
+    pixel_clk_i <= clk13m    when acp_video_on = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '1' and te = '1' else
+                   clk17m    when acp_video_on = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '1' else
+                   clk25m    when acp_video_on = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '1' and te = '0' else
+                   clk33m    when acp_video_on = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '0' else 
+                   clk25m    when acp_video_on = '1' and acp_vctr(9) = '1' and acp_vctr(8) = '1' else
+                   clk33m    when acp_video_on = '1' and acp_vctr(9 downto 8) = "01" else
+                   clk_video when acp_video_on = '1' and acp_vctr(9) = '1' else
                    '0';
 
     p_shiftmode : process(all)
