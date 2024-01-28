@@ -137,11 +137,25 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1011", VCTR, R, 32x"11223344", LONG),         -- 29
 
         -- ST Shifter
-        ("1101", STSHIFT, W, 32x"00000001", BYTE),
+        ("1101", STSHIFT, W, 32x"00000001", BYTE),      -- 30
 
         -- VDL_VCT
-        ("1101", VDL_VCT, W, 32x"00000182", WORD),
-        ("1101", VDL_VCT, R, 32x"00000182", WORD)
+        ("1101", VDL_VCT, W, 32x"00000182", WORD),      -- 31
+        ("1101", VDL_VCT, R, 32x"00000182", WORD),      -- 32
+
+        -- try some scrspain settings (640x480)
+        ("1101", VDL_HHT, W, 32x"00C6008D", LONG),      -- 33
+        ("1101", VDL_HBE, W, 32x"001502AB", LONG),      -- 34
+        ("1101", VDL_HDE, W, 32x"00840097", LONG),      -- 35
+        ("1101", VDL_VFT, W, 32x"041903FF", LONG),      -- 36
+        ("1101", VDL_VBE, W, 32x"003F003F", LONG),      -- 37
+        ("1101", VDL_VDE, W, 32x"03FF0415", LONG),      -- 38
+        ("1101", STSYNC,  W, 32x"00000200", WORD),      -- 39
+        ("1101", VDL_VCT, W, 32x"00000186", WORD),      -- 40
+        ("1101", SPSHIFT, W, 32x"00000000", WORD),      -- 41
+        ("1101", SPSHIFT, W, 32x"00000010", WORD),      -- 42
+        ("1101", VDL_VMD, W, 32x"00000008", WORD),      -- 43
+        ("1101", VWRAP,   W, 32x"00000140", WORD)       -- 44
     );
 
     signal step         : positive := 1;
@@ -293,6 +307,21 @@ begin
                 prepare_test(31);       -- write VDL_VCT
                 prepare_test(30);       -- write ST SHIFT MODE
                 prepare_test(31);
+                check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
+            elsif run("set scrspain init") then
+                prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(33);
+                prepare_test(34);
+                prepare_test(35);
+                prepare_test(36);
+                prepare_test(37);
+                prepare_test(38);
+                prepare_test(39);
+                prepare_test(40);
+                prepare_test(41);
+                prepare_test(42);
+                prepare_test(43);
+                prepare_test(44);
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             end if;
         end loop;

@@ -4,44 +4,44 @@ use ieee.std_logic_1164.all;
 package video_regs is
     subtype addr_t is std_ulogic_vector(31 downto 0);
 
-    constant MONTYPE    : addr_t := x"ffff8006";   -- monitor type
+    constant MONTYPE    : addr_t := x"FFFF8006";   -- monitor type
+    constant STSYNC     : addr_t := x"FFFF820A";   -- ST Sync mode
+    constant LIN_OFS    : addr_t := x"FFFF820E";   -- offset to next line
+    constant VWRAP      : addr_t := x"FFFF8210";   -- linewidth in words
 
-    constant LIN_OFS    : addr_t := x"ffff820e";   -- offset to next line
-    constant VWRAP      : addr_t := x"ffff8210";   -- linewidth in words
+    constant STE_PAL    : addr_t := x"FFFF8240";   -- STE compatible palette registers 0-15
+                                                   -- ends at  x"FFFF825e"
+    constant STSHIFT    : addr_t := x"FFFF8260";   -- ST compatible shifter control register
 
-    constant STE_PAL    : addr_t := x"ffff8240";   -- STE compatible palette registers 0-15
-                                                   -- ends at  x"ffff825e"
-    constant STSHIFT    : addr_t := x"ffff8260";   -- ST compatible shifter control register
+    constant HSCROLL    : addr_t := x"FFFF8265";   -- STE compatible horizontal scroll register
 
-    constant HSCROLL    : addr_t := x"ffff8265";   -- STE compatible horizontal scroll register
+    constant SPSHIFT    : addr_t := x"FFFF8266";   -- Falcon shift register
 
-    constant SPSHIFT    : addr_t := x"ffff8266";   -- Falcon shift register
+    -- constant VDL_HHC    : addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- not impelemented in VHDL
+    constant VDL_HHT    : addr_t := x"FFFF8282";   -- horizontal half line total
+    constant VDL_HBB    : addr_t := x"FFFF8284";   -- horizontal blank begin
+    constant VDL_HBE    : addr_t := x"FFFF8286";   -- horizontal blank end
+    constant VDL_HDB    : addr_t := x"FFFF8288";   -- horizontal display begin
+    constant VDL_HDE    : addr_t := x"FFFF828A";   -- horizontal display end
+    constant VDL_HSS    : addr_t := x"FFFF828C";   -- horizontal sync start
 
-    -- constant VDL_HHC    : addr_t := x"ffff8280";   -- horizontal hold counterA (read only) -- not impelemented in VHDL
-    constant VDL_HHT    : addr_t := x"ffff8282";   -- horizontal half line total
-    constant VDL_HBB    : addr_t := x"ffff8284";   -- horizontal blank begin
-    constant VDL_HBE    : addr_t := x"ffff8286";   -- horizontal blank end
-    constant VDL_HDB    : addr_t := x"ffff8288";   -- horizontal display begin
-    constant VDL_HDE    : addr_t := x"ffff828a";   -- horizontal display end
-    constant VDL_HSS    : addr_t := x"ffff828c";   -- horizontal sync start
+    -- constant VDL_HFS    : addr_t := x"FFFF828e";   -- horizontal field sync                  -- not implemented in HDL
+    -- constant VDL_HEE    : addr_t := x"FFFF8290";   -- horizontal equalization end
+    -- constant VDL_VBT    : addr_t := x"FFFF8292";   -- video burst time
+    -- constant NUMREQ     : addr_t := x"FFFF8294";   -- video data transfers
+    -- constant VDL_HWC    : addr_t := x"FFFF8296";   -- horizontal word count
 
-    -- constant VDL_HFS    : addr_t := x"ffff828e";   -- horizontal field sync                  -- not implemented in HDL
-    -- constant VDL_HEE    : addr_t := x"ffff8290";   -- horizontal equalization end
-    -- constant VDL_VBT    : addr_t := x"ffff8292";   -- video burst time
-    -- constant NUMREQ     : addr_t := x"ffff8294";   -- video data transfers
-    -- constant VDL_HWC    : addr_t := x"ffff8296";   -- horizontal word count
+    -- constant VDL_VFC    : addr_t := x"FFFF82a0";   -- vertical frequency counter (read only) -- not implemented in HDL
 
-    -- constant VDL_VFC    : addr_t := x"ffff82a0";   -- vertical frequency counter (read only) -- not implemented in HDL
+    constant VDL_VFT    : addr_t := x"FFFF82A2";   -- vertical field total
+    constant VDL_VBB    : addr_t := x"FFFF82A4";   -- vertical blank begin
+    constant VDL_VBE    : addr_t := x"FFFF82A6";   -- vertical blank end
+    constant VDL_VDB    : addr_t := x"FFFF82A8";   -- vertical display begin 0 and 1
+    constant VDL_VDE    : addr_t := x"FFFF82AA";   -- vertical display end 0 and 1
+    constant VDL_VSS    : addr_t := x"FFFF82AC";   -- vertical sync start
 
-    constant VDL_VFT    : addr_t := x"ffff82a2";   -- vertical field total
-    constant VDL_VBB    : addr_t := x"ffff82a4";   -- vertical blank begin
-    constant VDL_VBE    : addr_t := x"ffff82a6";   -- vertical blank end
-    constant VDL_VDB    : addr_t := x"ffff82a8";   -- vertical display begin 0 and 1
-    constant VDL_VDE    : addr_t := x"ffff82aa";   -- vertical display end 0 and 1
-    constant VDL_VSS    : addr_t := x"ffff82ac";   -- vertical sync start
-
-    constant VDL_VCT    : addr_t := x"ffff82c0";   -- Video Master Control
-    constant VDL_VMD    : addr_t := x"ffff82c2";   -- Falcon Video Control
+    constant VDL_VCT    : addr_t := x"FFFF82C0";   -- Video Master Control
+    constant VDL_VMD    : addr_t := x"FFFF82C2";   -- Falcon Video Control
 
     subtype fbcs_t is std_ulogic_vector(5 downto 0);
 
