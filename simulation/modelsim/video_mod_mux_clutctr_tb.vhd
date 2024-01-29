@@ -144,18 +144,24 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_VCT, R, 32x"00000182", WORD),      -- 32
 
         -- try some scrspain settings (640x480)
-        ("1101", VDL_HHT, W, 32x"00C6008D", LONG),      -- 33
-        ("1101", VDL_HBE, W, 32x"001502AB", LONG),      -- 34
-        ("1101", VDL_HDE, W, 32x"00840097", LONG),      -- 35
-        ("1101", VDL_VFT, W, 32x"041903FF", LONG),      -- 36
-        ("1101", VDL_VBE, W, 32x"003F003F", LONG),      -- 37
-        ("1101", VDL_VDE, W, 32x"03FF0415", LONG),      -- 38
-        ("1101", STSYNC,  W, 32x"00000200", WORD),      -- 39
-        ("1101", VDL_VCT, W, 32x"00000186", WORD),      -- 40
-        ("1101", SPSHIFT, W, 32x"00000000", WORD),      -- 41
-        ("1101", SPSHIFT, W, 32x"00000010", WORD),      -- 42
-        ("1101", VDL_VMD, W, 32x"00000008", WORD),      -- 43
-        ("1101", VWRAP,   W, 32x"00000140", WORD)       -- 44
+        ("1101", VDL_HHT, W, 32x"00C6", WORD),          -- 33
+        ("1101", VDL_HBB, W, 32x"008D", WORD),          -- 34
+        ("1101", VDL_HBE, W, 32x"0015", WORD),          -- 35
+        ("1101", VDL_HDB, W, 32x"02AB", WORD),          -- 36
+        ("1101", VDL_HDE, W, 32x"0084", WORD),          -- 37
+        ("1101", VDL_HSS, W, 32x"0097", WORD),          -- 38
+        ("1101", VDL_VFT, W, 32x"0419", WORD),          -- 39
+        ("1101", VDL_VDB, W, 32x"03FF", WORD),          -- 40
+        ("1101", VDL_VBE, W, 32x"003F", WORD),          -- 41
+        ("1101", VDL_VDB, W, 32x"003F", WORD),          -- 42
+        ("1101", VDL_VDE, W, 32x"03FF", WORD),          -- 43
+        ("1101", VDL_VSS, W, 32x"0415", WORD),          -- 44
+        ("1101", STSYNC,  W, 32x"0200", WORD),          -- 45
+        ("1101", VDL_VCT, W, 32x"0186", WORD),          -- 46
+        ("1101", SPSHIFT, W, 32x"0000", WORD),          -- 47
+        ("1101", SPSHIFT, W, 32x"0010", WORD),          -- 48
+        ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 49
+        ("1101", VWRAP,   W, 32x"0140", WORD)           -- 50
     );
 
     signal step         : positive := 1;
@@ -322,7 +328,13 @@ begin
                 prepare_test(42);
                 prepare_test(43);
                 prepare_test(44);
-                for i in 1 to 1000 loop
+                prepare_test(45);
+                prepare_test(46);
+                prepare_test(47);
+                prepare_test(48);
+                prepare_test(49);
+                prepare_test(50);
+                for i in 1 to 400000 loop
                     prepare_test(1);
                 end loop;
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
