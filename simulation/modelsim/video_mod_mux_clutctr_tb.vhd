@@ -322,6 +322,9 @@ begin
                 prepare_test(42);
                 prepare_test(43);
                 prepare_test(44);
+                for i in 1 to 1000 loop
+                    prepare_test(1);
+                end loop;
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             end if;
         end loop;
