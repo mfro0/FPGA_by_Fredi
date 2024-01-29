@@ -122,9 +122,9 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdo_off                  : std_logic;
     signal vhcnt                    : std_logic_vector(12 downto 0);
     signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
-    signal vvcnt                    : std_logic_vector(12 downto 0);
+    signal vvcnt                    : std_logic_vector(12 downto 0) := (others => '0');
     
-    type verz_type is array(2 downto 0) of std_logic_vector(9 downto 0);
+    type verz_type is array(9 downto 0) of std_logic_vector(2 downto 0);
     signal verz                     : verz_type;
     signal rand                     : std_logic_vector(6 downto 0);
     signal rand_on                  : std_logic;
@@ -199,6 +199,7 @@ architecture rtl of video_mod_mux_clutctr is
     
     type width_type is (BYTE, WORD, LONG, LINE);
     signal w                        : width_type;
+    signal l                        : natural range 0 to 9;
 begin
     p_fb_b : process(all)
     begin
@@ -687,7 +688,14 @@ begin
                 dpo_off <= '0';
             end if;
             
-            disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
+            if not dpo_off then
+                disp_on <= '1';
+            elsif dpo_zl = '1' and dpo_on = '1' then
+                disp_on <= '1';
+            else
+                disp_on <= '0';
+            end if;
+            --disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
             
             -- data transfer on/off
             if vhcnt = std_logic_vector(unsigned(hdis_start) - 2) then 
@@ -732,26 +740,30 @@ begin
             end if;
             
             
-            for j in 0 to 2 loop
-                for i in 0 to 8 loop
-                    verz(j)(i + 1) <= verz(j)(i);
-                end loop;
-            end loop;
+            verz(l + 1) <= verz(l);
+            if l = 8 then
+                l <= 0;
+            else
+                l <= l + 1;
+            end if;
+
             verz(0)(0) <= disp_on;
-            
+        
+            -- set hsync according to the requested polarity (vdl_vct(6) = '1': positive)
             if (vdl_vct(6) = '0' and hsync_i /= 8d"0") or (vdl_vct(6) = '1' and hsync_i = 8d"0") then
-                verz(1)(0) <= '1';
+                verz(0)(1) <= '1';
             else
-                verz(1)(0) <= '0';
+                verz(0)(1) <= '0';
             end if;
+            -- set vsync according to the requested polarity (vdl_vct(5) = '1': positive)
             if (vdl_vct(5) = '0' and vsync_i /= 3d"0") or (vdl_vct(5) = '1' and vsync_i = 3d"0") then
-                verz(2)(0) <= '1';
+                verz(0)(2) <= '1';
             else
-                verz(2)(0) <= '0';
+                verz(0)(2) <= '0';
             end if;
-            nBLANK <= verz(0)(8);
-            hsync <= verz(1)(9);
-            vsync <= verz(2)(9);
+            nBLANK <= verz(8)(0);
+            hsync <= verz(9)(1);
+            vsync <= verz(9)(2);
             
             -- make border color
             rand(0) <= disp_on and not(vdtron) and acp_vctr(25);
@@ -832,7 +844,7 @@ begin
                 std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video_on else
                 (others => '0');
     h_total <= vdl_hht when acp_video_on else
-               std_logic_vector(resize((unsigned(vdl_hht) + 2) * unsigned(mulf), vdl_hht'length)) when not acp_video_on else
+               std_logic_vector(resize((unsigned(vdl_hht) + 2) * 2 * unsigned(mulf), vdl_hht'length)) when not acp_video_on else
                (others => '0');
                
     -- timing vertical
