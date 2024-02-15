@@ -1,0 +1,5 @@
+#!/bin/bash -v
+
+set -x
+python run.py --gtkwave-args "--save video_mod_mux_clutctr.gtkw" "$@"
+ 

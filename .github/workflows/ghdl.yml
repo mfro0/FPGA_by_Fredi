@@ -1,8 +1,26 @@
-- name: Setup GHDL
-  uses: ghdl/setup-ghdl-ci@nightly
-  with:
-    backend: llvm
-- run: |
-  ghdl --version
-  $GHDL --version
+name: Setup GHDL
+on:
+  push:
+
+    
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    name: CI test
+
+    steps:
+      - uses: ghdl/setup-ghdl-ci@nightly
+        with:
+          backend: llvm
+
+      - uses: actions/checkout@v3
+
+      - name: Test
+        run: |
+          ghdl --version
+          pip install vunit_hdl
+          ./run
+          # $GHDL --version
+
             

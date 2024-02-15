@@ -465,13 +465,12 @@ begin
                 when "000" => color4 <= '1'; color1 <= '0'; color2 <= '0';
                 when others => null;
             end case;
+        else
+            color1 <= '0';
+            color2 <= '0';
+            color4 <= '0';
         end if;
-        -- set color mode in ACP
-        color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color16 <=                                        acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color24 <=                                                            acp_vctr(2) and acp_video_on;
-        
+
         if falcon_video and not(acp_video_on) then
             case falcon_shift_mode is
                 when 11x"400" => color1 <= '1'; color4 <= '0'; color8 <= '0'; color16 <= '0';
@@ -481,6 +480,13 @@ begin
                 when others => null;
             end case;
         end if;
+
+        -- set color mode in ACP
+        color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color16 <=                                        acp_vctr(3) and not acp_vctr(2) and acp_video_on;
+        color24 <=                                                            acp_vctr(2) and acp_video_on;
+        
     end process p_shiftmode;
     
     p : process(all)
@@ -688,7 +694,7 @@ begin
                 dpo_off <= '0';
             end if;
             
-            if not dpo_off then
+            if not dpo_off and disp_on then
                 disp_on <= '1';
             elsif dpo_zl = '1' and dpo_on = '1' then
                 disp_on <= '1';
@@ -803,13 +809,20 @@ begin
                 end if;
             end if;
             
-            fifo_rde <= ((tr(sub_pixel_cnt(6 downto 0) = 7d"1") and color1) or
-                         (tr(sub_pixel_cnt(5 downto 0) = 6d"1") and color2) or
-                         (tr(sub_pixel_cnt(4 downto 0) = 5d"1") and color4) or
-                         (tr(sub_pixel_cnt(3 downto 0) = 4d"1") and color16) or
-                         ((tr(sub_pixel_cnt(2 downto 0) = 3d"1") and color24) and vdtron) or
-                         (sync_pix or sync_pix1 or sync_pix2));
-                         
+            if vdtron then
+                if (sub_pixel_cnt(6 downto 0) = 7d"1" and color1 = '1') or
+                    (sub_pixel_cnt(5 downto 0) = 6d"1" and color2 = '1') or
+                    (sub_pixel_cnt(4 downto 0) = 5d"1" and color4 = '1') or
+                    (sub_pixel_cnt(3 downto 0) = 3d"1" and color16 = '1') or
+                    (sub_pixel_cnt(2 downto 0) = 2d"1" and color24 = '1') then
+                    fifo_rde <= '1';
+                end if;
+            elsif sync_pix or sync_pix1 or sync_pix2 then
+                fifo_rde <= '1';
+            else
+                fifo_rde <= '0';
+            end if;
+
             clut_mux_av(0) <= sub_pixel_cnt(3 downto 0);
             clut_mux_av(1) <= clut_mux_av(0);
             clut_mux_adr <= clut_mux_av(1);
