@@ -1,0 +1,8 @@
+- name: Setup GHDL
+  uses: ghdl/setup-ghdl-ci@nightly
+  with:
+    backend: llvm
+- run: |
+  ghdl --version
+  $GHDL --version
+            
