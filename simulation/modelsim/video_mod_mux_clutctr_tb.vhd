@@ -239,56 +239,55 @@ begin
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
                 prepare_test(15);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hht : videl_reg_t >>, "write/read VDL_HHT");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HHT");
             elsif run("write/read VDL_HBB") then
                 prepare_test(3);
                 prepare_test(16);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hbb : videl_reg_t >>, "write/read VDL_HBB");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HBB");
             elsif run("write/read VDL_HBE") then
                 prepare_test(4);
                 prepare_test(17);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hbe : videl_reg_t >>, "write/read VDL_HBE");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HBE");
             elsif run("write/read VDL_HDB") then
                 prepare_test(5);
                 prepare_test(18);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hdb : videl_reg_t >>, "write/read VDL_HDB");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HDB");
             elsif run("write/read VDL_HDE") then
                 prepare_test(6);
                 prepare_test(19);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hde : videl_reg_t >>, "write/read VDL_HDE");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HDE");
             elsif run("write/read VDL_HSS") then
                 prepare_test(7);
                 prepare_test(20);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_hss : videl_reg_t >>, "write/read VDL_HSS");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_HSS");
             elsif run("write/read VDL_VFT") then
                 prepare_test(8);
                 prepare_test(21);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vft : videl_reg_t >>, "write/read VDL_VFT");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VFT");
             elsif run("write/read VDL_VBB") then
                 prepare_test(9);
                 prepare_test(22);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vbb : videl_reg_t >>, "write/read VDL_VBB");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VBB");
             elsif run("write/read VDL_VBE") then
                 prepare_test(10);
                 prepare_test(23);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vbe : videl_reg_t >>, "write/read VDL_VBE");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VBE");
             elsif run("write/read VDL_VDB") then
                 prepare_test(11);
                 prepare_test(24);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vdb : videl_reg_t >>, "write/read VDL_VDB");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VDB");
             elsif run("write/read VDL_VDE") then
                 prepare_test(12);
                 prepare_test(25);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vde : videl_reg_t >>, "write/read VDL_VDE");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VDE");
             elsif run("write/read VDL_VSS") then
                 prepare_test(13);
                 prepare_test(26);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vss : videl_reg_t >>, "write/read VDL_VSS");
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VSS");
             elsif run("write/read VDL_VMD") then
                 prepare_test(14);
                 prepare_test(27);
-                check_equal(d(3 downto 0), <<signal uut.vdl_vmd : std_logic_vector(3 downto 0) >>,
-                            "write/read VDL_VMD");
+                check_equal(d(3 downto 0), sv(step).data(3 downto 0), "write/read VDL_VMD");
             elsif run("write ACP_VCTR") then
                 prepare_test(28);
                 -- this would fail if we would not mask out the ST/Falcon mode bits as 
@@ -300,7 +299,7 @@ begin
                 prepare_test(28);
                 prepare_test(29);
                 check_equal(sv(step).data and x"FFFFFF3F",
-                            <<signal uut.acp_vctr : addr_t>> and x"FFFFFF3F", "write/read ACP_VCTR");
+                            d and x"FFFFFF3F", "write/read ACP_VCTR");
             elsif run("write ST Shifter register") then
                 prepare_test(28);       -- write ACP_VCTR first
                 prepare_test(14);       -- write VDL_VMD
