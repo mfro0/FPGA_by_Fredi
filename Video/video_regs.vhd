@@ -17,7 +17,7 @@ package video_regs is
 
     constant SPSHIFT    : addr_t := x"FFFF8266";   -- Falcon shift register
 
-    -- constant VDL_HHC    : addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- not impelemented in VHDL
+    -- constant VDL_HHC    : addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- FIXME: not implemented in VHDL
     constant VDL_HHT    : addr_t := x"FFFF8282";   -- horizontal half line total
     constant VDL_HBB    : addr_t := x"FFFF8284";   -- horizontal blank begin
     constant VDL_HBE    : addr_t := x"FFFF8286";   -- horizontal blank end

@@ -162,7 +162,8 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", SPSHIFT, W, 32x"0000", WORD),          -- 47
         ("1101", SPSHIFT, W, 32x"0010", WORD),          -- 48
         ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 49
-        ("1101", VWRAP,   W, 32x"0140", WORD)           -- 50
+        ("1101", VWRAP,   W, 32x"0140", WORD),          -- 50
+        ("1011", VCTR, W, 32x"13223344", LONG)          -- 51 enable display
     );
 
     signal step         : positive := 1;
@@ -233,8 +234,6 @@ begin
                 prepare_test(31);
                 prepare_test(32);
                 check_equal(d(videl_reg_t'range), <<signal uut.vdl_vct : videl_reg_t >>, "write/read VDL_VCT");
-
-
             -- now write the register, read the register and check for equality
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
@@ -316,25 +315,27 @@ begin
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             elsif run("set scrspain init") then
                 prepare_test(28);       -- write ACP_VCTR first
-                prepare_test(33);
-                prepare_test(34);
-                prepare_test(35);
-                prepare_test(36);
-                prepare_test(37);
-                prepare_test(38);
-                prepare_test(39);
-                prepare_test(40);
-                prepare_test(41);
-                prepare_test(42);
-                prepare_test(43);
-                prepare_test(44);
-                prepare_test(45);
-                prepare_test(46);
-                prepare_test(47);
-                prepare_test(48);
-                prepare_test(49);
-                prepare_test(50);
-                
+                prepare_test(33);       -- VDL_HHT
+                prepare_test(34);       -- VDL_HBB
+                prepare_test(35);       -- VDL_HBE
+                prepare_test(36);       -- VDL_HDB
+                prepare_test(37);       -- VDL_HDE
+                prepare_test(38);       -- VDL_HSS
+                prepare_test(39);       -- VDL_VFT
+                prepare_test(40);       -- VDL_VDB
+                prepare_test(41);       -- VDL_VBE
+                prepare_test(42);       -- VDL_VDB
+                prepare_test(43);       -- VDL_VDE
+                prepare_test(44);       -- VDL_VSS
+                prepare_test(45);       -- STSYNC,
+                prepare_test(46);       -- VDL_VCT
+                prepare_test(47);       -- SPSHIFT
+                prepare_test(48);       -- SPSHIFT
+                prepare_test(49);       -- VDL_VMD
+                prepare_test(50);       -- VWRAP 
+                prepare_test(51);       -- ACP_VCTR disp enable
+                --
+                -- then burn a few cycles (at least one screen line)
                 for i in 1 to 700 loop
                     prepare_test(1);
                 end loop;
@@ -343,16 +344,18 @@ begin
 
                 wait until <<signal uut.last : std_logic>> = '1';
                 <<signal uut.vvcnt : videl_reg_t>> <= 
+                    -- uut.v_total is the programmed line length
                     force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 100);
+                -- burn cycles to get this forced value into pipeline
                 for i in 1 to 20 loop
                     prepare_test(1);
                 end loop;
-                <<signal uut.vvcnt : videl_reg_t>> <= release;
+                -- <<signal uut.vvcnt : videl_reg_t>> <= release;
                 for i in 1 to 700 loop
                     prepare_test(1);
                 end loop;
 
-                check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
+                check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
             end if;
         end loop;
 
