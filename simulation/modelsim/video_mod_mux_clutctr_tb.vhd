@@ -169,7 +169,17 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal step         : positive := 1;
     signal d            : addr_t;
 
-begin    
+begin
+    measure_pixelclk : process
+        variable t : time := now;
+        variable previous_t : time := now;
+    begin
+        previous_t := t;
+        wait until rising_edge(pixel_clk);
+        t := now;
+        report "freq = " & to_string(1.0E3 / real((t - previous_t) / 1 ns), "%4.2f") & " MHz";
+    end process measure_pixelclk;
+
     test_runner : process
         -- initialize index into stimulation vector and
         -- wait for the ColdFire state machine to complete a full circle state transition
@@ -230,11 +240,13 @@ begin
             elsif run("write VDL_VCT") then
                 prepare_test(31);
                 check_equal(sv(step).data(videl_reg_t'range), <<signal uut.vdl_vct : videl_reg_t >>, "write VDL_VCT");
+
+            -- now write the register, read the register and check for equality
             elsif run("write/read VDL_VCT") then
                 prepare_test(31);
                 prepare_test(32);
-                check_equal(d(videl_reg_t'range), <<signal uut.vdl_vct : videl_reg_t >>, "write/read VDL_VCT");
             -- now write the register, read the register and check for equality
+                check_equal(d(videl_reg_t'range), sv(step).data(videl_reg_t'range), "write/read VDL_VCT");
             elsif run("write/read VDL_HHT") then
                 prepare_test(2);
                 prepare_test(15);
@@ -365,7 +377,7 @@ begin
     p_main_clk : process
     begin
         main_clk <= not main_clk;
-        wait for 30.03 ns;
+        wait for (30.03 / 2.0) * 1 ns;
     end process p_main_clk;
     
     clk33m <= main_clk;
@@ -373,7 +385,7 @@ begin
     p_clk25m : process
     begin
         clk25m <= not clk25m;
-        wait for 40 ns;
+        wait for (40.0 / 2.0) * 1 ns;
     end process p_clk25m;
     
     cpu_nextstate : process(all)
