@@ -166,8 +166,9 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1011", VCTR, W, 32x"13223344", LONG)          -- 51 enable display
     );
 
-    signal step         : positive := 1;
-    signal d            : addr_t;
+    signal step                 : positive := 1;
+    signal d                    : addr_t;
+    signal pixel_clk_frq        : real;
 
 begin
     measure_pixelclk : process
@@ -177,7 +178,8 @@ begin
         previous_t := t;
         wait until rising_edge(pixel_clk);
         t := now;
-        report "freq = " & to_string(1.0E3 / real((t - previous_t) / 1 ns), "%4.2f") & " MHz";
+        pixel_clk_frq <= 1.0E3 / real((t - previous_t) / 1 ns);
+        -- report "freq = " & to_string(1.0E3 / real((t - previous_t) / 1 ns), "%4.2f") & " MHz";
     end process measure_pixelclk;
 
     test_runner : process
@@ -359,7 +361,7 @@ begin
                     -- uut.v_total is the programmed line length
                     force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 100);
                 -- burn cycles to get this forced value into pipeline
-                for i in 1 to 20 loop
+                for i in 1 to 100 loop
                     prepare_test(1);
                 end loop;
                 -- <<signal uut.vvcnt : videl_reg_t>> <= release;
@@ -368,6 +370,7 @@ begin
                 end loop;
 
                 check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
+                check_equal(pixel_clk_frq, 25.00, "check if pixel clk runs at 25 MHz", max_diff => 0.1);
             end if;
         end loop;
 
