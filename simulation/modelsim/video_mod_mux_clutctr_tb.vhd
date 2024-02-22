@@ -30,7 +30,7 @@ architecture sim of video_mod_mux_clutctr_tb is
     signal clk33m           : std_logic;
     signal clk25m           : std_logic := '0';
 		
-    signal blitter_run      : std_logic;
+    signal blitter_run      : std_logic := '0';
     signal clk_video        : std_logic;
     signal vr_d             : std_logic_vector(8 downto 0);
     signal vr_busy          : std_logic;
@@ -56,7 +56,7 @@ architecture sim of video_mod_mux_clutctr_tb is
            color4           : std_logic;
     signal pixel_clk        : std_logic;
     signal clut_off         : std_logic_vector(3 downto 0);
-    signal blitter_on       : std_logic;
+    signal blitter_on       : std_logic := '0';
 
     signal video_ram_ctr    : std_logic_vector(15 downto 0);
     signal video_mod_ta     : std_logic;
@@ -163,7 +163,8 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", SPSHIFT, W, 32x"0010", WORD),          -- 48
         ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 49
         ("1101", VWRAP,   W, 32x"0140", WORD),          -- 50
-        ("1011", VCTR, W, 32x"13223344", LONG)          -- 51 enable display
+        ("1011", VCTR, W, 32x"13223344", LONG),         -- 51 enable display
+        ("1101", MONTYPE, W, 32x"FFFFFFF0", WORD)       -- 52 set monitor type (named sys_ctr in video_mod_mux_clutctr)
     );
 
     signal step                 : positive := 1;
@@ -327,7 +328,7 @@ begin
                 prepare_test(30);       -- write ST SHIFT MODE
                 prepare_test(31);
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
-            elsif run("set scrspain init") then
+            elsif run("set screens pain init") then
                 prepare_test(28);       -- write ACP_VCTR first
                 prepare_test(33);       -- VDL_HHT
                 prepare_test(34);       -- VDL_HBB
@@ -348,6 +349,7 @@ begin
                 prepare_test(49);       -- VDL_VMD
                 prepare_test(50);       -- VWRAP 
                 prepare_test(51);       -- ACP_VCTR disp enable
+                prepare_test(52);       -- set monitor type in sys_ctr/MONTYPE
                 --
                 -- then burn a few cycles (at least one screen line)
                 for i in 1 to 700 loop
@@ -359,13 +361,13 @@ begin
                 wait until <<signal uut.last : std_logic>> = '1';
                 <<signal uut.vvcnt : videl_reg_t>> <= 
                     -- uut.v_total is the programmed line length
-                    force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 100);
+                    force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 2);
                 -- burn cycles to get this forced value into pipeline
                 for i in 1 to 100 loop
                     prepare_test(1);
                 end loop;
-                -- <<signal uut.vvcnt : videl_reg_t>> <= release;
-                for i in 1 to 700 loop
+                <<signal uut.vvcnt : videl_reg_t>> <= release;
+                for i in 1 to 1700 loop
                     prepare_test(1);
                 end loop;
 

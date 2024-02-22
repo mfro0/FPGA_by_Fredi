@@ -1,7 +1,7 @@
 from vunit import VUnit
 import os
 
-os.environ['PATH'] = '/opt/altera/13.1/modelsim_ase/bin:' + os.environ['PATH']
+#os.environ['PATH'] = '/opt/altera/13.1/modelsim_ase/bin:' + os.environ['PATH']
 #os.environ['VUNIT_SIMULATOR'] = 'modelsim'
 os.environ['VUNIT_SIMULATOR'] = 'ghdl'
 
