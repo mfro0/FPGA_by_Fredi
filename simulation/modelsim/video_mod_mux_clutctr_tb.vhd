@@ -126,8 +126,8 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_HSS, R, 32x"789", WORD),           -- 20
         -- vertical
         ("1101", VDL_VFT, R, 32x"89A", WORD),           -- 21
-        ("1101", VDL_VBB, R, 32x"9AB", WORD),           -- 22
-        ("1101", VDL_VBE, R, 32x"ABC", WORD),           -- 23
+        ("1101", VDL_VBB, R, 32x"20C", WORD),           -- 22
+        ("1101", VDL_VBE, R, 32x"030", WORD),           -- 23
         ("1101", VDL_VDB, R, 32x"BCD", WORD),           -- 24
         ("1101", VDL_VDE, R, 32x"CDE", WORD),           -- 25
         ("1101", VDL_VSS, R, 32x"DEF", WORD),           -- 26
