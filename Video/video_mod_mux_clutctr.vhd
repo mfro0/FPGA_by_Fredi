@@ -694,14 +694,7 @@ begin
                 dpo_off <= '0';
             end if;
             
-            if not dpo_off and disp_on then
-                disp_on <= '1';
-            elsif dpo_zl = '1' and dpo_on = '1' then
-                disp_on <= '1';
-            else
-                disp_on <= '0';
-            end if;
-            --disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
+            disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
             
             -- data transfer on/off
             if vhcnt = std_logic_vector(unsigned(hdis_start) - 2) then 
