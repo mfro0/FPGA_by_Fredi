@@ -109,8 +109,8 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_HSS, W, 32x"789", WORD),           -- 7
         -- vertical
         ("1101", VDL_VFT, W, 32x"89A", WORD),           -- 8
-        ("1101", VDL_VBB, W, 32x"9AB", WORD),           -- 9
-        ("1101", VDL_VBE, W, 32x"ABC", WORD),           -- 10
+        ("1101", VDL_VBB, W, 32x"20C", WORD),           -- 9
+        ("1101", VDL_VBE, W, 32x"030", WORD),           -- 10
         ("1101", VDL_VDB, W, 32x"BCD", WORD),           -- 11
         ("1101", VDL_VDE, W, 32x"CDE", WORD),           -- 12
         ("1101", VDL_VSS, W, 32x"DEF", WORD),           -- 13
@@ -330,6 +330,8 @@ begin
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             elsif run("set screens pain init") then
                 prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(9);        -- VDL_VBB
+                prepare_test(10);       -- VDL_VBE
                 prepare_test(33);       -- VDL_HHT
                 prepare_test(34);       -- VDL_HBB
                 prepare_test(35);       -- VDL_HBE

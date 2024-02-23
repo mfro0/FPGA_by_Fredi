@@ -112,10 +112,10 @@ architecture rtl of video_mod_mux_clutctr is
     signal hsync_start              : std_logic;
     signal last                     : std_logic;
     signal vsync_i                  : std_logic_vector(2 downto 0);
-    signal disp_on                  : std_logic;
-    signal dpo_zl                   : std_logic;
-    signal dpo_on                   : std_logic;
-    signal dpo_off                  : std_logic;
+    signal disp_on                  : std_logic := '0';
+    signal dpo_zl                   : std_logic := '0';
+    signal dpo_on                   : std_logic := '0';
+    signal dpo_off                  : std_logic := '0';
     signal vdtron                   : std_logic;
     signal vdo_zl                   : std_logic;
     signal vdo_on                   : std_logic;
@@ -282,32 +282,42 @@ begin
     
     pixel_clk <= pixel_clk_i;
     
-    ccr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"101" else '0';
+    -- border colour
+    ccr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"101" else '0';               -- x"F0000404 / 4"
     
-    sys_ctr_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c003" else '0';
+    -- MONTYPE
+    sys_ctr_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c003" else '0';         -- x"F8006 / 2"
     
     blitter_on <= sys_ctr(3);
     
-    vdl_lof_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c107" else '0';
-    
-    vdl_lwd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c108" else '0';
-    
+    -- LIN_OFS
+    vdl_lof_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c107" else '0';         -- x"F820E / 2"
+    -- VWRAP
+    vdl_lwd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c108" else '0';         -- x"F8210 / 2"
+    -- FireBee specific R/O register: Bits per Plane
     vdl_bpp_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c109" else '0';
-    
+    -- FireBee specific R/O register: width in pixels. Doesn't seem to be used anywhere
     vdl_ph_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c10a" else '0';
-    
+    -- FireBee specific R/O register: height in pixels. Doesn't seem to be used anywhere
     vdl_pv_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c10b" else '0';
     
+    -- here we are back to original Falcon registers
+    -- HHT - horizontal hold timer
     vdl_hht_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c141" else '0';
     
-    vdl_hbe_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c143" else '0';
-    
-    vdl_hdb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c144" else '0';
-    
-    vdl_hde_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c145" else '0';
-    
+    -- HBB - horizontal border begin
     vdl_hbb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c142" else '0';
     
+    -- HBE - horizontal border end
+    vdl_hbe_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c143" else '0';
+    
+    -- HDB - horizontal display begin
+    vdl_hdb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c144" else '0';
+    
+    -- HDE - horizontal display end
+    vdl_hde_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c145" else '0';
+    
+    -- HSS - horizontal sync S
     vdl_hss_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c146" else '0';
     
     -- vertical

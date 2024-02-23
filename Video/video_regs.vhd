@@ -17,22 +17,17 @@ package video_regs is
 
     constant SPSHIFT    : addr_t := x"FFFF8266";   -- Falcon shift register
 
-    -- constant VDL_HHC    : addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- FIXME: not implemented in VHDL
+    constant VDL_HHC    : addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- FIXME: not implemented in HDL
     constant VDL_HHT    : addr_t := x"FFFF8282";   -- horizontal half line total
     constant VDL_HBB    : addr_t := x"FFFF8284";   -- horizontal blank begin
     constant VDL_HBE    : addr_t := x"FFFF8286";   -- horizontal blank end
     constant VDL_HDB    : addr_t := x"FFFF8288";   -- horizontal display begin
     constant VDL_HDE    : addr_t := x"FFFF828A";   -- horizontal display end
     constant VDL_HSS    : addr_t := x"FFFF828C";   -- horizontal sync start
+    constant VDL_HFS    : addr_t := x"FFFF828E";   -- horizontal field sync (FIXME: not implemented in HDL)
+    constant VDL_HEE    : addr_t := x"FFFF8290";   -- horizontal equalization end (FIXME: not implemented in HDL)
 
-    -- constant VDL_HFS    : addr_t := x"FFFF828e";   -- horizontal field sync                  -- not implemented in HDL
-    -- constant VDL_HEE    : addr_t := x"FFFF8290";   -- horizontal equalization end
-    -- constant VDL_VBT    : addr_t := x"FFFF8292";   -- video burst time
-    -- constant NUMREQ     : addr_t := x"FFFF8294";   -- video data transfers
-    -- constant VDL_HWC    : addr_t := x"FFFF8296";   -- horizontal word count
-
-    -- constant VDL_VFC    : addr_t := x"FFFF82a0";   -- vertical frequency counter (read only) -- not implemented in HDL
-
+    constant VDL_VFC    : addr_t := x"FFFF82A0";   -- vertical frequency counter (read only) -- FIXME: not implemented in HDL
     constant VDL_VFT    : addr_t := x"FFFF82A2";   -- vertical field total
     constant VDL_VBB    : addr_t := x"FFFF82A4";   -- vertical blank begin
     constant VDL_VBE    : addr_t := x"FFFF82A6";   -- vertical blank end
@@ -78,6 +73,7 @@ package video_regs is
     constant CSMR_BAM_64K       : addr_t := x"00000000";
 
     constant VCTR               : addr_t := x"F0000400";
+    constant CCR                : addr_t := x"F0040404";
     --
     -- these must match settings in sysinit.c (FireBee ColdFire firmware)
     --

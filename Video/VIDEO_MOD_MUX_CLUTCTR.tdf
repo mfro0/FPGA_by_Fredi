@@ -294,7 +294,7 @@ BEGIN
 -- DIVERSE (VIDEO)-REGISTER ----------------------------
 -- RANDFARBE
 	CCR[].CLK = MAIN_CLK;
-	CCR_CS = !nFB_CS2 & FB_ADR[27..2]==H"101";								-- $F004'0404/4
+	CCR_CS = !nFB_CS2 & FB_ADR[27..2]==H"101";								-- $F004'0404/4	-- FIXME: looks like a typo that should be $F0000404?
 	CCR[] = FB_AD[23..0];
 	CCR[23..16].ENA = CCR_CS & FB_B1 & !nFB_WR;
 	CCR[15..8].ENA  = CCR_CS & FB_B2 & !nFB_WR;
