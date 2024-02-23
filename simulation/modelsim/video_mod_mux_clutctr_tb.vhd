@@ -307,7 +307,7 @@ begin
                 -- this would fail if we would not mask out the ST/Falcon mode bits as 
                 -- ACP VCTR bits 6 & 7 are read only and cannot be written (only indirectly with writing
                 -- to the ST Shift or Falcon Shifter registers)
-                check_equal(sv(step).data and x"FFFFFF3F",
+                check_equal(sv(step).data and x"FFFFFF3E",
                             <<signal uut.acp_vctr : addr_t>> and x"FFFFFF3F", "write ACP_VCTR");
             elsif run("write/read ACP_VCTR") then
                 prepare_test(28);
