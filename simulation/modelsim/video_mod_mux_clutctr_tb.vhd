@@ -164,7 +164,29 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 49
         ("1101", VWRAP,   W, 32x"0140", WORD),          -- 50
         ("1011", VCTR, W, 32x"13223344", LONG),         -- 51 enable display
-        ("1101", MONTYPE, W, 32x"FFFFFFF0", WORD)       -- 52 set monitor type (named sys_ctr in video_mod_mux_clutctr)
+        ("1101", MONTYPE, W, 32x"FFFFFFF0", WORD),      -- 52 set monitor type (named sys_ctr in video_mod_mux_clutctr)
+
+        -- 640x400 mono (ST)
+        ("1101", VDL_HHT, W, 32x"00C0", WORD),          -- 53
+        ("1101", VDL_HBB, W, 32x"008D", WORD),          -- 54
+        ("1101", VDL_HBE, W, 32x"0015", WORD),          -- 55
+        ("1101", VDL_HDB, W, 32x"0273", WORD),          -- 56
+        ("1101", VDL_HDE, W, 32x"004C", WORD),          -- 57
+        ("1101", VDL_HSS, W, 32x"0097", WORD),          -- 58
+        ("1101", VDL_VFT, W, 32x"0419", WORD),          -- 59
+        ("1101", VDL_VBB, W, 32x"03AF", WORD),          -- 60
+        ("1101", VDL_VBE, W, 32x"008F", WORD),          -- 61
+        ("1101", VDL_VDB, W, 32x"008F", WORD),          -- 62
+        ("1101", VDL_VDE, W, 32x"03AF", WORD),          -- 63
+        ("1101", VDL_VSS, W, 32x"0415", WORD),          -- 64
+        ("1101", STSHIFT, W, 32x"0200", WORD),          -- 65
+        ("1101", VDL_VCT, W, 32x"0186", WORD),          -- 64
+        ("1101", SPSHIFT, W, 32x"0000", WORD),          -- 65
+        ("1101", SPSHIFT, W, 32x"0400", WORD),          -- 66
+        ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 67
+        ("1101", VWRAP,   W, 32x"0028", WORD),          -- 68
+        ("1011", VCTR,    W, 32x"13223344", LONG),      -- 69
+        ("1101", MONTYPE, W, 32x"FFF0", WORD)           -- 70
     );
 
     signal step                 : positive := 1;
@@ -329,6 +351,53 @@ begin
                 prepare_test(31);
                 check_equal(pixel_clk'quiet(32 ns), false, "check pixel clk toggling");
             elsif run("set screens pain init") then
+                prepare_test(28);       -- write ACP_VCTR first
+                prepare_test(9);        -- VDL_VBB
+                prepare_test(10);       -- VDL_VBE
+                prepare_test(33);       -- VDL_HHT
+                prepare_test(34);       -- VDL_HBB
+                prepare_test(35);       -- VDL_HBE
+                prepare_test(36);       -- VDL_HDB
+                prepare_test(37);       -- VDL_HDE
+                prepare_test(38);       -- VDL_HSS
+                prepare_test(39);       -- VDL_VFT
+                prepare_test(40);       -- VDL_VDB
+                prepare_test(41);       -- VDL_VBE
+                prepare_test(42);       -- VDL_VDB
+                prepare_test(43);       -- VDL_VDE
+                prepare_test(44);       -- VDL_VSS
+                prepare_test(45);       -- STSYNC,
+                prepare_test(46);       -- VDL_VCT
+                prepare_test(47);       -- SPSHIFT
+                prepare_test(48);       -- SPSHIFT
+                prepare_test(49);       -- VDL_VMD
+                prepare_test(50);       -- VWRAP 
+                prepare_test(51);       -- ACP_VCTR disp enable
+                prepare_test(52);       -- set monitor type in sys_ctr/MONTYPE
+                --
+                -- then burn a few cycles (at least one screen line)
+                for i in 1 to 700 loop
+                    prepare_test(1);
+                end loop;
+                -- fast forward: inject (near) end of frame values instead of clocking
+                -- through thousands of loop iterations
+
+                wait until <<signal uut.last : std_logic>> = '1';
+                <<signal uut.vvcnt : videl_reg_t>> <= 
+                    -- uut.v_total is the programmed line length
+                    force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 2);
+                -- burn cycles to get this forced value into pipeline
+                for i in 1 to 100 loop
+                    prepare_test(1);
+                end loop;
+                <<signal uut.vvcnt : videl_reg_t>> <= release;
+                for i in 1 to 1700 loop
+                    prepare_test(1);
+                end loop;
+
+                check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
+                check_equal(pixel_clk_frq, 25.00, "check if pixel clk runs at 25 MHz", max_diff => 0.1);
+            elsif run("set screens pain 640x400 mono") then
                 prepare_test(28);       -- write ACP_VCTR first
                 prepare_test(9);        -- VDL_VBB
                 prepare_test(10);       -- VDL_VBE
