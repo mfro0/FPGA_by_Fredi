@@ -111,7 +111,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal hsy_len                  : std_logic_vector(7 downto 0);
     signal hsync_start              : std_logic;
     signal last                     : std_logic;
-    signal vsync_i                  : std_logic_vector(2 downto 0);
+    signal vsync_i                  : std_logic;
     signal disp_on                  : std_logic := '0';
     signal dpo_zl                   : std_logic := '0';
     signal dpo_on                   : std_logic := '0';
@@ -743,9 +743,9 @@ begin
             end if;
             
             if vvcnt(12 downto 1) = vs_start(12 downto 1) then
-                vsync_i <= (others => '1');
+                vsync_i <= '1';
             else
-                vsync_i <= (others => '0');
+                vsync_i <= '0';
             end if;
             
             
@@ -757,7 +757,7 @@ begin
                 l <= l + 1;
             end if;
             */
-            for i in 0 to 7 loop
+            for i in 0 to 8 loop
                 verz(i + 1) <= verz(i);
             end loop;
 
@@ -770,7 +770,7 @@ begin
                 verz(0)(1) <= '0';
             end if;
             -- set vsync according to the requested polarity (vdl_vct(5) = '1': positive)
-            if (vdl_vct(5) = '0' and vsync_i /= 3d"0") or (vdl_vct(5) = '1' and vsync_i = 3d"0") then
+            if (vdl_vct(5) = '0' and vsync_i /= '0') or (vdl_vct(5) = '1' and vsync_i = '0') then
                 verz(0)(2) <= '1';
             else
                 verz(0)(2) <= '0';

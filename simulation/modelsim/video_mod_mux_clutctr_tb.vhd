@@ -423,12 +423,13 @@ begin
                 prepare_test(52);       -- set monitor type in sys_ctr/MONTYPE
                 --
                 -- then burn a few cycles (at least one screen line)
-                for i in 1 to 700 loop
+                for i in 1 to 700000 loop
                     prepare_test(1);
                 end loop;
                 -- fast forward: inject (near) end of frame values instead of clocking
                 -- through thousands of loop iterations
 
+                /*
                 wait until <<signal uut.last : std_logic>> = '1';
                 <<signal uut.vvcnt : videl_reg_t>> <= 
                     -- uut.v_total is the programmed line length
@@ -441,7 +442,7 @@ begin
                 for i in 1 to 1700 loop
                     prepare_test(1);
                 end loop;
-
+                */
                 check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
                 check_equal(pixel_clk_frq, 25.00, "check if pixel clk runs at 25 MHz", max_diff => 0.1);
             end if;
