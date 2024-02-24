@@ -401,24 +401,24 @@ begin
                 prepare_test(28);       -- write ACP_VCTR first
                 prepare_test(9);        -- VDL_VBB
                 prepare_test(10);       -- VDL_VBE
-                prepare_test(33);       -- VDL_HHT
-                prepare_test(34);       -- VDL_HBB
-                prepare_test(35);       -- VDL_HBE
+                prepare_test(53);       -- VDL_HHT
+                prepare_test(54);       -- VDL_HBB
+                prepare_test(55);       -- VDL_HBE
                 prepare_test(36);       -- VDL_HDB
                 prepare_test(37);       -- VDL_HDE
                 prepare_test(38);       -- VDL_HSS
                 prepare_test(39);       -- VDL_VFT
-                prepare_test(40);       -- VDL_VDB
-                prepare_test(41);       -- VDL_VBE
-                prepare_test(42);       -- VDL_VDB
-                prepare_test(43);       -- VDL_VDE
-                prepare_test(44);       -- VDL_VSS
-                prepare_test(45);       -- STSYNC,
-                prepare_test(46);       -- VDL_VCT
-                prepare_test(47);       -- SPSHIFT
-                prepare_test(48);       -- SPSHIFT
-                prepare_test(49);       -- VDL_VMD
-                prepare_test(50);       -- VWRAP 
+                prepare_test(60);       -- VDL_VDB
+                prepare_test(61);       -- VDL_VBE
+                prepare_test(62);       -- VDL_VDB
+                prepare_test(63);       -- VDL_VDE
+                prepare_test(64);       -- VDL_VSS
+                prepare_test(65);       -- STSYNC,
+                prepare_test(66);       -- VDL_VCT
+                prepare_test(67);       -- SPSHIFT
+                prepare_test(68);       -- SPSHIFT
+                prepare_test(69);       -- VDL_VMD
+                prepare_test(70);       -- VWRAP 
                 prepare_test(51);       -- ACP_VCTR disp enable
                 prepare_test(52);       -- set monitor type in sys_ctr/MONTYPE
                 --
