@@ -20,6 +20,7 @@ lib = vu.add_library("lib")
 # Add all files ending in .vhd in current working directory to library
 lib.add_source_files("simulation/modelsim/*.vhd")
 lib.add_source_files("./firebee_utils.vhd")
+lib.add_source_files("./byte_selector.vhd")
 lib.add_source_files("Video/video_mod_mux_clutctr.vhd")
 lib.add_source_files("Video/video_regs.vhd")
 

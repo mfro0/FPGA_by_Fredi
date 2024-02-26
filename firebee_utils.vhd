@@ -3,9 +3,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 package firebee_utils is
-    function vext(e : std_logic; size : integer) return std_logic_vector;
-    -- function "and" (v : std_logic_vector; s : std_logic) return std_logic_vector;
-    function tr(b : boolean) return std_logic;
+    subtype adr_t is std_logic_vector(31 downto 0);
+    type width_t is (BYTE, WORD, LONG, LINE);
+
 end package firebee_utils;
 
 package body firebee_utils is

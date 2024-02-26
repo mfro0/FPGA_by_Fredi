@@ -201,37 +201,14 @@ architecture rtl of video_mod_mux_clutctr is
     signal w                        : width_type;
     signal l                        : natural range 0 to 9;
 begin
-    p_fb_b : process(all)
-    begin
-        tsize <= fb_size1 & fb_size0;
-        case tsize is
-            when "00" => w <= LONG;
-            when "01" => w <= BYTE;
-            when "10" => w <= WORD;
-            when "11" => w <= LINE;
-            when others => null;
-        end case;
-    end process p_fb_b;
-    
-    -- byte select 32 bit
-    fb_b(0) <= '1' when fb_adr(1 downto 0) = "00" else '0';                         -- adr = 0              
-    fb_b(1) <= '1' when fb_adr(1 downto 0) = "01" else                              -- adr = 1
-               '1' when w = WORD and fb_adr(1) = '0' else                           -- high word
-               '1' when w = LINE or w = LONG else
-               '0';                                                                 -- long and line
-    fb_b(2) <= '1' when fb_adr(1 downto 0) = "10" else                              -- adr = 2
-               '1' when w = LONG or w = LINE else        -- long and line
-               '0';
-    fb_b(3) <= '1' when fb_adr(1 downto 0) = "11" else                              -- adr = 3
-               '1' when w = WORD and fb_adr(1) = '1' else                           -- low word
-               '1' when w = LONG or w = LINE else        -- long and line
-               '0';
-    
-    -- byte select 16 bit
-    fb_16b(0) <= '1' when fb_adr(0) = '0' else '0';
-    fb_16b(1) <= '1' when fb_adr(0) = '1' else
-                 '1' when w /= BYTE else
-                 '0';
+    byte_selector : entity work.byte_selector
+        port map
+        (
+            fb_adr      => fb_adr,
+            tsize       => fb_size1 & fb_size0,
+            fb_b        => fb_b,
+            fb_16b      => fb_16b
+        );
 
     -- VIDEL cs
     videl_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 8) = x"f82" else '0';
@@ -748,18 +725,22 @@ begin
                 vsync_i <= '0';
             end if;
             
-            
-            /*
             verz(l + 1) <= verz(l);
-            if l = 8 then
-                l <= 0;
+            if l = 0 then
+                l <= 8;
             else
-                l <= l + 1;
+                l <= l - 1;
             end if;
+<<<<<<< Updated upstream
             */
+=======
+
+            /*
+>>>>>>> Stashed changes
             for i in 0 to 8 loop
                 verz(i + 1) <= verz(i);
             end loop;
+            */
 
             verz(0)(0) <= disp_on;
         
