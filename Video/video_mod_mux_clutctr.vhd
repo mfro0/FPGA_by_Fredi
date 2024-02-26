@@ -725,22 +725,9 @@ begin
                 vsync_i <= '0';
             end if;
             
-            verz(l + 1) <= verz(l);
-            if l = 0 then
-                l <= 8;
-            else
-                l <= l - 1;
-            end if;
-<<<<<<< Updated upstream
-            */
-=======
-
-            /*
->>>>>>> Stashed changes
             for i in 0 to 8 loop
                 verz(i + 1) <= verz(i);
             end loop;
-            */
 
             verz(0)(0) <= disp_on;
         
@@ -802,8 +789,8 @@ begin
                 if (sub_pixel_cnt(6 downto 0) = 7d"1" and color1 = '1') or
                     (sub_pixel_cnt(5 downto 0) = 6d"1" and color2 = '1') or
                     (sub_pixel_cnt(4 downto 0) = 5d"1" and color4 = '1') or
-                    (sub_pixel_cnt(3 downto 0) = 3d"1" and color16 = '1') or
-                    (sub_pixel_cnt(2 downto 0) = 2d"1" and color24 = '1') then
+                    (sub_pixel_cnt(3 downto 0) = 4d"1" and color16 = '1') or
+                    (sub_pixel_cnt(2 downto 0) = 3d"1" and color24 = '1') then
                     fifo_rde <= '1';
                 end if;
             elsif sync_pix or sync_pix1 or sync_pix2 then
