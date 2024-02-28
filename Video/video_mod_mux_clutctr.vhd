@@ -127,7 +127,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal dpo_zl                   : std_logic := '0';
     signal dpo_on                   : std_logic := '0';
     signal dpo_off                  : std_logic := '0';
-    signal vdtron                   : std_logic;
+    signal vdtron                   : std_logic := '0';
     signal vdo_zl                   : std_logic;
     signal vdo_on                   : std_logic;
     signal vdo_off                  : std_logic;
@@ -795,8 +795,8 @@ begin
                     (sub_pixel_cnt(5 downto 0) = 6d"1" and color2 = '1') or
                     (sub_pixel_cnt(4 downto 0) = 5d"1" and color4 = '1') or
                     (sub_pixel_cnt(3 downto 0) = 4d"1" and color8 = '1') or
-                    (sub_pixel_cnt(3 downto 0) = 3d"1" and color16 = '1') or
-                    (sub_pixel_cnt(2 downto 0) = 2d"1" and color24 = '1') then
+                    (sub_pixel_cnt(2 downto 0) = 3d"1" and color16 = '1') or
+                    (sub_pixel_cnt(1 downto 0) = 2d"1" and color24 = '1') then
                     fifo_rde <= '1';
                 end if;
             elsif sync_pix or sync_pix1 or sync_pix2 then
@@ -840,13 +840,13 @@ begin
                 std_logic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video else
                 (others => '0');
     rand_rechts <= vdl_hbb when acp_video else
-                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, vdl_hht'length)) when not acp_video else
+                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, rand_rechts'length)) when not acp_video else
                 (others => '0');
     hs_start <= vdl_hss when acp_video else
-                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, vdl_hss'length)) when not acp_video else
+                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, hs_start'length)) when not acp_video else
                 (others => '0');
     h_total <= vdl_hht when acp_video else
-               std_logic_vector(resize((unsigned(vdl_hht) + 2) * 2 * unsigned(mulf), vdl_hht'length)) when not acp_video else
+               std_logic_vector(resize((unsigned(vdl_hht) + 2) * 2 * unsigned(mulf), h_total'length)) when not acp_video else
                (others => '0');
                
     -- timing vertical
