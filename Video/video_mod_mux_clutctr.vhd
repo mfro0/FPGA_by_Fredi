@@ -27,7 +27,6 @@ entity video_mod_mux_clutctr is
         vr_d                : in std_logic_vector(8 downto 0);
         vr_busy             : in std_logic;
 
-        color8              : out std_logic;
         acp_clut_rd         : out std_logic;
         color1              : out std_logic;
 
@@ -45,7 +44,8 @@ entity video_mod_mux_clutctr is
         nPD_VGA             : out std_logic;
         fifo_rde            : out std_logic;
         color2,
-        color4              : out std_logic;
+        color4,
+        color8              : out std_logic;
         pixel_clk           : out std_logic;
         clut_off            : out std_logic_vector(3 downto 0);
         blitter_on          : out std_logic;
@@ -80,20 +80,32 @@ architecture rtl of video_mod_mux_clutctr is
            falcon_clut              : std_logic;
     signal st_clut_cs,
            st_clut                  : std_logic;
-    signal fb_b                     : std_logic_vector(3 downto 0);
-    signal fb_16b                   : std_logic_vector(1 downto 0);
-    
     signal st_shift_mode            : std_logic_vector(2 downto 0);
     signal st_shift_mode_cs         : std_logic;
+    
+    signal fb_b                     : std_logic_vector(3 downto 0);
+    signal fb_16b                   : std_logic_vector(1 downto 0);
     
     signal falcon_shift_mode        : std_logic_vector(10 downto 0);
     signal falcon_shift_mode_cs     : std_logic;
     
-    type clut_mux_av_type is array(1 downto 0) of std_logic_vector(3 downto 0);
-    signal clut_mux_av              : clut_mux_av_type;
+    type clut_mux_av_t is array(1 downto 0) of std_logic_vector(3 downto 0);
+    signal clut_mux_av              : clut_mux_av_t;
     
     signal acp_vctr_cs              : std_logic;
     signal acp_vctr                 : std_logic_vector(31 downto 0);
+    alias acp_video : std_logic is acp_vctr(0);
+    alias dac_on    : std_logic is acp_vctr(1);
+    alias acp_24    : std_logic is acp_vctr(2);
+    alias acp_16    : std_logic is acp_vctr(3);
+    alias acp_8     : std_logic is acp_vctr(4);
+    alias acp_1     : std_logic is acp_vctr(5);
+    alias falcon_shift : std_logic is acp_vctr(6);
+    alias st_shift : std_logic is acp_vctr(7);
+    alias vclk      : std_logic_vector(1 downto 0) is acp_vctr(9 downto 8);
+    alias sync      : std_logic is acp_vctr(15);
+    alias rand_ena  : std_logic is acp_vctr(25);
+
     signal ccr_cs                   : std_logic;
     
     signal acp_video_on             : std_logic;
@@ -124,8 +136,8 @@ architecture rtl of video_mod_mux_clutctr is
     signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
     signal vvcnt                    : std_logic_vector(12 downto 0) := (others => '0');
     
-    type verz_type is array(9 downto 0) of std_logic_vector(2 downto 0);
-    signal verz                     : verz_type := (others => (others => '0'));
+    type verz_t is array(9 downto 0) of std_logic_vector(2 downto 0);
+    signal verz                     : verz_t := (others => (others => '0'));
     signal rand                     : std_logic_vector(6 downto 0);
     signal rand_on                  : std_logic;
     signal start_zeile              : std_logic;
@@ -138,10 +150,11 @@ architecture rtl of video_mod_mux_clutctr is
     
     -- horizontal
     signal rand_links               : std_logic_vector(12 downto 0);
+    signal rand_rechts              : std_logic_vector(12 downto 0);
+
     signal hdis_start               : std_logic_vector(12 downto 0);
     signal startp                   : std_logic_vector(12 downto 0);
     signal hdis_end                 : std_logic_vector(12 downto 0);
-    signal rand_rechts              : std_logic_vector(12 downto 0);
     signal mulf                     : std_logic_vector(12 downto 0);
     signal hs_start                 : std_logic_vector(12 downto 0);
     signal h_total                  : std_logic_vector(12 downto 0);
@@ -197,9 +210,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal pixel_clk_i              : std_logic;
     signal tsize                    : std_logic_vector(1 downto 0);
     
-    type width_type is (BYTE, WORD, LONG, LINE);
-    signal w                        : width_type;
-    signal l                        : natural range 0 to 9;
+    signal w                        : width_t;
 begin
     byte_selector : entity work.byte_selector
         port map
@@ -469,10 +480,12 @@ begin
         end if;
 
         -- set color mode in ACP
-        color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color16 <=                                        acp_vctr(3) and not acp_vctr(2) and acp_video_on;
-        color24 <=                                                            acp_vctr(2) and acp_video_on;
+        if acp_video_on then
+            color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2);
+            color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2);
+            color16 <=                                        acp_vctr(3) and not acp_vctr(2);
+            color24 <=                                                            acp_vctr(2);
+        end if;
         
     end process p_shiftmode;
     
@@ -789,8 +802,9 @@ begin
                 if (sub_pixel_cnt(6 downto 0) = 7d"1" and color1 = '1') or
                     (sub_pixel_cnt(5 downto 0) = 6d"1" and color2 = '1') or
                     (sub_pixel_cnt(4 downto 0) = 5d"1" and color4 = '1') or
-                    (sub_pixel_cnt(3 downto 0) = 4d"1" and color16 = '1') or
-                    (sub_pixel_cnt(2 downto 0) = 3d"1" and color24 = '1') then
+                    (sub_pixel_cnt(3 downto 0) = 4d"1" and color8 = '1') or
+                    (sub_pixel_cnt(3 downto 0) = 3d"1" and color16 = '1') or
+                    (sub_pixel_cnt(2 downto 0) = 2d"1" and color24 = '1') then
                     fifo_rde <= '1';
                 end if;
             elsif sync_pix or sync_pix1 or sync_pix2 then
