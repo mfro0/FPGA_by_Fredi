@@ -455,20 +455,15 @@ begin
 
     p_shiftmode : process(all)
     begin
-        if not(color8) and st_video and not(acp_video) then
+        if st_video then
             case st_shift_mode is
                 when "010" => color1 <= '1'; color2 <= '0'; color4 <= '0';
                 when "001" => color2 <= '1'; color1 <= '0'; color4 <= '0';
                 when "000" => color4 <= '1'; color1 <= '0'; color2 <= '0';
                 when others => null;
             end case;
-        else
-            color1 <= '0';
-            color2 <= '0';
-            color4 <= '0';
-        end if;
-
-        if falcon_video and not(acp_video) then
+            (color8, color16, color24) <= std_logic_vector'("000");
+        elsif falcon_video then
             case falcon_shift_mode is
                 when 11x"400" => color1 <= '1'; color4 <= '0'; color8 <= '0'; color16 <= '0';
                 when 11x"000" => color4 <= '1'; color1 <= '0'; color8 <= '0'; color16 <= '0';
@@ -476,14 +471,10 @@ begin
                 when 11x"100" => color16 <= '1'; color1 <= '0'; color4 <= '0'; color8 <= '0';
                 when others => null;
             end case;
-        end if;
-
-        -- set color mode in ACP
-        if acp_video then
-            color1 <= acp_vctr(5) and not acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2);
-            color8 <=                     acp_vctr(4) and not acp_vctr(3) and not acp_vctr(2);
-            color16 <=                                        acp_vctr(3) and not acp_vctr(2);
-            color24 <=                                                            acp_vctr(2);
+            (color16, color24) <= std_logic_vector'("00");
+        elsif acp_video then
+            (color1, color8, color16 , color24) <= acp_vctr(5 downto 2);
+            color4 <= '0';
         end if;
         
     end process p_shiftmode;
