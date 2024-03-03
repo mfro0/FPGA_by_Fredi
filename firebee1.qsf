@@ -667,6 +667,8 @@ set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulati
 
 set_global_assignment -name FLOW_ENABLE_RTL_VIEWER ON
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
+
+set_global_assignment -name VHDL_FILE Video/video_regs.vhd
 set_global_assignment -name VHDL_FILE byte_selector.vhd
 set_global_assignment -name VHDL_FILE firebee_utils.vhd
 set_global_assignment -name VHDL_FILE Video/video_mod_mux_clutctr.vhd
@@ -856,5 +858,4 @@ set_global_assignment -name QIP_FILE Video/Doppelzeilen_Fifo.qip
 set_global_assignment -name QIP_FILE Video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE Video/BLITTER/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee1.stp
-
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

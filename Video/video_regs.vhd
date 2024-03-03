@@ -1,8 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.math_real.all;
 
 package video_regs is
-    subtype addr_t is std_ulogic_vector(31 downto 0);
+    subtype addr_t is std_logic_vector(31 downto 0);
 
     constant MONTYPE    : addr_t := x"FFFF8006";   -- monitor type
     constant STSYNC     : addr_t := x"FFFF820A";   -- ST Sync mode
@@ -38,7 +39,7 @@ package video_regs is
     constant VDL_VCT    : addr_t := x"FFFF82C0";   -- Video Master Control
     constant VDL_VMD    : addr_t := x"FFFF82C2";   -- Falcon Video Control
 
-    subtype fbcs_t is std_ulogic_vector(5 downto 0);
+    subtype fbcs_t is std_logic_vector(5 downto 0);
 
     type fb_cs_rec_t is record
         base_address            : addr_t;
@@ -79,7 +80,7 @@ package video_regs is
     --
     constant fb_cs_fb           : fb_cs_array_t :=
     (
-        (base_address => x"E0000000", address_mask => x"3FFF0000", control_reg => (others => '0')),
+        (base_address => x"E0000000", address_mask => CSMR_BAM_1G, control_reg => (others => '0')),
         (base_address => x"FFF80000", address_mask => CSMR_BAM_512K, control_reg => (others => '0')),
         (base_address => x"F0000000", address_mask => CSMR_BAM_128M, control_reg => (others => '0')),
         (base_address => x"FFF00000", address_mask => CSMR_BAM_512K, control_reg => (others => '0')),
@@ -88,8 +89,8 @@ package video_regs is
     );
 
 
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector;
-                       width : positive; fbcs : fbcs_t) return boolean;
+    function adr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
+                       width : natural) return boolean; 
 end package video_regs;
 
 
@@ -97,15 +98,44 @@ end package video_regs;
 -- find if bus address matches with address range of a register.
 -- reg  address from the bus
 -- check the address to check against
--- adr_mask     the limited range to check (e.g. when checking against a FBCS-selected address range)
+-- fbc   the index into the fb_cs_fb array to check for
 --
 -- result: true when check is a match, false otherwise
 --
 package body video_regs is
-    function reg_match(reg, check : addr_t; adr_mask : std_ulogic_vector;
-                       width : positive; fbcs : fbcs_t) return boolean is
-        variable res : boolean;
+    function adr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
+                       width : natural) return boolean is
+        variable zero_count : natural := 0;
+        variable upper      : natural := 0;
+        variable lower      : natural := width - 1;
     begin
-        return res;
-    end function reg_match;
+        if fbcs(fbc) = '0' then
+            -- count the number of '0' bits in the fbc address mask
+            for i in fb_cs_fb(fbc).address_mask'high downto fb_cs_fb(fbc).address_mask'low loop
+                if fb_cs_fb(fbc).address_mask(i) = '0' then
+                    zero_count := zero_count + 1;
+                else
+                    exit;
+                end if;
+            end loop;
+
+            upper := reg'high - zero_count + 1;
+            lower := natural(ceil(log2(real(width))));
+
+            -- report "slice: " & natural'image(upper) & " downto " & natural'image(lower);
+    
+            -- synthesis translate off
+            report "reg(" & natural'image(upper) & " downto " & natural'image(lower) & " ) = " &
+                to_hstring(reg(upper downto lower)) & ", " &
+                "check(" & natural'image(upper) & " downto " & natural'image(lower) & ") = " &
+                to_hstring(check(upper downto lower));
+            -- synthesis translate on
+            if reg(upper downto lower) = check(upper downto lower) then
+                report "slice matches";
+                return true;
+            end if;
+        end if;
+        -- report "slice does not match";
+        return false;
+    end function adr_match;
 end package body video_regs;

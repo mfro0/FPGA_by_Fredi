@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.video_regs.all;
 
 use work.firebee_utils.all;
 
@@ -80,7 +81,7 @@ architecture rtl of video_mod_mux_clutctr is
            falcon_clut              : std_logic;
     signal st_clut_cs,
            st_clut                  : std_logic;
-    signal st_shift_mode            : std_logic_vector(2 downto 0);
+    signal st_shift_mode            : std_logic_vector(1 downto 0);
     signal st_shift_mode_cs         : std_logic;
     
     signal fb_b                     : std_logic_vector(3 downto 0);
@@ -210,7 +211,10 @@ architecture rtl of video_mod_mux_clutctr is
     signal tsize                    : std_logic_vector(1 downto 0);
     
     signal w                        : width_t;
+    signal fbcs                     : std_logic_vector(0 to 5);
 begin
+    fbcs <= '1' & nFB_CS1 & nFB_CS2 & nFB_CS3 & '1' & '1';
+
     byte_selector : entity work.byte_selector
         port map
         (
@@ -221,10 +225,12 @@ begin
         );
 
     -- VIDEL cs
-    videl_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 8) = x"f82" else '0';       -- x"ffff8200" - x"ffff82ff"
+    -- videl_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 8) = x"f82" else '0';       -- x"ffff8200" - x"ffff82ff"
+    videl_cs <= '1' when adr_match(fb_adr, x"FFFF8200", fbcs, 1, 16#FF#) else '0';
     
     -- ACP clut
     acp_clut_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 10) = 18d"0" else '0';
+
     acp_clut_rd <= '1' when acp_clut_cs = '1' and nFB_OE = '0' else '0';
     acp_clut_wr <= fb_b when acp_clut_cs = '1' and nFB_WR = '0' else (others => '0');
     
@@ -241,12 +247,15 @@ begin
     st_clut_wr <= fb_16b when st_clut_cs and not(nFB_WR) else (others => '0');
     
     -- ST shift mode
-    st_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c130" else '0';      -- x"f8260"/2    
+    -- st_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c130" else '0';      -- x"f8260"/2    
+    st_shift_mode_cs <= '1' when adr_match(fb_adr, STSHIFT, fbcs, 1, 2) else '0';
     -- Falcon shift mode
-    falcon_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c133" else '0';   -- x"f8266" / 2
+    -- falcon_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c133" else '0';   -- x"f8266" / 2
+    falcon_shift_mode_cs <= '1' when adr_match(fb_adr, SPSHIFT, fbcs, 1, 2) else '0';
     clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
-    acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"100" else '0';
+    -- acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"100" else '0';
+    acp_vctr_cs <= '1' when adr_match(fb_adr, VCTR, fbcs, 2, 4) else '0';
     nPD_VGA <= acp_vctr(1);
     
     -- video PLL configuration
@@ -289,7 +298,9 @@ begin
     
     -- here we are back to original Falcon registers
     -- HHT - horizontal hold timer
-    vdl_hht_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c141" else '0';
+    -- vdl_hht_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c141" else '0';
+    vdl_hht_cs <= '1' when adr_match(fb_adr, work.video_regs.VDL_HHT, fbcs, 1, 2) else '0';
+    -- videl_cs <= '1' when adr_match(fb_adr, x"FFFF8200", 1, 16#FF#) else '0';
     
     -- HBB - horizontal border begin
     vdl_hbb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c142" else '0';
@@ -353,7 +364,7 @@ begin
         -- assert false report "FB_AD = " & to_hstring(fb_ad) severity note;
         if (acp_vctr_cs = '1' or ccr_cs = '1' or video_pll_config_cs = '1' or videl_cs = '1' or sys_ctr_cs = '1') and nFB_OE = '0' then
             if st_shift_mode_cs = '1' then
-                fb_ad(31 downto 16) <= 5d"0" & st_shift_mode & 8x"ff";
+                fb_ad(31 downto 16) <= 6d"0" & st_shift_mode & 8x"ff";
             elsif falcon_shift_mode_cs then
                 fb_ad(31 downto 16) <= 5d"0" & falcon_shift_mode;
             elsif sys_ctr_cs = '1' then
@@ -455,14 +466,14 @@ begin
 
     p_shiftmode : process(all)
     begin
+        (color1, color2, color4, color8, color16, color24) <= std_logic_vector'("000000");
         if st_video then
             case st_shift_mode is
-                when "010" => color1 <= '1'; color2 <= '0'; color4 <= '0';
-                when "001" => color2 <= '1'; color1 <= '0'; color4 <= '0';
-                when "000" => color4 <= '1'; color1 <= '0'; color2 <= '0';
+                when "10" => color1 <= '1'; color2 <= '0'; color4 <= '0';
+                when "01" => color2 <= '1'; color1 <= '0'; color4 <= '0';
+                when "00" => color4 <= '1'; color1 <= '0'; color2 <= '0';
                 when others => null;
             end case;
-            (color8, color16, color24) <= std_logic_vector'("000");
         elsif falcon_video then
             case falcon_shift_mode is
                 when 11x"400" => color1 <= '1'; color4 <= '0'; color8 <= '0'; color16 <= '0';
@@ -471,12 +482,9 @@ begin
                 when 11x"100" => color16 <= '1'; color1 <= '0'; color4 <= '0'; color8 <= '0';
                 when others => null;
             end case;
-            (color16, color24) <= std_logic_vector'("00");
         elsif acp_video then
             (color1, color8, color16 , color24) <= acp_vctr(5 downto 2);
-            color4 <= '0';
         end if;
-        
     end process p_shiftmode;
     
     p : process(all)
@@ -485,7 +493,7 @@ begin
             clut_ta <= '0';
             
             if st_shift_mode_cs and not(nFB_WR) and fb_b(0) then
-                st_shift_mode <= fb_ad(26 downto 24);
+                st_shift_mode <= fb_ad(25 downto 24);
             end if;
             
             if falcon_shift_mode_cs then
@@ -497,11 +505,13 @@ begin
                 
             clut_ta <=  (acp_clut_cs or falcon_clut_cs or st_clut_cs) and not(video_mod_ta);
 
-            if acp_vctr_cs and not nFB_WR then
-                if fb_b(0) then acp_vctr(31 downto 24) <= fb_ad(31 downto 24); end if;
-                if fb_b(1) then acp_vctr(23 downto 16) <= fb_ad(23 downto 16); end if;
-                if fb_b(2) then acp_vctr(15 downto 8) <= fb_ad(15 downto 8); end if;
-                if fb_b(3) then acp_vctr(5 downto 0) <= fb_ad(5 downto 0); end if;
+            if acp_vctr_cs then
+                if not nFB_WR then
+                    if fb_b(0) then acp_vctr(31 downto 24) <= fb_ad(31 downto 24); end if;
+                    if fb_b(1) then acp_vctr(23 downto 16) <= fb_ad(23 downto 16); end if;
+                    if fb_b(2) then acp_vctr(15 downto 8) <= fb_ad(15 downto 8); end if;
+                    if fb_b(3) then acp_vctr(5 downto 0) <= fb_ad(5 downto 0); end if;
+                end if;
             end if;
 
             -- set ST or Falcon shift mode when write x..shift registers
