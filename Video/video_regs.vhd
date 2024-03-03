@@ -9,9 +9,12 @@ package video_regs is
     constant STSYNC     : addr_t := x"FFFF820A";   -- ST Sync mode
     constant LIN_OFS    : addr_t := x"FFFF820E";   -- offset to next line
     constant VWRAP      : addr_t := x"FFFF8210";   -- linewidth in words
+    constant VBPP       : addr_t := x"FFFF8210";   -- Firebee only: bits per plane, R/O
+    constant VWPXL      : addr_t := x"FFFF8212";   -- Firebee only: width in pixels, R/O
+    constant VHPXL      : addr_t := x"FFFF8214";   -- Firebee only: height in pixels, R/O
 
     constant STE_PAL    : addr_t := x"FFFF8240";   -- STE compatible palette registers 0-15
-                                                   -- ends at  x"FFFF825e"
+                                                   -- ends at  x"FFFF825E" (64 bytes)
     constant STSHIFT    : addr_t := x"FFFF8260";   -- ST compatible shifter control register
 
     constant HSCROLL    : addr_t := x"FFFF8265";   -- STE compatible horizontal scroll register
@@ -39,6 +42,16 @@ package video_regs is
     constant VDL_VCT    : addr_t := x"FFFF82C0";   -- Video Master Control
     constant VDL_VMD    : addr_t := x"FFFF82C2";   -- Falcon Video Control
 
+    constant VDL_CLUT   : addr_t := x"FFFF8900";   -- Falcon palette (1024 bytes)
+
+    -- ACP registers
+    constant ACP_CLUT           : addr_t := x"F0000000";        -- ACP color lookup table. 1024 bytes
+    constant VCTR               : addr_t := x"F0000400";
+    constant CCR                : addr_t := x"F0000404";
+    constant ACP_PLL_CFG        : addr_t := x"F0000600";        -- PLL config x"200" bytes
+    constant ACP_PLL_RECFG      : addr_t := x"F0000800";        -- bit 31 = '1' = busy
+
+    --
     subtype fbcs_t is std_logic_vector(5 downto 0);
 
     type fb_cs_rec_t is record
@@ -73,9 +86,7 @@ package video_regs is
     constant CSMR_BAM_128K      : addr_t := x"00010000";
     constant CSMR_BAM_64K       : addr_t := x"00000000";
 
-    constant VCTR               : addr_t := x"F0000400";
-    constant CCR                : addr_t := x"F0040404";
-    --
+
     -- these must match settings in sysinit.c (FireBee ColdFire firmware)
     --
     constant fb_cs_fb           : fb_cs_array_t :=

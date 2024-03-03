@@ -71,29 +71,29 @@ end entity video_mod_mux_clutctr;
 architecture rtl of video_mod_mux_clutctr is
     signal clk17m                   : std_logic;
     signal clk13m                   : std_logic;
-    signal acp_clut_cs              : std_logic;
+    signal acp_clut_cs              : boolean;
     signal acp_clut                 : std_logic;
-    signal video_pll_config_cs      : std_logic;
+    signal video_pll_config_cs      : boolean;
     signal vr_dout                  : std_logic_vector(8 downto 0);
     signal vr_frq                   : std_logic_vector(7 downto 0);
-    signal video_pll_reconfig_cs    : std_logic;
-    signal falcon_clut_cs,
-           falcon_clut              : std_logic;
-    signal st_clut_cs,
-           st_clut                  : std_logic;
+    signal video_pll_reconfig_cs    : boolean;
+    signal falcon_clut_cs           : boolean;
+    signal falcon_clut              : std_logic;
+    signal st_clut_cs               : boolean;
+    signal st_clut                  : std_logic;
     signal st_shift_mode            : std_logic_vector(1 downto 0);
-    signal st_shift_mode_cs         : std_logic;
+    signal st_shift_mode_cs         : boolean;
     
     signal fb_b                     : std_logic_vector(3 downto 0);
     signal fb_16b                   : std_logic_vector(1 downto 0);
     
     signal falcon_shift_mode        : std_logic_vector(10 downto 0);
-    signal falcon_shift_mode_cs     : std_logic;
+    signal falcon_shift_mode_cs     : boolean;
     
     type clut_mux_av_t is array(1 downto 0) of std_logic_vector(3 downto 0);
     signal clut_mux_av              : clut_mux_av_t;
     
-    signal acp_vctr_cs              : std_logic;
+    signal acp_vctr_cs              : boolean;
     signal acp_vctr                 : std_logic_vector(31 downto 0);
     alias acp_video                 : std_logic is acp_vctr(0);
     alias dac_on                    : std_logic is acp_vctr(1);
@@ -107,15 +107,15 @@ architecture rtl of video_mod_mux_clutctr is
     alias sync                      : std_logic is acp_vctr(15);
     alias rand_ena                  : std_logic is acp_vctr(25);
 
-    signal ccr_cs                   : std_logic;
+    signal ccr_cs                   : boolean;
     
     signal sys_ctr                  : std_logic_vector(6 downto 0);
-    signal sys_ctr_cs               : std_logic;
+    signal sys_ctr_cs               : boolean;
     
     signal vdl_lof                  : std_logic_vector(15 downto 0);
-    signal vdl_lof_cs               : std_logic;
+    signal vdl_lof_cs               : boolean;
     signal vdl_lwd                  : std_logic_vector(15 downto 0);
-    signal vdl_lwd_cs               : std_logic;
+    signal vdl_lwd_cs               : boolean;
     
     -- control registers
     signal clut_ta                  : std_logic;
@@ -161,17 +161,17 @@ architecture rtl of video_mod_mux_clutctr is
     signal hdis_len                 : std_logic_vector(12 downto 0);
     signal wpl                      : std_logic_vector(15 downto 0);
     signal vdl_hht                  : std_logic_vector(12 downto 0);
-    signal vdl_hht_cs               : std_logic;
+    signal vdl_hht_cs               : boolean;
     signal vdl_hbe                  : std_logic_vector(12 downto 0);
-    signal vdl_hbe_cs               : std_logic;
+    signal vdl_hbe_cs               : boolean;
     signal vdl_hdb                  : std_logic_vector(12 downto 0);
-    signal vdl_hdb_cs               : std_logic;
+    signal vdl_hdb_cs               : boolean;
     signal vdl_hde                  : std_logic_vector(12 downto 0);
-    signal vdl_hde_cs               : std_logic;
+    signal vdl_hde_cs               : boolean;
     signal vdl_hbb                  : std_logic_vector(12 downto 0);
-    signal vdl_hbb_cs               : std_logic;
+    signal vdl_hbb_cs               : boolean;
     signal vdl_hss                  : std_logic_vector(12 downto 0);
-    signal vdl_hss_cs               : std_logic;
+    signal vdl_hss_cs               : boolean;
 
     -- vertical
     signal rand_oben                : std_logic_vector(12 downto 0);
@@ -183,27 +183,27 @@ architecture rtl of video_mod_mux_clutctr is
     signal falcon_video             : std_logic;
     signal st_video                 : std_logic;
     
-    signal videl_cs                 : std_logic;
+    signal videl_cs                 : boolean;
     signal vdl_vbe                  : std_logic_vector(12 downto 0);
-    signal vdl_vbe_cs               : std_logic;
+    signal vdl_vbe_cs               : boolean;
     signal vdl_vdb                  : std_logic_vector(12 downto 0);
-    signal vdl_vdb_cs               : std_logic;
+    signal vdl_vdb_cs               : boolean;
     signal vdl_vde                  : std_logic_vector(12 downto 0);
-    signal vdl_vde_cs               : std_logic;
+    signal vdl_vde_cs               : boolean;
     signal vdl_vbb                  : std_logic_vector(12 downto 0);
-    signal vdl_vbb_cs               : std_logic;
+    signal vdl_vbb_cs               : boolean;
     signal vdl_vss                  : std_logic_vector(12 downto 0);
-    signal vdl_vss_cs               : std_logic;
+    signal vdl_vss_cs               : boolean;
     signal vdl_vft                  : std_logic_vector(12 downto 0);
-    signal vdl_vft_cs               : std_logic;
+    signal vdl_vft_cs               : boolean;
     signal vdl_vct                  : std_logic_vector(12 downto 0);
-    signal vdl_vct_cs               : std_logic;
+    signal vdl_vct_cs               : boolean;
     signal vdl_vmd                  : std_logic_vector(3 downto 0);
-    signal vdl_vmd_cs               : std_logic;
+    signal vdl_vmd_cs               : boolean;
 
-    signal vdl_bpp_cs               : std_logic;
-    signal vdl_ph_cs                : std_logic;
-    signal vdl_pv_cs                : std_logic;
+    signal vdl_bpp_cs               : boolean;
+    signal vdl_ph_cs                : boolean;
+    signal vdl_pv_cs                : boolean;
     
     signal vdl_hbep                 : std_logic;
     
@@ -225,46 +225,38 @@ begin
         );
 
     -- VIDEL cs
-    -- videl_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 8) = x"f82" else '0';       -- x"ffff8200" - x"ffff82ff"
-    videl_cs <= '1' when adr_match(fb_adr, x"FFFF8200", fbcs, 1, 16#FF#) else '0';
-    
-    -- ACP clut
-    acp_clut_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 10) = 18d"0" else '0';
+    videl_cs <= adr_match(fb_adr, x"FFFF8200", fbcs, 1, 16#FF#);
+    acp_clut_cs <=  adr_match(fb_adr, work.video_regs.ACP_CLUT, fbcs, 2, 16#400#);
 
-    acp_clut_rd <= '1' when acp_clut_cs = '1' and nFB_OE = '0' else '0';
-    acp_clut_wr <= fb_b when acp_clut_cs = '1' and nFB_WR = '0' else (others => '0');
+    acp_clut_rd <= '1' when acp_clut_cs and nFB_OE = '0' else '0';
+    acp_clut_wr <= fb_b when acp_clut_cs and nFB_WR = '0' else (others => '0');
     
     -- Falcon clut
-    falcon_clut_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 10) = 10x"3e6" else '0';
-    falcon_clut_rdh <= '1' when falcon_clut_cs and not(nFB_OE) and not(fb_adr(1)) else '0';
-    falcon_clut_rdl <= '1' when falcon_clut_cs and not(nFB_OE) and    (fb_adr(1)) else '0';
-    falcon_clut_wr(1 downto 0) <= fb_16b when not(fb_adr(1)) and falcon_clut_cs and not(nFB_WR) else (others => '0');
-    falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) and falcon_clut_cs and not(nFB_WR) else (others => '0');
+    falcon_clut_cs <= adr_match(fb_adr, VDL_CLUT, fbcs, 1, 16#400#);
+    falcon_clut_rdh <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '0' else '0';
+    falcon_clut_rdl <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '1' else '0';
+    falcon_clut_wr(1 downto 0) <= fb_16b when fb_adr(1) = '0' and falcon_clut_cs and nFB_WR = '0' else (others => '0');
+    falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) = '1' and falcon_clut_cs and nFB_WR = '0'else (others => '0');
     
     -- ST clut
-    st_clut_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 5) = 15x"7c12" else '0';              -- x"8240" / x"20"
-    st_clut_rd <= '1' when st_clut_cs = '1' and nFB_OE = '0' else '0';
-    st_clut_wr <= fb_16b when st_clut_cs and not(nFB_WR) else (others => '0');
+    st_clut_cs <= adr_match(fb_adr, STE_PAL, fbcs, 1, 16#40#);
+    st_clut_rd <= '1' when st_clut_cs and nFB_OE = '0' else '0';
+    st_clut_wr <= fb_16b when st_clut_cs and nFB_WR = '0' else (others => '0');
     
-    -- ST shift mode
-    -- st_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c130" else '0';      -- x"f8260"/2    
-    st_shift_mode_cs <= '1' when adr_match(fb_adr, STSHIFT, fbcs, 1, 2) else '0';
-    -- Falcon shift mode
-    -- falcon_shift_mode_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c133" else '0';   -- x"f8266" / 2
-    falcon_shift_mode_cs <= '1' when adr_match(fb_adr, SPSHIFT, fbcs, 1, 2) else '0';
+    st_shift_mode_cs <= adr_match(fb_adr, STSHIFT, fbcs, 1, 2);
+    falcon_shift_mode_cs <= adr_match(fb_adr, SPSHIFT, fbcs, 1, 2);
     clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
-    -- acp_vctr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"100" else '0';
-    acp_vctr_cs <= '1' when adr_match(fb_adr, VCTR, fbcs, 2, 4) else '0';
+    acp_vctr_cs <= adr_match(fb_adr, VCTR, fbcs, 2, 4);
     nPD_VGA <= acp_vctr(1);
     
     -- video PLL configuration
-    video_pll_config_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 9) = 19x"3" and fb_b(0) = '1' and fb_b(1) = '1' else '0';
+    video_pll_config_cs <= adr_match(fb_adr, ACP_PLL_CFG, fbcs, 2, 16#200#) and fb_b(0) = '1' and fb_b(1) = '1'; 
     
-    vr_rd <= video_pll_config_cs and nFB_WR and not vr_busy;
+    vr_rd <= '1' when video_pll_config_cs and nFB_WR = '1' and vr_busy = '0' else '0';
     
     -- video PLL reconfig
-    video_pll_reconfig_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 0) = 28x"800" else '0';
+    video_pll_reconfig_cs <= adr_match(fb_adr, ACP_PLL_RECFG, fbcs, 2, 4) and fb_b(0) = '1';
     
     video_ram_ctr <= acp_vctr(31 downto 16);
     
@@ -278,62 +270,39 @@ begin
     pixel_clk <= pixel_clk_i;
     
     -- border colour
-    ccr_cs <= '1' when nFB_CS2 = '0' and fb_adr(27 downto 2) = 26x"101" else '0';               -- x"F0000404 / 4"
-    
-    -- MONTYPE
-    sys_ctr_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c003" else '0';         -- x"F8006 / 2"
+    ccr_cs <= adr_match(fb_adr, work.video_regs.CCR, fbcs, 2, 4);
+    sys_ctr_cs <= adr_match(fb_adr, MONTYPE, fbcs, 1, 2);
+
     
     blitter_on <= sys_ctr(3);
     
-    -- LIN_OFS
-    vdl_lof_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c107" else '0';         -- x"F820E / 2"
-    -- VWRAP
-    vdl_lwd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c108" else '0';         -- x"F8210 / 2"
+    vdl_lof_cs <= adr_match(fb_adr, LIN_OFS, fbcs, 1, 2);
+    vdl_lwd_cs <= adr_match(fb_adr, VWRAP, fbcs, 1, 2);
     -- FireBee specific R/O register: Bits per Plane
-    vdl_bpp_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c109" else '0';
+    vdl_bpp_cs <= adr_match(fb_adr, VBPP, fbcs, 1, 2);
     -- FireBee specific R/O register: width in pixels. Doesn't seem to be used anywhere
-    vdl_ph_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c10a" else '0';
+    vdl_ph_cs <= adr_match(fb_adr, VWPXL, fbcs, 1, 2);
     -- FireBee specific R/O register: height in pixels. Doesn't seem to be used anywhere
-    vdl_pv_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c10b" else '0';
+    vdl_pv_cs <= adr_match(fb_adr, VHPXL, fbcs, 1, 2);
     
     -- here we are back to original Falcon registers
-    -- HHT - horizontal hold timer
-    -- vdl_hht_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c141" else '0';
-    vdl_hht_cs <= '1' when adr_match(fb_adr, work.video_regs.VDL_HHT, fbcs, 1, 2) else '0';
-    -- videl_cs <= '1' when adr_match(fb_adr, x"FFFF8200", 1, 16#FF#) else '0';
-    
-    -- HBB - horizontal border begin
-    vdl_hbb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c142" else '0';
-    
-    -- HBE - horizontal border end
-    vdl_hbe_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c143" else '0';
-    
-    -- HDB - horizontal display begin
-    vdl_hdb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c144" else '0';
-    
-    -- HDE - horizontal display end
-    vdl_hde_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c145" else '0';
-    
-    -- HSS - horizontal sync S
-    vdl_hss_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c146" else '0';
+    vdl_hht_cs <= adr_match(fb_adr, work.video_regs.VDL_HHT, fbcs, 1, 2);
+    vdl_hbb_cs <= adr_match(fb_adr, work.video_regs.VDL_HBB, fbcs, 1, 2);
+    vdl_hbe_cs <= adr_match(fb_adr, work.video_regs.VDL_HBE, fbcs, 1, 2);
+    vdl_hdb_cs <= adr_match(fb_adr, work.video_regs.VDL_HDB, fbcs, 1, 2);
+    vdl_hde_cs <= adr_match(fb_adr, work.video_regs.VDL_HDE, fbcs, 1, 2);
+    vdl_hss_cs <= adr_match(fb_adr, work.video_regs.VDL_HSS, fbcs, 1, 2);
     
     -- vertical
     
-    vdl_vbe_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c153" else '0';
-    
-    vdl_vdb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c154" else '0';
-    
-    vdl_vde_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c155" else '0';
-    
-    vdl_vbb_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c152" else '0';
-    
-    vdl_vss_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c156" else '0';
-    
-    vdl_vft_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c151" else '0';         -- x"F82A2" / 2
-    
-    vdl_vct_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c160" else '0';         -- x"F82C0" / 2
-    
-    vdl_vmd_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = 19x"7c161" else '0';         -- x"F82C2" / 2
+    vdl_vbe_cs <= adr_match(fb_adr, work.video_regs.VDL_VBE, fbcs, 1, 2);
+    vdl_vdb_cs <= adr_match(fb_adr, work.video_regs.VDL_VDB, fbcs, 1, 2);
+    vdl_vde_cs <= adr_match(fb_adr, work.video_regs.VDL_VDE, fbcs, 1, 2);
+    vdl_vbb_cs <= adr_match(fb_adr, work.video_regs.VDL_VBB, fbcs, 1, 2);
+    vdl_vss_cs <= adr_match(fb_adr, work.video_regs.VDL_VSS, fbcs, 1, 2);
+    vdl_vft_cs <= adr_match(fb_adr, work.video_regs.VDL_VFT, fbcs, 1, 2);
+    vdl_vct_cs <= adr_match(fb_adr, work.video_regs.VDL_VCT, fbcs, 1, 2);
+    vdl_vmd_cs <= adr_match(fb_adr, work.video_regs.VDL_VMD, fbcs, 1, 2);
     
     -- multiplication factor (not really, anymore)
     mulf <= 13d"1" when not st_video and (te or vdl_vct(0)) else
@@ -362,58 +331,58 @@ begin
     register_out_p : process(all)
     begin
         -- assert false report "FB_AD = " & to_hstring(fb_ad) severity note;
-        if (acp_vctr_cs = '1' or ccr_cs = '1' or video_pll_config_cs = '1' or videl_cs = '1' or sys_ctr_cs = '1') and nFB_OE = '0' then
-            if st_shift_mode_cs = '1' then
+        if (acp_vctr_cs or ccr_cs or video_pll_config_cs or videl_cs or sys_ctr_cs) and nFB_OE = '0' then
+            if st_shift_mode_cs then
                 fb_ad(31 downto 16) <= 6d"0" & st_shift_mode & 8x"ff";
             elsif falcon_shift_mode_cs then
                 fb_ad(31 downto 16) <= 5d"0" & falcon_shift_mode;
-            elsif sys_ctr_cs = '1' then
+            elsif sys_ctr_cs then
                 fb_ad(31 downto 16) <= "100000000" & sys_ctr(6 downto 4) & blitter_run & sys_ctr(2 downto 0);
-            elsif vdl_lof_cs = '1' then
+            elsif vdl_lof_cs then
                 fb_ad(31 downto 16) <= vdl_lof;
-            elsif vdl_lwd_cs = '1' then
+            elsif vdl_lwd_cs then
                 fb_ad(31 downto 16) <= wpl;
-            elsif vdl_bpp_cs = '1' then
+            elsif vdl_bpp_cs then
                 fb_ad(31 downto 16) <= 11d"0" & color24 & color16 & color8 & color4 & color1;
-            elsif vdl_ph_cs = '1' then
+            elsif vdl_ph_cs then
                 fb_ad(31 downto 16) <= 3d"0" & hdis_len;
-            elsif vdl_pv_cs = '1' then
+            elsif vdl_pv_cs then
                 fb_ad(31 downto 16) <= 3d"0" & std_logic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1);
-            elsif vdl_hbe_cs = '1' then
+            elsif vdl_hbe_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hbe;
-            elsif vdl_hdb_cs = '1' then
+            elsif vdl_hdb_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hdb;
-            elsif vdl_hde_cs = '1' then
+            elsif vdl_hde_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hde;
-            elsif vdl_hbb_cs = '1' then
+            elsif vdl_hbb_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hbb;
-            elsif vdl_hss_cs = '1' then
+            elsif vdl_hss_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hss;
-            elsif vdl_hht_cs = '1' then
+            elsif vdl_hht_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hht;
-            elsif vdl_vbe_cs = '1' then
+            elsif vdl_vbe_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vbe;
-            elsif vdl_vdb_cs = '1' then
+            elsif vdl_vdb_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vdb;
-            elsif vdl_vde_cs = '1' then
+            elsif vdl_vde_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vde;
-            elsif vdl_vbb_cs = '1' then
+            elsif vdl_vbb_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vbb;
-            elsif vdl_vss_cs = '1' then
+            elsif vdl_vss_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vss;
-            elsif vdl_vft_cs = '1' then
+            elsif vdl_vft_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vft;
-            elsif vdl_vct_cs = '1' then
+            elsif vdl_vct_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_vct;
-            elsif vdl_vmd_cs = '1' then
+            elsif vdl_vmd_cs then
                 fb_ad(31 downto 16) <= 12d"0" & vdl_vmd;
-            elsif acp_vctr_cs = '1' then
+            elsif acp_vctr_cs then
                 fb_ad(31 downto 16) <= acp_vctr(31 downto 16);
-            elsif ccr_cs = '1' then
+            elsif ccr_cs then
                 fb_ad(31 downto 16) <= 8d"0" & ccr(23 downto 16);
-            elsif video_pll_config_cs = '1' then
+            elsif video_pll_config_cs then
                 fb_ad(31 downto 16) <= 7d"0" & vr_dout;
-            elsif video_pll_reconfig_cs = '1' then
+            elsif video_pll_reconfig_cs then
                 fb_ad(31 downto 16) <= vr_busy & "0000" & vr_wr & vr_rd & video_reconfig & x"fa";
             else
                 fb_ad(31 downto 16) <= (others => 'Z');
@@ -422,10 +391,10 @@ begin
             fb_ad(31 downto 16) <= (others => 'Z');
         end if;
         
-        if nFB_OE = '0' and (acp_vctr_cs = '1' or ccr_cs = '1') then
-            if acp_vctr_cs = '1' then
+        if nFB_OE = '0' and (acp_vctr_cs or ccr_cs) then
+            if acp_vctr_cs then
                 fb_ad(15 downto 0) <= acp_vctr(15 downto 0);
-            elsif ccr_cs = '1' then
+            elsif ccr_cs then
                 fb_ad(15 downto 0) <= ccr(15 downto 0);
             else
                 fb_ad(15 downto 0) <= (others => 'Z');
@@ -435,7 +404,7 @@ begin
         end if;
     end process register_out_p;
     
-    video_mod_ta <= clut_ta or acp_vctr_cs or sys_ctr_cs or videl_cs;
+    video_mod_ta <= '1' when clut_ta = '1' or acp_vctr_cs or sys_ctr_cs or videl_cs else '0';
     
     -- set video output
     
@@ -492,7 +461,7 @@ begin
         if rising_edge(main_clk) then
             clut_ta <= '0';
             
-            if st_shift_mode_cs and not(nFB_WR) and fb_b(0) then
+            if st_shift_mode_cs and nFB_WR = '1' and fb_b(0) = '1' then
                 st_shift_mode <= fb_ad(25 downto 24);
             end if;
             
@@ -503,7 +472,11 @@ begin
                 end if;
             end if;
                 
-            clut_ta <=  (acp_clut_cs or falcon_clut_cs or st_clut_cs) and not(video_mod_ta);
+            if (acp_clut_cs or falcon_clut_cs or st_clut_cs) and video_mod_ta = '0' then
+                clut_ta <= '1';
+            else
+                clut_ta <= '0';
+            end if;
 
             if acp_vctr_cs then
                 if not nFB_WR then
@@ -515,9 +488,11 @@ begin
             end if;
 
             -- set ST or Falcon shift mode when write x..shift registers
-            if (falcon_shift_mode_cs or st_shift_mode_cs) and not nFB_WR then
-                acp_vctr(7) <= falcon_shift_mode_cs and not nFB_WR and not acp_video;
-                acp_vctr(6) <= st_shift_mode_cs and not nFB_WR and not acp_video;
+            if (falcon_shift_mode_cs or st_shift_mode_cs) and acp_video = '0' then
+                if not nFB_WR then
+                    if falcon_shift_mode_cs then acp_vctr(7) <= '1'; else acp_vctr(7) <= '0'; end if;
+                    if st_shift_mode_cs then acp_vctr(6) <= '1'; else acp_vctr(6) <= '0'; end if;
+                end if;
             end if;
             
             if not vr_busy then
@@ -530,96 +505,101 @@ begin
                 end if;
             end if;
             
-            video_reconfig <= video_pll_reconfig_cs and not nFB_WR and not vr_busy and not video_reconfig;
+            if video_pll_reconfig_cs and nFB_WR = '0' and vr_busy = '0' and video_reconfig = '0' then
+                video_reconfig <= '1';
+            else
+                video_reconfig <= '0';
+            end if;
+
             
-            if ccr_cs and not nFB_WR then
+            if ccr_cs and nFB_WR = '0' then
                 if fb_b(1) then ccr(23 downto 16) <= fb_ad(23 downto 16); end if;
                 if fb_b(2) then ccr(15 downto 8) <= fb_ad(15 downto 8); end if;
                 if fb_b(3) then ccr(7 downto 0) <= fb_ad(7 downto 0); end if;                    
             end if;
             
-            if sys_ctr_cs and not nFB_WR and fb_b(3) then
+            if sys_ctr_cs and nFB_WR = '0' and fb_b(3) = '1' then
                 sys_ctr(6 downto 0) <= fb_ad(22 downto 16);
             end if;
             
-            if vdl_lof_cs and not nFB_WR then
+            if vdl_lof_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_lof(15 downto 8) <= fb_ad(31 downto 24); end if;
                 if fb_b(3) then vdl_lof(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_lwd_cs and not nFB_WR then
+            if vdl_lwd_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_lwd(15 downto 8) <= fb_ad(31 downto 24); end if;
                 if fb_b(1) then vdl_lwd(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hht_cs and not nFB_WR then
+            if vdl_hht_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_hht(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_hht(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hbe_cs and not nFB_WR then
+            if vdl_hbe_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_hbe(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_hbe(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hdb_cs and not nFB_WR then
+            if vdl_hdb_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_hdb(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_hdb(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hde_cs and not nFB_WR then
+            if vdl_hde_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_hde(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_hde(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hbb_cs and not nFB_WR then
+            if vdl_hbb_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_hbb(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_hbb(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_hss_cs and not nFB_WR then
+            if vdl_hss_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_hss(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_hss(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
             -- vertical
             
-            if vdl_vbe_cs and not nFB_WR then
+            if vdl_vbe_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_vbe(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_vbe(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vdb_cs and not nFB_WR then
+            if vdl_vdb_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_vdb(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_vdb(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vde_cs and not nFB_WR then
+            if vdl_vde_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_vde(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_vde(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vbb_cs and not nFB_WR then
+            if vdl_vbb_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_vbb(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_vbb(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vss_cs and not nFB_WR then
+            if vdl_vss_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_vss(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_vss(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vft_cs and not nFB_WR then
+            if vdl_vft_cs and nFB_WR = '0' then
                 if fb_b(2) then vdl_vft(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(3) then vdl_vft(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vct_cs and not nFB_WR then
+            if vdl_vct_cs and nFB_WR = '0' then
                 if fb_b(0) then vdl_vct(12 downto 8) <= fb_ad(28 downto 24); end if;
                 if fb_b(1) then vdl_vct(7 downto 0) <= fb_ad(23 downto 16); end if;
             end if;
             
-            if vdl_vmd_cs and not nFB_WR then
+            if vdl_vmd_cs and nFB_WR = '0' then
                 if fb_b(3) then vdl_vmd <= fb_ad(19 downto 16); end if;
             end if;
 
@@ -645,9 +625,12 @@ begin
                 end if;
             end if;
             
-            vr_wr <= video_pll_config_cs and not nFB_WR and not vr_busy and not vr_wr;
+            if video_pll_config_cs and nFB_WR = '0' and vr_busy = '0' and vr_wr = '0' then
+                vr_wr <= '1';
+            else
+                vr_wr <= '0';
+            end if;
         end if;  -- if rising_edge()
-        
     end process p;
     
     p_pxl: process(all)
