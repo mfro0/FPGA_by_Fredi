@@ -1,4 +1,4 @@
-name: Setup GHDL
+name: VUNIT check
 on:
   push:
 
