@@ -101,8 +101,8 @@ architecture rtl of video_mod_mux_clutctr is
     alias acp_16                    : std_logic is acp_vctr(3);
     alias acp_8                     : std_logic is acp_vctr(4);
     alias acp_1                     : std_logic is acp_vctr(5);
-    alias falcon_shift              : std_logic is acp_vctr(6);
-    alias st_shift                  : std_logic is acp_vctr(7);
+    alias st_video                  : std_logic is acp_vctr(6);
+    alias falcon_video              : std_logic is acp_vctr(7);
     alias vclk                      : std_logic_vector(1 downto 0) is acp_vctr(9 downto 8);
     alias sync                      : std_logic is acp_vctr(15);
     alias rand_ena                  : std_logic is acp_vctr(25);
@@ -180,8 +180,6 @@ architecture rtl of video_mod_mux_clutctr is
     signal rand_unten               : std_logic_vector(12 downto 0);
     signal vs_start                 : std_logic_vector(12 downto 0);
     signal v_total                  : std_logic_vector(12 downto 0);
-    signal falcon_video             : std_logic;
-    signal st_video                 : std_logic;
     
     signal videl_cs                 : boolean;
     signal vdl_vbe                  : std_logic_vector(12 downto 0);
@@ -239,16 +237,16 @@ begin
     falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) = '1' and falcon_clut_cs and nFB_WR = '0'else (others => '0');
     
     -- ST clut
-    st_clut_cs <= adr_match(fb_adr, STE_PAL, fbcs, 1, 16#40#);
+    st_clut_cs <= adr_match(fb_adr, STE_PAL, fbcs, 1, 16#20#);
     st_clut_rd <= '1' when st_clut_cs and nFB_OE = '0' else '0';
     st_clut_wr <= fb_16b when st_clut_cs and nFB_WR = '0' else (others => '0');
     
     st_shift_mode_cs <= adr_match(fb_adr, STSHIFT, fbcs, 1, 2);
     falcon_shift_mode_cs <= adr_match(fb_adr, SPSHIFT, fbcs, 1, 2);
-    clut_off(3 downto 0) <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
+    clut_off <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
     acp_vctr_cs <= adr_match(fb_adr, VCTR, fbcs, 2, 4);
-    nPD_VGA <= acp_vctr(1);
+    nPD_VGA <= dac_on;
     
     -- video PLL configuration
     video_pll_config_cs <= adr_match(fb_adr, ACP_PLL_CFG, fbcs, 2, 16#200#) and fb_b(0) = '1' and fb_b(1) = '1'; 
@@ -262,8 +260,6 @@ begin
     
     acp_clut <= (acp_video and (color1 or color8)) or (st_video and color1);
     
-    falcon_video <= acp_vctr(7);
-    st_video <= acp_vctr(6) and not acp_vctr(7);
     falcon_clut <= falcon_video and not acp_video and not color16;
     st_clut <= st_video and not acp_video and not color1;
     
@@ -428,9 +424,9 @@ begin
                    clk17m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '1' else
                    clk25m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '1' and te = '0' else
                    clk33m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '0' else 
-                   clk25m    when acp_video = '1' and acp_vctr(9) = '1' and acp_vctr(8) = '1' else
-                   clk33m    when acp_video = '1' and acp_vctr(9 downto 8) = "01" else
-                   clk_video when acp_video = '1' and acp_vctr(9) = '1' else
+                   clk25m    when acp_video = '1' and vclk = "00" else
+                   clk33m    when acp_video = '1' and vclk = "01" else
+                   clk_video when acp_video = '1' and vclk = "10" else
                    '0';
 
     p_shiftmode : process(all)
@@ -443,7 +439,8 @@ begin
                 when "00" => color4 <= '1'; color1 <= '0'; color2 <= '0';
                 when others => null;
             end case;
-        elsif falcon_video then
+        end if;
+        if falcon_video then
             case falcon_shift_mode is
                 when 11x"400" => color1 <= '1'; color4 <= '0'; color8 <= '0'; color16 <= '0';
                 when 11x"000" => color4 <= '1'; color1 <= '0'; color8 <= '0'; color16 <= '0';
@@ -451,8 +448,9 @@ begin
                 when 11x"100" => color16 <= '1'; color1 <= '0'; color4 <= '0'; color8 <= '0';
                 when others => null;
             end case;
-        elsif acp_video then
-            (color1, color8, color16 , color24) <= acp_vctr(5 downto 2);
+        end if;
+        if acp_video then
+            (color1, color8, color16, color24) <= acp_vctr(5 downto 2);
         end if;
     end process p_shiftmode;
     
@@ -488,10 +486,15 @@ begin
             end if;
 
             -- set ST or Falcon shift mode when write x..shift registers
-            if (falcon_shift_mode_cs or st_shift_mode_cs) and acp_video = '0' then
-                if not nFB_WR then
-                    if falcon_shift_mode_cs then acp_vctr(7) <= '1'; else acp_vctr(7) <= '0'; end if;
-                    if st_shift_mode_cs then acp_vctr(6) <= '1'; else acp_vctr(6) <= '0'; end if;
+            if (falcon_shift_mode_cs or st_shift_mode_cs) and nFB_WR = '0' then
+                if falcon_shift_mode_cs and nFB_WR = '0' and acp_video = '0' then
+                    acp_vctr(7) <= '1';
+                else acp_vctr(7) <= '0';
+                end if;
+                if st_shift_mode_cs and nFB_WR = '0' and acp_video = '0' then
+                    acp_vctr(6) <= '1';
+                else
+                    acp_vctr(6) <= '0';
                 end if;
             end if;
             
@@ -499,10 +502,8 @@ begin
                 vr_dout <= vr_d;
             end if;
             
-            if vr_wr then
-                if fb_adr(8 downto 0) = 9x"04" then
-                    vr_frq <= fb_ad(23 downto 16);
-                end if;
+            if vr_wr = '1' and fb_adr(8 downto 0) = 9x"04" then
+                vr_frq <= fb_ad(23 downto 16);
             end if;
             
             if video_pll_reconfig_cs and nFB_WR = '0' and vr_busy = '0' and video_reconfig = '0' then
@@ -512,10 +513,22 @@ begin
             end if;
 
             
-            if ccr_cs and nFB_WR = '0' then
-                if fb_b(1) then ccr(23 downto 16) <= fb_ad(23 downto 16); end if;
-                if fb_b(2) then ccr(15 downto 8) <= fb_ad(15 downto 8); end if;
-                if fb_b(3) then ccr(7 downto 0) <= fb_ad(7 downto 0); end if;                    
+            if ccr_cs and fb_b(1) = '1' and nFB_WR = '0' then
+                if ccr_cs and fb_b(1) = '1' and nFB_WR = '0' then
+                    ccr(23 downto 16) <= fb_ad(23 downto 16);
+                else
+                    ccr(23 downto 16) <= (others => '0');
+                end if;
+                if ccr_cs and fb_b(2) = '1' and nFB_WR = '0' then
+                    ccr(15 downto 8) <= fb_ad(15 downto 8);
+                else
+                    ccr(15 downto 8) <= (others => '0');
+                end if;
+                if ccr_cs and fb_b(3) = '1' and nFB_WR = '0' then
+                    ccr(7 downto 0) <= fb_ad(7 downto 0);
+                else
+                    ccr(7 downto 0) <= (others => '0');
+                end if;                    
             end if;
             
             if sys_ctr_cs and nFB_WR = '0' and fb_b(3) = '1' then
@@ -652,10 +665,24 @@ begin
             if vhcnt = hs_start and inter_zei = '1' then dop_fifo_clr <= '1'; else dop_fifo_clr <= '0';  end if; -- delete fifo at end of odd lines
             
             -- counters
-            if vhcnt = std_logic_vector(unsigned(h_total) - 1) then last <= '1'; else last <= '0'; end if;
-            if not(last) then vhcnt <= std_logic_vector(unsigned(vhcnt) + 1); else vhcnt <= (others => '0'); end if;
+            if vhcnt = std_logic_vector(unsigned(h_total) - 1) then
+                last <= '1';
+            else
+                last <= '0';
+            end if;
+
+            if not(last) then
+                vhcnt <= std_logic_vector(unsigned(vhcnt) + 1);
+            else
+                vhcnt <= (others => '0');
+            end if;
+            
             if last then
-                if vvcnt = v_total then vvcnt <= (others => '0'); else vvcnt <= std_logic_vector(unsigned(vvcnt) + 1); end if;
+                if vvcnt = v_total then
+                    vvcnt <= (others => '0');
+                else
+                    vvcnt <= std_logic_vector(unsigned(vvcnt) + 1);
+                end if;
             end if;
             
             -- display on/off
@@ -752,8 +779,8 @@ begin
                 end if;
             end if;
             
-            if vvcnt = 13d"1" then
-                if last then
+            if last then
+                if vvcnt = 13d"1" then
                     start_zeile <= '1';
                 else
                     start_zeile <= '0';
@@ -782,6 +809,8 @@ begin
                     (sub_pixel_cnt(2 downto 0) = 3d"1" and color16 = '1') or
                     (sub_pixel_cnt(1 downto 0) = 2d"1" and color24 = '1') then
                     fifo_rde <= '1';
+                else
+                    fifo_rde <= '0';
                 end if;
             elsif sync_pix or sync_pix1 or sync_pix2 then
                 fifo_rde <= '1';
