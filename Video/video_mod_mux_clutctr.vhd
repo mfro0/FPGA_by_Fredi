@@ -103,7 +103,7 @@ architecture rtl of video_mod_mux_clutctr is
     alias acp_1                     : std_logic is acp_vctr(5);
     alias st_video                  : std_logic is acp_vctr(6);
     alias falcon_video              : std_logic is acp_vctr(7);
-    alias vclk                      : std_logic_vector(1 downto 0) is acp_vctr(9 downto 8);
+    alias acp_vclk                  : std_logic_vector(1 downto 0) is acp_vctr(9 downto 8);
     alias sync                      : std_logic is acp_vctr(15);
     alias rand_ena                  : std_logic is acp_vctr(25);
 
@@ -132,7 +132,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdo_zl                   : std_logic;
     signal vdo_on                   : std_logic;
     signal vdo_off                  : std_logic;
-    signal vhcnt                    : std_logic_vector(12 downto 0);
+    signal vhcnt                    : unsigned(12 downto 0);
     signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
     signal vvcnt                    : std_logic_vector(12 downto 0) := (others => '0');
     
@@ -156,8 +156,8 @@ architecture rtl of video_mod_mux_clutctr is
     signal startp                   : std_logic_vector(12 downto 0);
     signal hdis_end                 : std_logic_vector(12 downto 0);
     signal mulf                     : std_logic_vector(12 downto 0);
-    signal hs_start                 : std_logic_vector(12 downto 0);
-    signal h_total                  : std_logic_vector(12 downto 0);
+    signal hs_start                 : unsigned(12 downto 0);
+    signal h_total                  : unsigned(12 downto 0);
     signal hdis_len                 : std_logic_vector(12 downto 0);
     signal wpl                      : std_logic_vector(15 downto 0);
     signal vdl_hht                  : std_logic_vector(12 downto 0);
@@ -424,9 +424,9 @@ begin
                    clk17m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '1' else
                    clk25m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '1' and te = '0' else
                    clk33m    when acp_video = '0' and (falcon_video = '1' or st_video = '1') and vdl_vct(2) = '0' and te = '0' else 
-                   clk25m    when acp_video = '1' and vclk = "00" else
-                   clk33m    when acp_video = '1' and vclk = "01" else
-                   clk_video when acp_video = '1' and vclk = "10" else
+                   clk25m    when acp_video = '1' and acp_vclk = "00" else
+                   clk33m    when acp_video = '1' and acp_vclk = "01" else
+                   clk_video when acp_video = '1' and acp_vclk = "10" else
                    '0';
 
     p_shiftmode : process(all)
@@ -488,13 +488,13 @@ begin
             -- set ST or Falcon shift mode when write x..shift registers
             if (falcon_shift_mode_cs or st_shift_mode_cs) and nFB_WR = '0' then
                 if falcon_shift_mode_cs and nFB_WR = '0' and acp_video = '0' then
-                    acp_vctr(7) <= '1';
-                else acp_vctr(7) <= '0';
+                    falcon_video <= '1';
+                else falcon_video <= '0';
                 end if;
                 if st_shift_mode_cs and nFB_WR = '0' and acp_video = '0' then
-                    acp_vctr(6) <= '1';
+                    st_video <= '1';
                 else
-                    acp_vctr(6) <= '0';
+                    st_video <= '0';
                 end if;
             end if;
             
@@ -619,23 +619,20 @@ begin
             
             -- horizontal sync length in pixel clk
             if acp_video = '0' and (falcon_video = '1' or st_video = '1') then
-                if vdl_vct(2) and te then
-                    hsy_len <= 8d"19";
-                elsif not vdl_vct(2) and te then
-                    hsy_len <= 8d"25";
-                elsif vdl_vct(2) and not te then
-                    hsy_len <= 8d"38";
-                elsif not vdl_vct(2) and not te then
-                    hsy_len <= 8d"50";
-                end if;
+                case std_logic_vector'(vdl_vct(2) & te) is
+                    when "11" => hsy_len <= 8d"19";
+                    when "01" => hsy_len <= 8d"25";
+                    when "10" => hsy_len <= 8d"38";
+                    when "00" => hsy_len <= 8d"50";
+                    when others => null;
+                end case;
             elsif acp_video = '1' then
-                if acp_vctr(9 downto 8) = "00" then
-                    hsy_len <= 8d"38";
-                elsif acp_vctr(9 downto 8) = "01" then
-                    hsy_len <= 8d"50";
-                elsif acp_vctr(9) = '1' then
-                    hsy_len <= vr_frq;
-                end if;
+                case acp_vclk is
+                    when "00" => hsy_len <= 8d"38";
+                    when "01" => hsy_len <= 8d"50";
+                    when "10" => hsy_len <= vr_frq;
+                    when others => null;
+                end case;
             end if;
             
             if video_pll_config_cs and nFB_WR = '0' and vr_busy = '0' and vr_wr = '0' then
@@ -665,14 +662,14 @@ begin
             if vhcnt = hs_start and inter_zei = '1' then dop_fifo_clr <= '1'; else dop_fifo_clr <= '0';  end if; -- delete fifo at end of odd lines
             
             -- counters
-            if vhcnt = std_logic_vector(unsigned(h_total) - 1) then
+            if vhcnt = h_total - 1 then
                 last <= '1';
             else
                 last <= '0';
             end if;
 
             if not(last) then
-                vhcnt <= std_logic_vector(unsigned(vhcnt) + 1);
+                vhcnt <= vhcnt + 1;
             else
                 vhcnt <= (others => '0');
             end if;
@@ -692,13 +689,13 @@ begin
                 dpo_zl <= '0';
             end if;
             
-            if vhcnt = std_logic_vector(unsigned(rand_links) - 1) then
+            if vhcnt = unsigned(rand_links) - 1 then
                 dpo_on <= '1';
             else
                 dpo_on <= '0';
             end if;
             
-            if vhcnt = std_logic_vector(unsigned(rand_rechts) - 2) then
+            if vhcnt = unsigned(rand_rechts) - 2 then
                 dpo_off <= '1';
             else
                 dpo_off <= '0';
@@ -707,13 +704,13 @@ begin
             disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
             
             -- data transfer on/off
-            if vhcnt = std_logic_vector(unsigned(hdis_start) - 2) then 
+            if vhcnt = unsigned(hdis_start) - 2 then 
                 vdo_on <= '1';
             else
                 vdo_on <= '0';
             end if;
 
-            if vhcnt = std_logic_vector(unsigned(hdis_end) - 1) then
+            if vhcnt = unsigned(hdis_end) - 1 then
                 vdo_off <= '1';
             else
                 vdo_off <= '0';
@@ -728,7 +725,7 @@ begin
             vdtron <= (vdtron and not(vdo_off)) or (vdo_on and vdo_zl);
             
             -- delay and sync
-            if vhcnt = std_logic_vector(unsigned(hs_start) - 2) then
+            if vhcnt = hs_start - 2 then
                 hsync_start <= '1';
             else
                 hsync_start <= '0';
@@ -855,11 +852,11 @@ begin
     rand_rechts <= vdl_hbb when acp_video else
                 std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, rand_rechts'length)) when not acp_video else
                 (others => '0');
-    hs_start <= vdl_hss when acp_video else
-                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, hs_start'length)) when not acp_video else
+    hs_start <= unsigned(vdl_hss) when acp_video else
+                resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, hs_start'length) when not acp_video else
                 (others => '0');
-    h_total <= vdl_hht when acp_video else
-               std_logic_vector(resize((unsigned(vdl_hht) + 2) * 2 * unsigned(mulf), h_total'length)) when not acp_video else
+    h_total <= unsigned(vdl_hht) when acp_video else
+               resize((unsigned(vdl_hht) + 2) * 2 * unsigned(mulf), h_total'length) when not acp_video else
                (others => '0');
                
     -- timing vertical
