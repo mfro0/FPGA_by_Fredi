@@ -748,7 +748,7 @@ begin
                 vsync_i <= '0';
             end if;
             
-            for i in 0 to 9 loop
+            for i in 0 to 8 loop
                 verz(i + 1) <= verz(i);
             end loop;
 
@@ -766,9 +766,9 @@ begin
             else
                 verz(0)(2) <= '0';
             end if;
-            nBLANK <= verz(6)(0);
-            hsync <= verz(7)(1);
-            vsync <= verz(7)(2);
+            nBLANK <= verz(8)(0);
+            hsync <= verz(9)(1);
+            vsync <= verz(9)(2);
             
             -- fifo clr
             if last then
