@@ -42,7 +42,7 @@ package video_regs is
     constant VDL_VCT    : addr_t := x"FFFF82C0";   -- Video Master Control
     constant VDL_VMD    : addr_t := x"FFFF82C2";   -- Falcon Video Control
 
-    constant VDL_CLUT   : addr_t := x"FFFF8900";   -- Falcon palette (1024 bytes)
+    constant VDL_CLUT   : addr_t := x"FFFF9800";   -- Falcon palette (1024 bytes)
 
     -- ACP registers
     constant ACP_CLUT           : addr_t := x"F0000000";        -- ACP color lookup table. 1024 bytes
