@@ -134,7 +134,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdo_off                  : std_logic;
     signal vhcnt                    : unsigned(12 downto 0);
     signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
-    signal vvcnt                    : std_logic_vector(12 downto 0) := (others => '0');
+    signal vvcnt                    : unsigned(12 downto 0) := (others => '0');
     
     type verz_t is array(10 downto 0) of std_logic_vector(2 downto 0);
     signal verz                     : verz_t := (others => (others => '0'));
@@ -179,7 +179,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdis_end                 : std_logic_vector(12 downto 0);
     signal rand_unten               : std_logic_vector(12 downto 0);
     signal vs_start                 : std_logic_vector(12 downto 0);
-    signal v_total                  : std_logic_vector(12 downto 0);
+    signal v_total                  : unsigned(12 downto 0);
     
     signal videl_cs                 : boolean;
     signal vdl_vbe                  : std_logic_vector(12 downto 0);
@@ -678,12 +678,12 @@ begin
                 if vvcnt = v_total then
                     vvcnt <= (others => '0');
                 else
-                    vvcnt <= std_logic_vector(unsigned(vvcnt) + 1);
+                    vvcnt <= vvcnt + 1;
                 end if;
             end if;
             
             -- display on/off
-            if (unsigned(vvcnt) > unsigned(rand_oben) and unsigned(vvcnt) <  unsigned(rand_unten)) then
+            if (vvcnt > unsigned(rand_oben) and vvcnt <  unsigned(rand_unten)) then
                 dpo_zl <= '1';
             else
                 dpo_zl <= '0';
@@ -716,7 +716,7 @@ begin
                 vdo_off <= '0';
             end if;
             
-            if unsigned(vvcnt) > unsigned(vdis_start) and unsigned(vvcnt) <= unsigned(vdis_end) then
+            if vvcnt > unsigned(vdis_start) and vvcnt <= unsigned(vdis_end) then
                 vdo_zl <= '1';
             else
                 vdo_zl <= '0';
@@ -739,7 +739,7 @@ begin
                 end if;
             end if;
             
-            if vvcnt(12 downto 1) = vs_start(12 downto 1) then
+            if vvcnt(12 downto 1) = unsigned(vs_start(12 downto 1)) then
                 vsync_i <= '1';
             else
                 vsync_i <= '0';
@@ -769,7 +769,7 @@ begin
             
             -- fifo clr
             if last then
-                if vvcnt = std_logic_vector(unsigned(vdis_end) + 2) then
+                if vvcnt = unsigned(vdis_end) + 2 then
                     clr_fifo <= '1';
                 else
                     clr_fifo <= '0';
@@ -829,7 +829,7 @@ begin
 
     rand_on <= rand(6);
     nSYNC <= '0';
-    dpzf_clkena <= '1' when unsigned(vvcnt) > d"4" else '0';
+    dpzf_clkena <= '1' when vvcnt > d"4" else '0';
     
     -- timing horizontal
     startp <= std_logic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
@@ -884,9 +884,9 @@ begin
                 vdl_vss                    when vdl_vct(0) = '1' and acp_video = '0' else
                 (others => '0');
                 
-    v_total <= vdl_vft                                                    when                      acp_video = '1' else
-               "0" & std_logic_vector(unsigned(vdl_vft(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video = '0' else
-               std_logic_vector(unsigned(vdl_vft) + 1)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    v_total <= unsigned(vdl_vft)                        when                      acp_video = '1' else
+               "0" & unsigned(vdl_vft(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
+               unsigned(vdl_vft) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
                (others => '0');
 end architecture rtl;
 		
