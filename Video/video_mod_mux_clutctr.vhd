@@ -149,17 +149,17 @@ architecture rtl of video_mod_mux_clutctr is
     signal te                       : std_logic;
     
     -- horizontal
-    signal rand_links               : std_logic_vector(12 downto 0);
-    signal rand_rechts              : std_logic_vector(12 downto 0);
+    signal rand_links               : unsigned(12 downto 0);
+    signal rand_rechts              : unsigned(12 downto 0);
 
-    signal hdis_start               : std_logic_vector(12 downto 0);
-    signal startp                   : std_logic_vector(12 downto 0);
-    signal hdis_end                 : std_logic_vector(12 downto 0);
+    signal hdis_start               : unsigned(12 downto 0);
+    signal startp                   : unsigned(12 downto 0);
+    signal hdis_end                 : unsigned(12 downto 0);
     signal mulf                     : std_logic_vector(12 downto 0);
     signal hs_start                 : unsigned(12 downto 0);
     signal h_total                  : unsigned(12 downto 0);
-    signal hdis_len                 : std_logic_vector(12 downto 0);
-    signal wpl                      : std_logic_vector(15 downto 0);
+    signal hdis_len                 : unsigned(12 downto 0);
+    signal wpl                      : unsigned(15 downto 0);
     signal vdl_hht                  : std_logic_vector(12 downto 0);
     signal vdl_hht_cs               : boolean;
     signal vdl_hbe                  : std_logic_vector(12 downto 0);
@@ -174,11 +174,11 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdl_hss_cs               : boolean;
 
     -- vertical
-    signal rand_oben                : std_logic_vector(12 downto 0);
-    signal vdis_start               : std_logic_vector(12 downto 0);
-    signal vdis_end                 : std_logic_vector(12 downto 0);
-    signal rand_unten               : std_logic_vector(12 downto 0);
-    signal vs_start                 : std_logic_vector(12 downto 0);
+    signal rand_oben                : unsigned(12 downto 0);
+    signal vdis_start               : unsigned(12 downto 0);
+    signal vdis_end                 : unsigned(12 downto 0);
+    signal rand_unten               : unsigned(12 downto 0);
+    signal vs_start                 : unsigned(12 downto 0);
     signal v_total                  : unsigned(12 downto 0);
     
     signal videl_cs                 : boolean;
@@ -311,10 +311,10 @@ begin
     -- width in pixel
     hdis_len <= 13d"320" when te and not acp_video else
                 13d"640" when not te and not acp_video else
-                std_logic_vector(unsigned(hdis_end) - unsigned(hdis_start) + 1) when acp_video else
+                hdis_end - hdis_start + 1 when acp_video else
                 (others => '0');
 
-    wpl <= vdl_lwd when not acp_video else
+    wpl <= unsigned(vdl_lwd) when not acp_video else
            (7d"0" & hdis_len(12 downto 4)) when color1 and acp_video else
            (4d"0" & hdis_len(12 downto 1)) when color8 and acp_video else
            (3d"0" & hdis_len) when color16 and acp_video else
@@ -337,13 +337,13 @@ begin
             elsif vdl_lof_cs then
                 fb_ad(31 downto 16) <= vdl_lof;
             elsif vdl_lwd_cs then
-                fb_ad(31 downto 16) <= wpl;
+                fb_ad(31 downto 16) <= std_logic_vector(wpl);
             elsif vdl_bpp_cs then
                 fb_ad(31 downto 16) <= 11d"0" & color24 & color16 & color8 & color4 & color1;
             elsif vdl_ph_cs then
-                fb_ad(31 downto 16) <= 3d"0" & hdis_len;
+                fb_ad(31 downto 16) <= 3d"0" & std_logic_vector(hdis_len);
             elsif vdl_pv_cs then
-                fb_ad(31 downto 16) <= 3d"0" & std_logic_vector(unsigned(vdis_end) - unsigned(vdis_start) + 1);
+                fb_ad(31 downto 16) <= 3d"0" & std_logic_vector(vdis_end - vdis_start + 1);
             elsif vdl_hbe_cs then
                 fb_ad(31 downto 16) <= 3d"0" & vdl_hbe;
             elsif vdl_hdb_cs then
@@ -683,19 +683,19 @@ begin
             end if;
             
             -- display on/off
-            if (vvcnt > unsigned(rand_oben) and vvcnt <  unsigned(rand_unten)) then
+            if (vvcnt > rand_oben and vvcnt <  rand_unten) then
                 dpo_zl <= '1';
             else
                 dpo_zl <= '0';
             end if;
             
-            if vhcnt = unsigned(rand_links) - 1 then
+            if vhcnt = rand_links - 1 then
                 dpo_on <= '1';
             else
                 dpo_on <= '0';
             end if;
             
-            if vhcnt = unsigned(rand_rechts) - 2 then
+            if vhcnt = rand_rechts - 2 then
                 dpo_off <= '1';
             else
                 dpo_off <= '0';
@@ -704,19 +704,19 @@ begin
             disp_on <= (disp_on and not(dpo_off)) or (dpo_on and dpo_zl);
             
             -- data transfer on/off
-            if vhcnt = unsigned(hdis_start) - 2 then 
+            if vhcnt = hdis_start - 2 then 
                 vdo_on <= '1';
             else
                 vdo_on <= '0';
             end if;
 
-            if vhcnt = unsigned(hdis_end) - 1 then
+            if vhcnt = hdis_end - 1 then
                 vdo_off <= '1';
             else
                 vdo_off <= '0';
             end if;
             
-            if vvcnt > unsigned(vdis_start) and vvcnt <= unsigned(vdis_end) then
+            if vvcnt > vdis_start and vvcnt <= vdis_end then
                 vdo_zl <= '1';
             else
                 vdo_zl <= '0';
@@ -739,7 +739,7 @@ begin
                 end if;
             end if;
             
-            if vvcnt(12 downto 1) = unsigned(vs_start(12 downto 1)) then
+            if vvcnt(12 downto 1) = vs_start(12 downto 1) then
                 vsync_i <= '1';
             else
                 vsync_i <= '0';
@@ -769,7 +769,7 @@ begin
             
             -- fifo clr
             if last then
-                if vvcnt = unsigned(vdis_end) + 2 then
+                if vvcnt = vdis_end + 2 then
                     clr_fifo <= '1';
                 else
                     clr_fifo <= '0';
@@ -832,25 +832,25 @@ begin
     dpzf_clkena <= '1' when vvcnt > d"4" else '0';
     
     -- timing horizontal
-    startp <= std_logic_vector(unsigned(rand_links) + unsigned(rand_rechts) - unsigned(hdis_len));
+    startp <= rand_links + rand_rechts - hdis_len;
     
-    rand_links <= vdl_hbe                      when                   acp_video = '1' else
-                  vdl_hbe                      when mulf = 13d"1" and acp_video = '0' else
-                  vdl_hbe(11 downto 0) & "0"   when mulf = 13d"2" and acp_video = '0' else
-                  vdl_hbe(10 downto 0) & "00"  when mulf = 13d"4" and acp_video = '0' else
-                  vdl_hbe(9 downto 0) & "000"  when mulf = 13d"8" and acp_video = '0' else
-                  vdl_hbe(8 downto 0) & "0000" when mulf = 13d"16" and acp_video = '0' else
+    rand_links <= unsigned(vdl_hbe)                      when                   acp_video = '1' else
+                  unsigned(vdl_hbe)                      when mulf = 13d"1" and acp_video = '0' else
+                  unsigned(vdl_hbe(11 downto 0)) & "0"   when mulf = 13d"2" and acp_video = '0' else
+                  unsigned(vdl_hbe(10 downto 0)) & "00"  when mulf = 13d"4" and acp_video = '0' else
+                  unsigned(vdl_hbe(9 downto 0)) & "000"  when mulf = 13d"8" and acp_video = '0' else
+                  unsigned(vdl_hbe(8 downto 0)) & "0000" when mulf = 13d"16" and acp_video = '0' else
                   (others => '0');
                   
-    hdis_start <= vdl_hdb when acp_video else
-                  std_logic_vector((unsigned(rand_links) + 1)) when not vdl_vct(0) and not acp_video else
-                  "0" & std_logic_vector(unsigned(startp(12 downto 1)) + 1) when vdl_vct(0) and not acp_video else
+    hdis_start <= unsigned(vdl_hdb) when acp_video else
+                  rand_links + 1 when not vdl_vct(0) and not acp_video else
+                  "0" & startp(12 downto 1) + 1 when vdl_vct(0) and not acp_video else
                   (others => '0');
-    hdis_end <= vdl_hde when acp_video else
-                std_logic_vector(unsigned(hdis_start) + unsigned(hdis_len) - 1) when not acp_video else
+    hdis_end <= unsigned(vdl_hde) when acp_video else
+                hdis_start + hdis_len - 1 when not acp_video else
                 (others => '0');
-    rand_rechts <= vdl_hbb when acp_video else
-                std_logic_vector(resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, rand_rechts'length)) when not acp_video else
+    rand_rechts <= unsigned(vdl_hbb) when acp_video else
+                resize(unsigned(vdl_hht) + 2 + unsigned(vdl_hbb) * unsigned(mulf) + 1, rand_rechts'length) when not acp_video else
                 (others => '0');
     hs_start <= unsigned(vdl_hss) when acp_video else
                 resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, hs_start'length) when not acp_video else
@@ -860,28 +860,28 @@ begin
                (others => '0');
                
     -- timing vertical
-    rand_oben <= vdl_vbe                    when acp_video = '1' else
-                 "0" & vdl_vbe(12 downto 1) when vdl_vct(0) = '0' and acp_video = '0' else
-                 vdl_vbe                    when vdl_vct(0) = '1' and acp_video = '0' else
+    rand_oben <= unsigned(vdl_vbe)                    when acp_video = '1' else
+                 "0" & unsigned(vdl_vbe(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
+                 unsigned(vdl_vbe)                    when vdl_vct(0) = '1' and acp_video = '0' else
                  (others => '0');
                  
-    vdis_start <= vdl_vdb                                                    when                      acp_video = '1' else
-                  "0" & std_logic_vector(unsigned(vdl_vdb(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video = '0' else
-                  std_logic_vector(unsigned(vdl_vdb) + 1)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vdis_start <= unsigned(vdl_vdb)                        when                      acp_video = '1' else
+                  "0" & unsigned(vdl_vdb(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
+                  unsigned(vdl_vdb) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
                   (others => '0');
                   
-    vdis_end <= vdl_vde                    when                      acp_video = '1' else
-                "0" & vdl_vde(12 downto 1) when vdl_vct(0) = '0' and acp_video = '0' else
-                vdl_vde                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vdis_end <= unsigned(vdl_vde)                    when                      acp_video = '1' else
+                "0" & unsigned(vdl_vde(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
+                unsigned(vdl_vde)                    when vdl_vct(0) = '1' and acp_video = '0' else
                 (others => '0');
                 
-    rand_unten <= vdl_vbb                                                                         when acp_video = '1' else
-                  "0" & std_logic_vector(unsigned(vdl_vbb(12 downto 1)) + 1) when vdl_vct(0) = '0' and acp_video = '0' else
-                  std_logic_vector(unsigned(vdl_vbb) + 1)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    rand_unten <= unsigned(vdl_vbb)                        when acp_video = '1' else
+                  "0" & unsigned(vdl_vbb(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
+                  unsigned(vdl_vbb) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
                   (others => '0');
-    vs_start <= vdl_vss                    when                      acp_video = '1' else
-                "0" & vdl_vss(12 downto 1) when vdl_vct(0) = '0' and acp_video = '0' else
-                vdl_vss                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vs_start <= unsigned(vdl_vss)                    when                      acp_video = '1' else
+                "0" & unsigned(vdl_vss(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
+                unsigned(vdl_vss)                    when vdl_vct(0) = '1' and acp_video = '0' else
                 (others => '0');
                 
     v_total <= unsigned(vdl_vft)                        when                      acp_video = '1' else
