@@ -47,7 +47,7 @@ package video_regs is
     -- ACP registers
     constant ACP_CLUT           : addr_t := x"F0000000";        -- ACP color lookup table. 1024 bytes
     constant VCTR               : addr_t := x"F0000400";
-    constant CCR                : addr_t := x"F0000404";
+    constant CCR                : addr_t := x"F0040404";
     constant ACP_PLL_CFG        : addr_t := x"F0000600";        -- PLL config x"200" bytes
     constant ACP_PLL_RECFG      : addr_t := x"F0000800";        -- bit 31 = '1' = busy
 

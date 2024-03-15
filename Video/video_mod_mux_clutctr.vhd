@@ -136,7 +136,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
     signal vvcnt                    : std_logic_vector(12 downto 0) := (others => '0');
     
-    type verz_t is array(9 downto 0) of std_logic_vector(2 downto 0);
+    type verz_t is array(10 downto 0) of std_logic_vector(2 downto 0);
     signal verz                     : verz_t := (others => (others => '0'));
     signal rand                     : std_logic_vector(6 downto 0);
     signal rand_on                  : std_logic;
@@ -748,7 +748,7 @@ begin
                 vsync_i <= '0';
             end if;
             
-            for i in 0 to 8 loop
+            for i in 0 to 9 loop
                 verz(i + 1) <= verz(i);
             end loop;
 
@@ -766,9 +766,9 @@ begin
             else
                 verz(0)(2) <= '0';
             end if;
-            nBLANK <= verz(8)(0);
-            hsync <= verz(9)(1);
-            vsync <= verz(9)(2);
+            nBLANK <= verz(6)(0);
+            hsync <= verz(7)(1);
+            vsync <= verz(7)(2);
             
             -- fifo clr
             if last then
