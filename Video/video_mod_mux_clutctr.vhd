@@ -683,7 +683,7 @@ begin
             end if;
             
             -- display on/off
-            if (vvcnt > rand_oben and vvcnt <  rand_unten) then
+            if vvcnt > rand_oben and vvcnt <  rand_unten then
                 dpo_zl <= '1';
             else
                 dpo_zl <= '0';
@@ -739,7 +739,7 @@ begin
                 end if;
             end if;
             
-            if vvcnt(12 downto 1) = vs_start(12 downto 1) then
+            if shift_right(vvcnt, 1) = shift_right(vs_start, 1) then
                 vsync_i <= '1';
             else
                 vsync_i <= '0';
@@ -834,17 +834,17 @@ begin
     -- timing horizontal
     startp <= rand_links + rand_rechts - hdis_len;
     
-    rand_links <= unsigned(vdl_hbe)                      when                   acp_video = '1' else
-                  unsigned(vdl_hbe)                      when mulf = 13d"1" and acp_video = '0' else
-                  unsigned(vdl_hbe(11 downto 0)) & "0"   when mulf = 13d"2" and acp_video = '0' else
-                  unsigned(vdl_hbe(10 downto 0)) & "00"  when mulf = 13d"4" and acp_video = '0' else
-                  unsigned(vdl_hbe(9 downto 0)) & "000"  when mulf = 13d"8" and acp_video = '0' else
-                  unsigned(vdl_hbe(8 downto 0)) & "0000" when mulf = 13d"16" and acp_video = '0' else
+    rand_links <= unsigned(vdl_hbe)                when                   acp_video = '1' else
+                  unsigned(vdl_hbe)                when mulf = 13d"1" and acp_video = '0' else
+                  shift_left(unsigned(vdl_hbe), 1) when mulf = 13d"2" and acp_video = '0' else
+                  shift_left(unsigned(vdl_hbe), 2) when mulf = 13d"4" and acp_video = '0' else
+                  shift_left(unsigned(vdl_hbe), 3) when mulf = 13d"8" and acp_video = '0' else
+                  shift_left(unsigned(vdl_hbe), 4) when mulf = 13d"16" and acp_video = '0' else
                   (others => '0');
                   
     hdis_start <= unsigned(vdl_hdb) when acp_video else
                   rand_links + 1 when not vdl_vct(0) and not acp_video else
-                  "0" & startp(12 downto 1) + 1 when vdl_vct(0) and not acp_video else
+                  "0" & (startp(12 downto 1) + 1) when vdl_vct(0) and not acp_video else
                   (others => '0');
     hdis_end <= unsigned(vdl_hde) when acp_video else
                 hdis_start + hdis_len - 1 when not acp_video else
@@ -860,33 +860,33 @@ begin
                (others => '0');
                
     -- timing vertical
-    rand_oben <= unsigned(vdl_vbe)                    when acp_video = '1' else
-                 "0" & unsigned(vdl_vbe(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
-                 unsigned(vdl_vbe)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    rand_oben <= unsigned(vdl_vbe)                 when acp_video = '1' else
+                 shift_right(unsigned(vdl_vbe), 1) when vdl_vct(0) = '0' and acp_video = '0' else
+                 unsigned(vdl_vbe)                 when vdl_vct(0) = '1' and acp_video = '0' else
                  (others => '0');
                  
-    vdis_start <= unsigned(vdl_vdb)                        when                      acp_video = '1' else
-                  "0" & unsigned(vdl_vdb(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
-                  unsigned(vdl_vdb) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vdis_start <= unsigned(vdl_vdb)                     when                      acp_video = '1' else
+                  shift_right(unsigned(vdl_vdb) + 1, 1) when vdl_vct(0) = '0' and acp_video = '0' else
+                  unsigned(vdl_vdb) + 1                 when vdl_vct(0) = '1' and acp_video = '0' else
                   (others => '0');
                   
-    vdis_end <= unsigned(vdl_vde)                    when                      acp_video = '1' else
-                "0" & unsigned(vdl_vde(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
-                unsigned(vdl_vde)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vdis_end <= unsigned(vdl_vde)                 when                      acp_video = '1' else
+                shift_right(unsigned(vdl_vde), 1) when vdl_vct(0) = '0' and acp_video = '0' else
+                unsigned(vdl_vde)                 when vdl_vct(0) = '1' and acp_video = '0' else
                 (others => '0');
                 
-    rand_unten <= unsigned(vdl_vbb)                        when acp_video = '1' else
-                  "0" & unsigned(vdl_vbb(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
-                  unsigned(vdl_vbb) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
+    rand_unten <= unsigned(vdl_vbb)                     when acp_video = '1' else
+                  shift_right(unsigned(vdl_vbb) + 1, 1) when vdl_vct(0) = '0' and acp_video = '0' else
+                  unsigned(vdl_vbb) + 1                 when vdl_vct(0) = '1' and acp_video = '0' else
                   (others => '0');
-    vs_start <= unsigned(vdl_vss)                    when                      acp_video = '1' else
-                "0" & unsigned(vdl_vss(12 downto 1)) when vdl_vct(0) = '0' and acp_video = '0' else
-                unsigned(vdl_vss)                    when vdl_vct(0) = '1' and acp_video = '0' else
+    vs_start <= unsigned(vdl_vss)                 when                      acp_video = '1' else
+                shift_right(unsigned(vdl_vss), 1) when vdl_vct(0) = '0' and acp_video = '0' else
+                unsigned(vdl_vss)                 when vdl_vct(0) = '1' and acp_video = '0' else
                 (others => '0');
                 
-    v_total <= unsigned(vdl_vft)                        when                      acp_video = '1' else
-               "0" & unsigned(vdl_vft(12 downto 1)) + 1 when vdl_vct(0) = '0' and acp_video = '0' else
-               unsigned(vdl_vft) + 1                    when vdl_vct(0) = '1' and acp_video = '0' else
+    v_total <= unsigned(vdl_vft)                  when                      acp_video = '1' else
+               shift_right(unsigned(vdl_vft) + 1, 1) when vdl_vct(0) = '0' and acp_video = '0' else
+               unsigned(vdl_vft) + 1              when vdl_vct(0) = '1' and acp_video = '0' else
                (others => '0');
 end architecture rtl;
 		
