@@ -133,7 +133,7 @@ architecture rtl of video_mod_mux_clutctr is
     signal vdo_on                   : std_logic;
     signal vdo_off                  : std_logic;
     signal vhcnt                    : unsigned(12 downto 0);
-    signal sub_pixel_cnt            : std_logic_vector(6 downto 0);
+    signal sub_pixel_cnt            : unsigned(6 downto 0);
     signal vvcnt                    : unsigned(12 downto 0) := (others => '0');
     
     type verz_t is array(10 downto 0) of std_logic_vector(2 downto 0);
@@ -792,7 +792,7 @@ begin
             
             if vdtron or sync_pix then
                 if not sync_pix then
-                    sub_pixel_cnt <= std_logic_vector(unsigned(sub_pixel_cnt) + 1);
+                    sub_pixel_cnt <= sub_pixel_cnt + 1;
                 else
                     sub_pixel_cnt <= (others => '0');
                 end if;
@@ -815,7 +815,7 @@ begin
                 fifo_rde <= '0';
             end if;
 
-            clut_mux_av(0) <= sub_pixel_cnt(3 downto 0);
+            clut_mux_av(0) <= std_logic_vector(sub_pixel_cnt(3 downto 0));
             clut_mux_av(1) <= clut_mux_av(0);
             clut_mux_adr <= clut_mux_av(1);
             
