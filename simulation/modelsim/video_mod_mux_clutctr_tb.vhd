@@ -383,14 +383,14 @@ begin
                 -- through thousands of loop iterations
 
                 wait until <<signal uut.last : std_logic>> = '1';
-                <<signal uut.vvcnt : videl_reg_t>> <= 
+                <<signal uut.vvcnt : unsigned(12 downto 0)>> <= 
                     -- uut.v_total is the programmed line length
-                    force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 2);
+                    force <<signal uut.v_total : unsigned(12 downto 0)>> - 2;
                 -- burn cycles to get this forced value into pipeline
                 for i in 1 to 100 loop
                     prepare_test(1);
                 end loop;
-                <<signal uut.vvcnt : videl_reg_t>> <= release;
+                <<signal uut.vvcnt : unsigned(12 downto 0)>> <= release;
                 for i in 1 to 1700 loop
                     prepare_test(1);
                 end loop;
@@ -423,26 +423,25 @@ begin
                 prepare_test(52);       -- set monitor type in sys_ctr/MONTYPE
                 --
                 -- then burn a few cycles (at least one screen line)
-                for i in 1 to 700000 loop
+                for i in 1 to 700 loop
                     prepare_test(1);
                 end loop;
                 -- fast forward: inject (near) end of frame values instead of clocking
                 -- through thousands of loop iterations
 
-                /*
                 wait until <<signal uut.last : std_logic>> = '1';
-                <<signal uut.vvcnt : videl_reg_t>> <= 
+                <<signal uut.vvcnt : unsigned(12 downto 0)>> <= 
                     -- uut.v_total is the programmed line length
-                    force std_logic_vector(unsigned(<<signal uut.v_total : videl_reg_t>>) - 2);
+                    force <<signal uut.v_total : unsigned(12 downto 0)>> - 2;
                 -- burn cycles to get this forced value into pipeline
                 for i in 1 to 100 loop
                     prepare_test(1);
                 end loop;
-                <<signal uut.vvcnt : videl_reg_t>> <= release;
+                <<signal uut.vvcnt : unsigned(12 downto 0)>> <= release;
                 for i in 1 to 1700 loop
                     prepare_test(1);
                 end loop;
-                */
+
                 check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
                 check_equal(pixel_clk_frq, 25.00, "check if pixel clk runs at 25 MHz", max_diff => 0.1);
             end if;
