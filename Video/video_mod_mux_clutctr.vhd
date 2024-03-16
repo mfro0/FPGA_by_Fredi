@@ -850,7 +850,7 @@ begin
                 hdis_start + hdis_len - 1 when not acp_video else
                 (others => '0');
     rand_rechts <= unsigned(vdl_hbb) when acp_video else
-                resize(unsigned(vdl_hht) + 2 + unsigned(vdl_hbb) * unsigned(mulf) + 1, rand_rechts'length) when not acp_video else
+                resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hbb)) * unsigned(mulf) + 1, rand_rechts'length) when not acp_video else
                 (others => '0');
     hs_start <= unsigned(vdl_hss) when acp_video else
                 resize((unsigned(vdl_hht) + 2 + unsigned(vdl_hss)) * unsigned(mulf) + 1, hs_start'length) when not acp_video else
