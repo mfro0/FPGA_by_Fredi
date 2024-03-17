@@ -186,7 +186,19 @@ architecture sim of video_mod_mux_clutctr_tb is
         ("1101", VDL_VMD, W, 32x"0008", WORD),          -- 67
         ("1101", VWRAP,   W, 32x"0028", WORD),          -- 68
         ("1011", VCTR,    W, 32x"13223344", LONG),      -- 69
-        ("1101", MONTYPE, W, 32x"FFF0", WORD)           -- 70
+        ("1101", MONTYPE, W, 32x"FFF0", WORD),          -- 70
+
+        -- set ACP video mode
+        ("1101", VCTR,    R, 32x"0000", WORD),          -- 71 read VCTR register
+        -- probably unnecessary since the relevant bits are read only anyway
+        ("1011", VCTR,    W, 32x"0000", LONG),          -- 72 write VCTR register to disable Falcon video
+        ("1101", STSHIFT, W, 32x"0000", WORD),          -- 73 write STSHIFT register to disable ST mode
+        ("1101", SPSHIFT, W, 32x"0000", WORD),          -- 74 write SPSHIFT register to disable Falcon video
+                                                        -- here we should set all the Videl registers 
+                                                        -- accordingly, skipped for now
+        ("1011", VCTR,    W, 32x"0000", LONG),          -- 75 enable 16 color + neg sync
+        ("1011", VCTR,    W, 32x"0000", LONG),          -- 76 disable color24, color8 and color1
+        ("1011", VCTR,    W, 32x"0000", LONG)           -- 77 enable video and video dac
     );
 
     signal step                 : positive := 1;
@@ -444,6 +456,16 @@ begin
 
                 check_equal(not pixel_clk'quiet(32 ns), true, "check if pixel clk toggles after init");
                 check_equal(pixel_clk_frq, 25.00, "check if pixel clk runs at 25 MHz", max_diff => 0.1);
+            elsif run("switch ACP mode 1400x1024x16") then
+                prepare_test(71);
+                prepare_test(72);
+                prepare_test(73);
+                prepare_test(74);
+                prepare_test(75);
+                prepare_test(76);
+                prepare_test(77);
+                -- check_equal(not pixel_clk'quiet(15 ns), true, "check if pixel clk runs");
+                -- check_equal(pixel_clk_frq, 0.00, "check if pixel clk runs at 90 MHz", max_diff => 0.1);
             end if;
         end loop;
 
