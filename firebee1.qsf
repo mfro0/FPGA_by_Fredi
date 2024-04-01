@@ -668,36 +668,36 @@ set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulati
 set_global_assignment -name FLOW_ENABLE_RTL_VIEWER ON
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
 
-set_global_assignment -name VHDL_FILE Video/video_regs.vhd
+set_global_assignment -name VHDL_FILE video/video_regs.vhd
 set_global_assignment -name VHDL_FILE byte_selector.vhd
 set_global_assignment -name VHDL_FILE firebee_utils.vhd
-set_global_assignment -name VHDL_FILE Video/video_mod_mux_clutctr.vhd
+set_global_assignment -name VHDL_FILE video/video_mod_mux_clutctr.vhd
 set_global_assignment -name AHDL_FILE blitter.tdf
 set_global_assignment -name SDC_FILE firebee1.sdc
 set_global_assignment -name VHDL_FILE compile_date.vhd
 set_global_assignment -name VHDL_FILE datetime.vhd
-set_global_assignment -name SOURCE_FILE Video/BLITTER/lpm_ror128.cmp
-set_global_assignment -name AHDL_FILE Video/BLITTER/lpm_ror128.tdf
-set_global_assignment -name AHDL_FILE Video/BLITTER/lpm_clshift144.tdf
-set_global_assignment -name SOURCE_FILE Video/BLITTER/altsyncram0.cmp
-set_global_assignment -name AHDL_FILE Video/BLITTER/altsyncram0.tdf
-set_global_assignment -name SOURCE_FILE Video/altddio_bidir0.cmp
+set_global_assignment -name SOURCE_FILE video/BLITTER/lpm_ror128.cmp
+set_global_assignment -name AHDL_FILE video/BLITTER/lpm_ror128.tdf
+set_global_assignment -name AHDL_FILE video/BLITTER/lpm_clshift144.tdf
+set_global_assignment -name SOURCE_FILE video/BLITTER/altsyncram0.cmp
+set_global_assignment -name AHDL_FILE video/BLITTER/altsyncram0.tdf
+set_global_assignment -name SOURCE_FILE video/altddio_bidir0.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF5380/wf5380_control.vhd
-set_global_assignment -name SOURCE_FILE Video/altddio_out0.cmp
+set_global_assignment -name SOURCE_FILE video/altddio_out0.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF5380/wf5380_pkg.vhd
-set_global_assignment -name SOURCE_FILE Video/altddio_out1.cmp
+set_global_assignment -name SOURCE_FILE video/altddio_out1.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF5380/wf5380_registers.vhd
-set_global_assignment -name SOURCE_FILE Video/altddio_out2.cmp
+set_global_assignment -name SOURCE_FILE video/altddio_out2.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF5380/wf5380_soc_top.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF5380/wf5380_top.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_am_detector.vhd
 set_global_assignment -name SOURCE_FILE FalconIO_SDCard_IDE_CF/dcfifo0.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/dcfifo0.vhd
-set_global_assignment -name SOURCE_FILE Video/altdpram2.cmp
+set_global_assignment -name SOURCE_FILE video/altdpram2.cmp
 set_global_assignment -name SOURCE_FILE FalconIO_SDCard_IDE_CF/dcfifo1.cmp
-set_global_assignment -name AHDL_FILE Video/DDR_CTR.tdf
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri0.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_bustri0.vhd
+set_global_assignment -name AHDL_FILE video/DDR_CTR.tdf
+set_global_assignment -name SOURCE_FILE video/lpm_bustri0.cmp
+set_global_assignment -name VHDL_FILE video/lpm_bustri0.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_control.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_crc_logic.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_digital_pll.vhd
@@ -706,23 +706,23 @@ set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf177
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_top.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_top_soc.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_FDC1772_IP/wf1772ip_transceiver.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri5.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_bustri5.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri6.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri5.cmp
+set_global_assignment -name VHDL_FILE video/lpm_bustri5.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_bustri6.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_UART6850_IP/wf6850ip_ctrl_status.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri7.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_bustri7.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_compare1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri7.cmp
+set_global_assignment -name VHDL_FILE video/lpm_bustri7.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_compare1.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_UART6850_IP/wf6850ip_receive.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_UART6850_IP/wf6850ip_top.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_UART6850_IP/wf6850ip_top_soc.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_UART6850_IP/wf6850ip_transmit.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_gpio.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_constant2.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_constant2.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_interrupts.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_constant3.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_constant3.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_pkg.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_constant4.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_constant4.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_timers.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_top.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_top_soc.vhd
@@ -732,62 +732,62 @@ set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_MFP68901_IP/wf68901ip_usart_tx.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_SND2149_IP/wf2149ip_pkg.vhd
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_SND2149_IP/wf2149ip_top.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_ff4.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_ff4.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_SND2149_IP/wf2149ip_top_soc.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_ff5.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_ff5.cmp
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/WF_SND2149_IP/wf2149ip_wave.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_ff6.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_ff6.cmp
 set_global_assignment -name VHDL_FILE lpm_latch0.vhd
 set_global_assignment -name SOURCE_FILE lpm_latch0.cmp
 set_global_assignment -name QIP_FILE altpll1.qip
-set_global_assignment -name SOURCE_FILE Video/lpm_latch1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_mux0.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_latch1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_mux0.cmp
 set_global_assignment -name QIP_FILE altpll2.qip
-set_global_assignment -name SOURCE_FILE Video/lpm_mux1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_mux2.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_mux1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_mux2.cmp
 set_global_assignment -name QIP_FILE altpll3.qip
-set_global_assignment -name SOURCE_FILE Video/lpm_mux3.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_mux4.cmp
-set_global_assignment -name SOURCE_FILE Video/altdpram0.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_mux5.cmp
-set_global_assignment -name VHDL_FILE Video/altdpram0.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_mux6.cmp
-set_global_assignment -name SOURCE_FILE Video/altdpram1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_muxDZ2.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_muxDZ2.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_muxDZ.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_muxDZ.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_mux3.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_mux4.cmp
+set_global_assignment -name SOURCE_FILE video/altdpram0.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_mux5.cmp
+set_global_assignment -name VHDL_FILE video/altdpram0.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_mux6.cmp
+set_global_assignment -name SOURCE_FILE video/altdpram1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_muxDZ2.cmp
+set_global_assignment -name VHDL_FILE video/lpm_muxDZ2.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_muxDZ.cmp
+set_global_assignment -name VHDL_FILE video/lpm_muxDZ.vhd
 set_global_assignment -name SOURCE_FILE altpll0.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_ff0.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg2.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri2.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg3.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_ff0.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg2.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri2.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg3.cmp
 set_global_assignment -name SOURCE_FILE altpll2.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg4.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri3.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg5.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_bustri3.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg6.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_bustri4.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg4.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri3.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg5.cmp
+set_global_assignment -name VHDL_FILE video/lpm_bustri3.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg6.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_bustri4.cmp
 set_global_assignment -name VHDL_FILE altpll2.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_constant0.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_constant0.cmp
 set_global_assignment -name SOURCE_FILE altpll3.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_constant1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_constant1.cmp
 set_global_assignment -name VHDL_FILE altpll3.vhd
 set_global_assignment -name SOURCE_FILE lpm_counter0.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_ff0.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_ff1.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_shiftreg0.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_ff1.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_ff2.cmp
-set_global_assignment -name SOURCE_FILE Video/lpm_ff3.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_ff3.vhd
-set_global_assignment -name VHDL_FILE Video/lpm_ff2.vhd
-set_global_assignment -name SOURCE_FILE Video/lpm_fifo_dc0.cmp
-set_global_assignment -name VHDL_FILE Video/lpm_fifo_dc0.vhd
-set_global_assignment -name BDF_FILE Video/Video.bdf
+set_global_assignment -name VHDL_FILE video/lpm_ff0.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_ff1.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_shiftreg0.cmp
+set_global_assignment -name VHDL_FILE video/lpm_ff1.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_ff2.cmp
+set_global_assignment -name SOURCE_FILE video/lpm_ff3.cmp
+set_global_assignment -name VHDL_FILE video/lpm_ff3.vhd
+set_global_assignment -name VHDL_FILE video/lpm_ff2.vhd
+set_global_assignment -name SOURCE_FILE video/lpm_fifo_dc0.cmp
+set_global_assignment -name VHDL_FILE video/lpm_fifo_dc0.vhd
+set_global_assignment -name BDF_FILE video/Video.bdf
 set_global_assignment -name VHDL_FILE altpll1.vhd
 set_global_assignment -name SOURCE_FILE altpll1.cmp
 set_global_assignment -name BDF_FILE firebee1.bdf
@@ -795,201 +795,67 @@ set_global_assignment -name QIP_FILE altpll0.qip
 set_global_assignment -name QIP_FILE lpm_counter0.qip
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/FalconIO_SDCard_IDE_CF.vhd
 set_global_assignment -name VHDL_FILE DSP/DSP.vhd
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg0.qip
-set_global_assignment -name QIP_FILE Video/altdpram0.qip
-set_global_assignment -name QIP_FILE Video/lpm_bustri1.qip
-set_global_assignment -name QIP_FILE Video/altdpram1.qip
-set_global_assignment -name QIP_FILE Video/lpm_bustri2.qip
-set_global_assignment -name QIP_FILE Video/lpm_bustri4.qip
-set_global_assignment -name QIP_FILE Video/lpm_constant0.qip
-set_global_assignment -name QIP_FILE Video/lpm_constant1.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux0.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux1.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux2.qip
-set_global_assignment -name QIP_FILE Video/lpm_constant2.qip
-set_global_assignment -name QIP_FILE Video/altdpram2.qip
-set_global_assignment -name QIP_FILE Video/lpm_bustri6.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux3.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux4.qip
-set_global_assignment -name QIP_FILE Video/lpm_constant3.qip
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg1.qip
-set_global_assignment -name QIP_FILE Video/lpm_latch1.qip
-set_global_assignment -name QIP_FILE Video/lpm_constant4.qip
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg2.qip
-set_global_assignment -name QIP_FILE Video/lpm_compare1.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg0.qip
+set_global_assignment -name QIP_FILE video/altdpram0.qip
+set_global_assignment -name QIP_FILE video/lpm_bustri1.qip
+set_global_assignment -name QIP_FILE video/altdpram1.qip
+set_global_assignment -name QIP_FILE video/lpm_bustri2.qip
+set_global_assignment -name QIP_FILE video/lpm_bustri4.qip
+set_global_assignment -name QIP_FILE video/lpm_constant0.qip
+set_global_assignment -name QIP_FILE video/lpm_constant1.qip
+set_global_assignment -name QIP_FILE video/lpm_mux0.qip
+set_global_assignment -name QIP_FILE video/lpm_mux1.qip
+set_global_assignment -name QIP_FILE video/lpm_mux2.qip
+set_global_assignment -name QIP_FILE video/lpm_constant2.qip
+set_global_assignment -name QIP_FILE video/altdpram2.qip
+set_global_assignment -name QIP_FILE video/lpm_bustri6.qip
+set_global_assignment -name QIP_FILE video/lpm_mux3.qip
+set_global_assignment -name QIP_FILE video/lpm_mux4.qip
+set_global_assignment -name QIP_FILE video/lpm_constant3.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg1.qip
+set_global_assignment -name QIP_FILE video/lpm_latch1.qip
+set_global_assignment -name QIP_FILE video/lpm_constant4.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg2.qip
+set_global_assignment -name QIP_FILE video/lpm_compare1.qip
 set_global_assignment -name AHDL_FILE Interrupt_Handler/interrupt_handler.tdf
 set_global_assignment -name QIP_FILE lpm_bustri_LONG.qip
 set_global_assignment -name QIP_FILE lpm_bustri_BYT.qip
 set_global_assignment -name QIP_FILE lpm_bustri_WORD.qip
-set_global_assignment -name QIP_FILE Video/lpm_ff4.qip
-set_global_assignment -name QIP_FILE Video/lpm_ff5.qip
-set_global_assignment -name QIP_FILE Video/lpm_ff6.qip
+set_global_assignment -name QIP_FILE video/lpm_ff4.qip
+set_global_assignment -name QIP_FILE video/lpm_ff5.qip
+set_global_assignment -name QIP_FILE video/lpm_ff6.qip
 set_global_assignment -name VECTOR_WAVEFORM_FILE firebee1.vwf
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg3.qip
-set_global_assignment -name QIP_FILE Video/altddio_bidir0.qip
-set_global_assignment -name QIP_FILE Video/altddio_out0.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux5.qip
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg5.qip
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg6.qip
-set_global_assignment -name QIP_FILE Video/lpm_shiftreg4.qip
-set_global_assignment -name QIP_FILE Video/altddio_out1.qip
-set_global_assignment -name QIP_FILE Video/altddio_out2.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg3.qip
+set_global_assignment -name QIP_FILE video/altddio_bidir0.qip
+set_global_assignment -name QIP_FILE video/altddio_out0.qip
+set_global_assignment -name QIP_FILE video/lpm_mux5.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg5.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg6.qip
+set_global_assignment -name QIP_FILE video/lpm_shiftreg4.qip
+set_global_assignment -name QIP_FILE video/altddio_out1.qip
+set_global_assignment -name QIP_FILE video/altddio_out2.qip
 set_global_assignment -name QIP_FILE altddio_out3.qip
-set_global_assignment -name QIP_FILE Video/lpm_mux6.qip
+set_global_assignment -name QIP_FILE video/lpm_mux6.qip
 set_global_assignment -name VHDL_FILE FalconIO_SDCard_IDE_CF/FalconIO_SDCard_IDE_CF_pgk.vhd
 set_global_assignment -name QIP_FILE FalconIO_SDCard_IDE_CF/dcfifo0.qip
 set_global_assignment -name QIP_FILE FalconIO_SDCard_IDE_CF/dcfifo1.qip
-set_global_assignment -name QIP_FILE Video/lpm_muxDZ.qip
-set_global_assignment -name QIP_FILE Video/lpm_muxVDM.qip
+set_global_assignment -name QIP_FILE video/lpm_muxDZ.qip
+set_global_assignment -name QIP_FILE video/lpm_muxVDM.qip
 set_global_assignment -name QIP_FILE altpll_reconfig1.qip
 set_global_assignment -name QIP_FILE altpll4.qip
 set_global_assignment -name QIP_FILE lpm_mux0.qip
-set_global_assignment -name QIP_FILE Video/BLITTER/altsyncram0.qip
+set_global_assignment -name QIP_FILE video/BLITTER/altsyncram0.qip
 set_global_assignment -name QIP_FILE lpm_shiftreg0.qip
 set_global_assignment -name QIP_FILE lpm_counter1.qip
 set_global_assignment -name QIP_FILE altiobuf_bidir0.qip
 set_global_assignment -name QIP_FILE lpm_mux1.qip
-set_global_assignment -name QIP_FILE Video/lpm_blitter.qip
-set_global_assignment -name AHDL_FILE Video/BLITTER/lpm_clshift384.tdf
-set_global_assignment -name INCLUDE_FILE Video/BLITTER/lpm_clshift383.inc
-set_global_assignment -name QIP_FILE Video/BLITTER/lpm_clshift384.qip
-set_global_assignment -name QIP_FILE Video/BLITTER/lpm_clshift144.qip
-set_global_assignment -name QIP_FILE Video/Doppelzeilen_Fifo.qip
-set_global_assignment -name QIP_FILE Video/shiftreg_dpz.qip
-set_global_assignment -name QIP_FILE Video/BLITTER/lpm_ror128.qip
+set_global_assignment -name QIP_FILE video/lpm_blitter.qip
+set_global_assignment -name AHDL_FILE video/BLITTER/lpm_clshift384.tdf
+set_global_assignment -name INCLUDE_FILE video/BLITTER/lpm_clshift383.inc
+set_global_assignment -name QIP_FILE video/BLITTER/lpm_clshift384.qip
+set_global_assignment -name QIP_FILE video/BLITTER/lpm_clshift144.qip
+set_global_assignment -name QIP_FILE video/Doppelzeilen_Fifo.qip
+set_global_assignment -name QIP_FILE video/shiftreg_dpz.qip
+set_global_assignment -name QIP_FILE video/BLITTER/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee1.stp
-set_global_assignment -name SLD_NODE_CREATOR_ID 110 -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_ENTITY_NAME sld_signaltap -section_id auto_signaltap_0
-set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_clk -to DDR_CLK -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_BLOCK_TYPE=AUTO" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_INFO=805334528" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_POWER_UP_TRIGGER=0" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_INVERSION_MASK_LENGTH=0" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SEGMENT_SIZE=4096" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ATTRIBUTE_MEM_MODE=OFF" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_FLOW_USE_GENERATED=0" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_BITS=11" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_BUFFER_FULL_STOP=1" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_CURRENT_RESOURCE_WIDTH=1" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL=1" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SAMPLE_DEPTH=4096" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=0" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_ENTITY=basic,1," -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[10]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[11]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[12]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[4] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[13]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[5] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[14]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[6] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[15]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[7] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[16]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[8] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[17]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[9] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[18]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[10] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[19]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[11] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[12] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[20]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[13] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[21]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[14] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[22]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[15] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[23]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[16] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[17] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[3]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[18] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[4]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[19] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[5]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[20] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[6]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[21] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[7]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[22] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[8]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[23] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[9]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[24] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[25] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[26] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[27] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLR_FIFO" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[28] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[29] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[30] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[31] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[3]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[32] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|COLOR4~2" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[33] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|COLOR4~3" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[34] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|DOP_FIFO_CLR" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[35] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|FIFO_RDE" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[36] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|HSYNC" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[37] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|INTER_ZEI" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[38] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|PIXEL_CLK" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[39] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|ST_CLUT_RD" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[40] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VR_WR" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[41] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VSYNC" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[42] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|nBLANK" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[43] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[1]~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[44] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[2]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[45] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[3]~2" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[46] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|color2~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[47] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_rdh~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[48] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_rdl~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[49] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_wr[0]~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[50] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_wr[1]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[0] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[1] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[10]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[2] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[11]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[3] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[12]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[4] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[13]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[5] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[14]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[6] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[15]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[7] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[16]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[8] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[17]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[9] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[18]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[10] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[19]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[11] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[12] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[20]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[13] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[21]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[14] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[22]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[15] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[23]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[16] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[17] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[3]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[18] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[4]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[19] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[5]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[20] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[6]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[21] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[7]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[22] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[8]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[23] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCR[9]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[24] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[25] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[26] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CCSEL[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[27] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLR_FIFO" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[28] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[0]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[29] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[1]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[30] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[2]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[31] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|CLUT_MUX_ADR[3]" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[32] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|COLOR4~2" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[33] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|COLOR4~3" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[34] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|DOP_FIFO_CLR" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[35] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|FIFO_RDE" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[36] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|HSYNC" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[37] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|INTER_ZEI" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[38] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|PIXEL_CLK" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[39] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|ST_CLUT_RD" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[40] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VR_WR" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[41] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|VSYNC" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[42] -to "Video:Fredi_Aschwanden|VIDEO_MOD_MUX_CLUTCTR:VIDEO_MOD_MUX_CLUTCTR|nBLANK" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[43] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[1]~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[44] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[2]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[45] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|acp_clut_wr[3]~2" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[46] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|color2~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[47] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_rdh~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[48] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_rdl~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[49] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_wr[0]~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[50] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|falcon_clut_wr[1]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[51] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_rd" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[52] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_wr[0]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[53] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_wr[1]~0" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[51] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_rd" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[52] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_wr[0]~1" -section_id auto_signaltap_0
-set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[53] -to "Video:Fredi_Aschwanden|video_mod_mux_clutctr:VIDEO_MOD_MUX_CLUTCTR|st_clut_wr[1]~0" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_DATA_BITS=54" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_BITS=54" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=188" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_LOWORD=47905" -section_id auto_signaltap_0
-set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_CRC_HIWORD=6513" -section_id auto_signaltap_0
-set_global_assignment -name SLD_FILE db/firebee1_auto_stripped.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
