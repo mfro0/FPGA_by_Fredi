@@ -1,5 +1,5 @@
-from vunit import VUnit
 import os
+from vunit import VUnit
 
 #os.environ['PATH'] = '/opt/altera/13.1/modelsim_ase/bin:' + os.environ['PATH']
 #os.environ['VUNIT_SIMULATOR'] = 'modelsim'
@@ -21,8 +21,8 @@ lib = vu.add_library("lib")
 lib.add_source_files("simulation/modelsim/*.vhd")
 lib.add_source_files("./firebee_utils.vhd")
 lib.add_source_files("./byte_selector.vhd")
-lib.add_source_files("Video/video_mod_mux_clutctr.vhd")
-lib.add_source_files("Video/video_regs.vhd")
+lib.add_source_files("video/video_mod_mux_clutctr.vhd")
+lib.add_source_files("video/video_regs.vhd")
 
 # Run vunit function
 vu.main()
