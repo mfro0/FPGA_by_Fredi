@@ -19,7 +19,7 @@ jobs:
       - name: Test
         run: |
           ghdl --version
-          pip install vunit_hdl
+          pip install vunit_hdl --break-system-packages
           ./run
           # $GHDL --version
 
