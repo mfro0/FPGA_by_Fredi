@@ -20,7 +20,7 @@ jobs:
         run: |
           ghdl --version
           git clone --recurse-submodules https://github.com/VUnit/vunit.git
-          cd vunit; python setup.py install
+          cd vunit; pip install -e .
           ./run
           # $GHDL --version
 
