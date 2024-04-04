@@ -20,8 +20,8 @@ jobs:
         run: |
           ghdl --version
           git clone --recurse-submodules https://github.com/VUnit/vunit.git
-          cd vunit; pip install --user .
-          ./run
+          pushd vunit; pip install --user .
+          popd; ./run
           # $GHDL --version
 
             
