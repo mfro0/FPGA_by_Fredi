@@ -19,7 +19,8 @@ jobs:
       - name: Test
         run: |
           ghdl --version
-          pip install vunit_hdl
+          git clone --recurse-submodules https://github.com/VUnit/vunit.git
+          cd vunit; python setup.py install
           ./run
           # $GHDL --version
 
