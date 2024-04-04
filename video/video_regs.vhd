@@ -9,9 +9,9 @@ package video_regs is
     constant STSYNC     : addr_t := x"FFFF820A";   -- ST Sync mode
     constant LIN_OFS    : addr_t := x"FFFF820E";   -- offset to next line
     constant VWRAP      : addr_t := x"FFFF8210";   -- linewidth in words
-    constant VBPP       : addr_t := x"FFFF8210";   -- Firebee only: bits per plane, R/O
-    constant VWPXL      : addr_t := x"FFFF8212";   -- Firebee only: width in pixels, R/O
-    constant VHPXL      : addr_t := x"FFFF8214";   -- Firebee only: height in pixels, R/O
+    constant VBPP       : addr_t := x"FFFF8212";   -- Firebee only: bits per plane, R/O
+    constant VWPXL      : addr_t := x"FFFF8214";   -- Firebee only: width in pixels, R/O
+    constant VHPXL      : addr_t := x"FFFF8216";   -- Firebee only: height in pixels, R/O
 
     constant STE_PAL    : addr_t := x"FFFF8240";   -- STE compatible palette registers 0-15
                                                    -- ends at  x"FFFF825E" (64 bytes)
@@ -28,8 +28,8 @@ package video_regs is
     constant VDL_HDB    : addr_t := x"FFFF8288";   -- horizontal display begin
     constant VDL_HDE    : addr_t := x"FFFF828A";   -- horizontal display end
     constant VDL_HSS    : addr_t := x"FFFF828C";   -- horizontal sync start
-    constant VDL_HFS    : addr_t := x"FFFF828E";   -- horizontal field sync (FIXME: not implemented in HDL)
-    constant VDL_HEE    : addr_t := x"FFFF8290";   -- horizontal equalization end (FIXME: not implemented in HDL)
+    constant VDL_HFS    : addr_t := x"FFFF828E";   -- horizontal field sync -- FIXME: not implemented in HDL
+    constant VDL_HEE    : addr_t := x"FFFF8290";   -- horizontal equalization end -- FIXME: not implemented in HDL
 
     constant VDL_VFC    : addr_t := x"FFFF82A0";   -- vertical frequency counter (read only) -- FIXME: not implemented in HDL
     constant VDL_VFT    : addr_t := x"FFFF82A2";   -- vertical field total
@@ -66,6 +66,8 @@ package video_regs is
     -- adapted from MCF5475_FBCS.h
 
     -- #define MCF_FBCS_CSMR_BAM(x)                 (((x)&0xFFFF)<<0x10)
+    function fbcs_csmr_bam(x : std_logic_vector(15 downto 0)) return addr_t;
+
     constant CSMR_BAM_4G        : addr_t := x"FFFF0000";
     constant CSMR_BAM_2G        : addr_t := x"7FFF0000";
     constant CSMR_BAM_1G        : addr_t := x"3FFF0000";
@@ -114,6 +116,11 @@ end package video_regs;
 -- result: true when check is a match, false otherwise
 --
 package body video_regs is
+    function fbcs_csmr_bam(x : std_logic_vector(15 downto 0)) return addr_t is
+    begin
+        return x and x"FFFF" & "0000000000";    -- left shift 10 bits
+    end function fbcs_csmr_bam;
+
     function adr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
                        width : natural) return boolean is
         variable zero_count : natural := 0;

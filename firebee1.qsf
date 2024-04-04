@@ -368,7 +368,7 @@ set_global_assignment -name ENABLE_DEVICE_WIDE_OE ON
 set_global_assignment -name CYCLONEIII_CONFIGURATION_SCHEME "PASSIVE SERIAL"
 set_global_assignment -name FORCE_CONFIGURATION_VCCIO ON
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
-set_global_assignment -name FITTER_EFFORT "AUTO FIT"
+set_global_assignment -name FITTER_EFFORT "FAST FIT"
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING OFF
@@ -859,3 +859,5 @@ set_global_assignment -name QIP_FILE video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE video/BLITTER/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee1.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
+set_global_assignment -name FIT_ONLY_ONE_ATTEMPT ON
