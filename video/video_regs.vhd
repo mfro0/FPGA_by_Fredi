@@ -5,49 +5,49 @@ use ieee.math_real.all;
 package video_regs is
     subtype addr_t is std_logic_vector(31 downto 0);
 
-    constant MONTYPE            : addr_t := x"FFFF8006";   -- monitor type
+    constant MONTYPE            : addr_t := x"FFFF8006";    -- monitor type
 
     -- Videl register addresses
-    constant VIDEL_REGS         : addr_t := x"FFFF8200";   -- start of Videl register file
-    constant VIDEL_REGS_SIZE    : natural := x"FF";     -- size of Videl register file
+    constant VIDEL_REGS         : addr_t := x"FFFF8200";    -- start of Videl register file
+    constant VIDEL_REGS_SIZE    : natural := 16#FF#;        -- size of Videl register file
 
-    constant STSYNC     	: addr_t1 := x"FFFF820A";   -- ST Sync mode
-    constant LIN_OFS    	: addr_t1 := x"FFFF820E";   -- offset to next line
-    constant VWRAP      	: addr_t1 := x"FFFF8210";   -- linewidth in words
-    constant VBPP       	: addr_t1 := x"FFFF8212";   -- Firebee only: bits per plane, R/O
-    constant VWPXL      	: addr_t1 := x"FFFF8214";   -- Firebee only: width in pixels, R/O
-    constant VHPXL      	: addr_t1 := x"FFFF8216";   -- Firebee only: height in pixels, R/O
+    constant STSYNC     	: addr_t := x"FFFF820A";   -- ST Sync mode
+    constant LIN_OFS    	: addr_t := x"FFFF820E";   -- offset to next line
+    constant VWRAP      	: addr_t := x"FFFF8210";   -- linewidth in words
+    constant VBPP       	: addr_t := x"FFFF8212";   -- Firebee only: bits per plane, R/O
+    constant VWPXL      	: addr_t := x"FFFF8214";   -- Firebee only: width in pixels, R/O
+    constant VHPXL      	: addr_t := x"FFFF8216";   -- Firebee only: height in pixels, R/O
 
-    constant STE_PAL    	: addr_t1 := x"FFFF8240";   -- STE compatible palette registers 0-15
+    constant STE_PAL    	: addr_t := x"FFFF8240";   -- STE compatible palette registers 0-15
                                                    -- ends at  x"FFFF825E" (64 bytes)
-    constant STSHIFT    	: addr_t1 := x"FFFF8260";   -- ST compatible shifter control register
+    constant STSHIFT    	: addr_t := x"FFFF8260";   -- ST compatible shifter control register
 
-    constant HSCROLL    	: addr_t1 := x"FFFF8265";   -- STE compatible horizontal scroll register
+    constant HSCROLL    	: addr_t := x"FFFF8265";   -- STE compatible horizontal scroll register
 
-    constant SPSHIFT    	: addr_t1 := x"FFFF8266";   -- Falcon shift register
+    constant SPSHIFT    	: addr_t := x"FFFF8266";   -- Falcon shift register
 
-    constant VDL_HHC    	: addr_t1 := x"FFFF8280";   -- horizontal hold counterA (read only) -- FIXME: not implemented in HDL
-    constant VDL_HHT    	: addr_t1 := x"FFFF8282";   -- horizontal half line total
-    constant VDL_HBB    	: addr_t1 := x"FFFF8284";   -- horizontal blank begin
-    constant VDL_HBE    	: addr_t1 := x"FFFF8286";   -- horizontal blank end
-    constant VDL_HDB    	: addr_t1 := x"FFFF8288";   -- horizontal display begin
-    constant VDL_HDE    	: addr_t1 := x"FFFF828A";   -- horizontal display end
-    constant VDL_HSS    	: addr_t1 := x"FFFF828C";   -- horizontal sync start
-    constant VDL_HFS    	: addr_t1 := x"FFFF828E";   -- horizontal field sync -- FIXME: not implemented in HDL
-    constant VDL_HEE    	: addr_t1 := x"FFFF8290";   -- horizontal equalization end -- FIXME: not implemented in HDL
+    constant VDL_HHC    	: addr_t := x"FFFF8280";   -- horizontal hold counterA (read only) -- FIXME: not implemented in HDL
+    constant VDL_HHT    	: addr_t := x"FFFF8282";   -- horizontal half line total
+    constant VDL_HBB    	: addr_t := x"FFFF8284";   -- horizontal blank begin
+    constant VDL_HBE    	: addr_t := x"FFFF8286";   -- horizontal blank end
+    constant VDL_HDB    	: addr_t := x"FFFF8288";   -- horizontal display begin
+    constant VDL_HDE    	: addr_t := x"FFFF828A";   -- horizontal display end
+    constant VDL_HSS    	: addr_t := x"FFFF828C";   -- horizontal sync start
+    constant VDL_HFS    	: addr_t := x"FFFF828E";   -- horizontal field sync -- FIXME: not implemented in HDL
+    constant VDL_HEE    	: addr_t := x"FFFF8290";   -- horizontal equalization end -- FIXME: not implemented in HDL
 
-    constant VDL_VFC    	: addr_t1 := x"FFFF82A0";   -- vertical frequency counter (read only) -- FIXME: not implemented in HDL
-    constant VDL_VFT    	: addr_t1 := x"FFFF82A2";   -- vertical field total
-    constant VDL_VBB    	: addr_t1 := x"FFFF82A4";   -- vertical blank begin
-    constant VDL_VBE    	: addr_t1 := x"FFFF82A6";   -- vertical blank end
-    constant VDL_VDB    	: addr_t1 := x"FFFF82A8";   -- vertical display begin 0 and 1
-    constant VDL_VDE    	: addr_t1 := x"FFFF82AA";   -- vertical display end 0 and 1
-    constant VDL_VSS    	: addr_t1 := x"FFFF82AC";   -- vertical sync start
+    constant VDL_VFC    	: addr_t := x"FFFF82A0";   -- vertical frequency counter (read only) -- FIXME: not implemented in HDL
+    constant VDL_VFT    	: addr_t := x"FFFF82A2";   -- vertical field total
+    constant VDL_VBB    	: addr_t := x"FFFF82A4";   -- vertical blank begin
+    constant VDL_VBE    	: addr_t := x"FFFF82A6";   -- vertical blank end
+    constant VDL_VDB    	: addr_t := x"FFFF82A8";   -- vertical display begin 0 and 1
+    constant VDL_VDE    	: addr_t := x"FFFF82AA";   -- vertical display end 0 and 1
+    constant VDL_VSS    	: addr_t := x"FFFF82AC";   -- vertical sync start
 
-    constant VDL_VCT    	: addr_t1 := x"FFFF82C0";   -- Video Master Control
-    constant VDL_VMD    	: addr_t1 := x"FFFF82C2";   -- Falcon Video Control
+    constant VDL_VCT    	: addr_t := x"FFFF82C0";   -- Video Master Control
+    constant VDL_VMD    	: addr_t := x"FFFF82C2";   -- Falcon Video Control
 
-    constant VDL_CLUT   	: addr_t1 := x"FFFF9800";   -- Falcon palette (1024 bytes)
+    constant VDL_CLUT   	: addr_t := x"FFFF9800";   -- Falcon palette (1024 bytes)
 
     -- ACP registers
     constant ACP_CLUT           : addr_t := x"F0000000";        -- ACP color lookup table. 1024 bytes
