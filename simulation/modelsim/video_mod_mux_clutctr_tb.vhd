@@ -89,7 +89,6 @@ architecture sim of video_mod_mux_clutctr_tb is
         data            : addr_t;
         width           : lane_width_type;
     end record;
-    type reg_ptr_t is access addr_t;
 
     type stim_vector_t is array (positive range <>) of stim_record;
 
