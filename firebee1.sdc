@@ -40,6 +40,7 @@ set_time_format -unit ns -decimal_places 3
 
 
 create_clock -name {MAIN_CLK} -period 30.303 -waveform { 0.000 15.151 } [get_ports {MAIN_CLK}]
+#create_clock -period 30.303 -name virt_main_clk
 
 #create_generated_clock  -multiply_by 4                    -name {CLK_DDR[0]} -phase 240  -source [get_ports {MAIN_CLK}] [get_pins inst12|altpll_component|auto_generated|pll1|clk[0]]
 #create_generated_clock  -multiply_by 4                    -name {CLK_DDR[1]} -phase 0    -source [get_ports {MAIN_CLK}] [get_pins inst12|altpll_component|auto_generated|pll1|clk[1]]
@@ -113,6 +114,11 @@ set_false_path -from [get_keepers *3fh1*rdptr_g\[*] -to [get_keepers *3fh1*15\|d
 set_false_path -from MAIN_CLK -to altpll4:inst22|altpll:altpll_component|altpll_r4n2:auto_generated|clk[0]
 set_false_path -from MAIN_CLK -to inst22|altpll_component|auto_generated|pll1|clk[0]
 
+set_false_path -from [get_clocks {MAIN_CLK}] -to [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}]
+set_false_path -from [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {MAIN_CLK}]
+
+set_false_path -from [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}]
+set_false_path -from [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}]
 #set_false_path -from [get_keepers {*rdptr_g*}] -to [get_keepers {*ws_dgrp|dffpipe_id9:dffpipe17|dffe18a*}]
 #set_false_path -from [get_keepers {*delayed_wrptr_g*}] -to [get_keepers {*rs_dgwp|dffpipe_hd9:dffpipe12|dffe13a*}]
 #set_false_path -from [get_keepers {*rdptr_g*}] -to [get_keepers {*ws_dgrp|dffpipe_kd9:dffpipe15|dffe16a*}]
@@ -131,19 +137,21 @@ set_false_path -from MAIN_CLK -to inst22|altpll_component|auto_generated|pll1|cl
 #**************************************************************
 
 # TPD
-set_max_delay -from [all_inputs] -to [all_outputs] 1
+#set_max_delay -from [all_inputs] -to [all_outputs] 1
 
 # TSU
 set_max_delay -from [all_inputs] -to [all_registers] 1
 
 # TCO
-set_max_delay -from [all_registers] -to [all_outputs] 1
+# set_max_delay -from [all_registers] -to [all_outputs] 1
 
 set_max_delay -from [get_keepers FB_AD*] -to [get_keepers BA*] 5
 set_max_delay -from [get_keepers FB_AD*] -to [get_keepers VA*] 5
 set_max_delay -from [get_keepers FB_AD*] -to [get_keepers nVRA*] 5
 
 
+set_output_delay -clock MAIN_CLK -max 1.5 [all_outputs]
+set_output_delay -clock MAIN_CLK -min 0 [all_outputs]
 #**************************************************************
 # Set Minimum Delay
 #**************************************************************

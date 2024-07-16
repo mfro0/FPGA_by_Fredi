@@ -234,7 +234,7 @@ begin
     falcon_clut_rdh <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '0' else '0';
     falcon_clut_rdl <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '1' else '0';
     falcon_clut_wr(1 downto 0) <= fb_16b when fb_adr(1) = '0' and falcon_clut_cs and nFB_WR = '0' else (others => '0');
-    falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) = '1' and falcon_clut_cs and nFB_WR = '0'else (others => '0');
+    falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) = '1' and falcon_clut_cs and nFB_WR = '0' else (others => '0');
     
     -- ST clut
     st_clut_cs <= adr_match(fb_adr, STE_PAL, fbcs, 1, 16#20#);
@@ -777,7 +777,7 @@ begin
             end if;
             
             if last then
-                if vvcnt = 13d"1" then
+                if vvcnt = d"1" then
                     start_zeile <= '1';
                 else
                     start_zeile <= '0';
@@ -820,7 +820,7 @@ begin
             clut_mux_adr <= clut_mux_av(1);
             
             -- make border color
-            rand(0) <= disp_on and not(vdtron) and acp_vctr(25);
+            rand(0) <= disp_on and not(vdtron) and rand_ena;
             for i in 0 to 5 loop
                 rand(i + 1) <= rand(i);
             end loop;

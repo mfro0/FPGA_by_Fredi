@@ -45,4 +45,9 @@ tags
 video_mod_mux_clutctr.gtkw
 vunit_out/
 work/
-
+.hdl_checker
+*.qws
+*.stp
+*.swo
+*.cf
+wave.do
