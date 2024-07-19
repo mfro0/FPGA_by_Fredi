@@ -111,7 +111,6 @@ set_false_path -from [get_keepers *0hh1*rdptr_g\[*] -to [get_keepers *0hh1*dffe1
 set_false_path -from [get_keepers *3fh1*d_wrptr*] -to [get_keepers *3fh1*dffe13a*]
 set_false_path -from [get_keepers *3fh1*rdptr_g\[*] -to [get_keepers *3fh1*15\|dffe16a\[*]
 
-set_false_path -from MAIN_CLK -to altpll4:inst22|altpll:altpll_component|altpll_r4n2:auto_generated|clk[0]
 set_false_path -from MAIN_CLK -to inst22|altpll_component|auto_generated|pll1|clk[0]
 
 set_false_path -from [get_clocks {MAIN_CLK}] -to [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}]
