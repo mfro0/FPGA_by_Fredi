@@ -33,5 +33,28 @@ entity blitter is
 end entity blitter;
 
 architecture rtl of blitter is
+    signal byt              : std_logic;
+    signal fb_16b           : std_logic_vector(1 downto 0);
+    signal blitter_cs,
+           bl_hram_cs,
+           dp_ram_cs        : std_logic;
+    signal bl_hram_be       : std_logic_vector(1 downto 0);
+    signal bl_dpram_out     : std_logic_vector(15 downto 0);
+    signal bl_src_x_inc_cs  : std_logic;
+    signal bl_src_x_inc     : std_logic_vector(15 downto 0);
+    signal src_adr_inc      : std_logic_vector(31 downto 0);
+    signal src_xinc32       : std_logic_vector(31 downto 0);
+    
+    signal bl_src_y_inc_cs  : std_logic;
+    signal bl_src_y_inc     : std_logic_vector(31 downto 0);
+    signal src_yinc32       : std_logic_vector(31 downto 0);
+    
+    signal bl_endmask1_cs   : std_logic;
+    signal bl_endmask1      : std_logic_vector(15 downto 0);
+    signal bl_endmask2_cs   : std_logic;
+    signal bl_endmask2      : std_logic_vector(15 downto 0);
+    signal bl_endmask3_cs   : std_logic;
+    signal bl_endmask3      : std_logic_vector(15 downto 0);
+    
 begin
 end architecture rtl;

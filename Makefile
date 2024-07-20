@@ -11,7 +11,7 @@ ALTOPT = --64bit
 BITSTREAM=$(PROJ).sof
 BUILD_DIR=.
 
-PROJ=firebee1
+PROJ=firebee
 
 all: synthesis fitter assembler timing_analyzer eda
 

@@ -1,4 +1,4 @@
-## Generated SDC file "D:/Download/firebee1.out.sdc"
+## Generated SDC file "D:/Download/firebee.out.sdc"
 
 ## Copyright (C) 1991-2010 Altera Corporation
 ## Your use of Altera Corporation's design tools, logic functions
@@ -111,13 +111,9 @@ set_false_path -from [get_keepers *0hh1*rdptr_g\[*] -to [get_keepers *0hh1*dffe1
 set_false_path -from [get_keepers *3fh1*d_wrptr*] -to [get_keepers *3fh1*dffe13a*]
 set_false_path -from [get_keepers *3fh1*rdptr_g\[*] -to [get_keepers *3fh1*15\|dffe16a\[*]
 
-set_false_path -from MAIN_CLK -to inst22|altpll_component|auto_generated|pll1|clk[0]
+set_false_path -from [get_clocks {MAIN_CLK}] -to [get_clocks {i_altpll4|altpll_component|auto_generated|pll1|clk[0]}]
+set_false_path -from [get_clocks {i_altpll4|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {MAIN_CLK}]
 
-set_false_path -from [get_clocks {MAIN_CLK}] -to [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}]
-set_false_path -from [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {MAIN_CLK}]
-
-set_false_path -from [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}]
-set_false_path -from [get_clocks {inst22|altpll_component|auto_generated|pll1|clk[0]}] -to [get_clocks {inst13|altpll_component|auto_generated|pll1|clk[0]}]
 #set_false_path -from [get_keepers {*rdptr_g*}] -to [get_keepers {*ws_dgrp|dffpipe_id9:dffpipe17|dffe18a*}]
 #set_false_path -from [get_keepers {*delayed_wrptr_g*}] -to [get_keepers {*rs_dgwp|dffpipe_hd9:dffpipe12|dffe13a*}]
 #set_false_path -from [get_keepers {*rdptr_g*}] -to [get_keepers {*ws_dgrp|dffpipe_kd9:dffpipe15|dffe16a*}]
