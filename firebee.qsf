@@ -648,11 +648,7 @@ set_global_assignment -name TIMEQUEST_DO_REPORT_TIMING ON
 set_global_assignment -name SYNCHRONIZER_IDENTIFICATION OFF
 set_global_assignment -name TIMEQUEST_DO_CCPP_REMOVAL ON
 set_instance_assignment -name AUTO_GLOBAL_CLOCK ON -to MAIN_CLK
-set_location_assignment PLL_1 -to "altpll3:inst13|altpll:altpll_component|altpll_9j03:auto_generated|pll1"
-set_location_assignment PLL_3 -to "altpll2:inst12|altpll:altpll_component|altpll_1r33:auto_generated|pll1"
-set_location_assignment PLL_2 -to "altpll4:inst22|altpll:altpll_component|altpll_r4n2:auto_generated|pll1"
 
-set_location_assignment PLL_4 -to "altpll1:inst|altpll:altpll_component|altpll_hsp2:auto_generated|pll1"
 
 set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
@@ -865,3 +861,7 @@ set_global_assignment -name VHDL_FILE video/blitter/blitter.vhd
 
 
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_location_assignment PLL_1 -to "altpll3:i_altpll3|altpll:altpll_component|altpll_9j03:auto_generated|pll1"
+set_location_assignment PLL_3 -to "altpll2:i_altpll2|altpll:altpll_component|altpll_1r33:auto_generated|pll1"
+set_location_assignment PLL_2 -to "altpll4:i_altpll4|altpll:altpll_component|altpll_r4n2:auto_generated|pll1"
+set_location_assignment PLL_4 -to "altpll1:i_altpll1|altpll:altpll_component|altpll_hsp2:auto_generated|pll1"
