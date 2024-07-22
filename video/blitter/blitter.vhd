@@ -108,15 +108,17 @@ architecture rtl of blitter is
     signal bl_skew          : std_logic_vector(7 downto 0);
 
     -- barrel shifter
-    DIST_RIGHT[8..0]            :NODE;
-    BS_SKEW[7..0]               :NODE;
-    BL_BSIN[383..0]             :NODE;
-    BL_BSOUT[383..0]            :NODE;
-    SHIFT_DIR                   :NODE;
-    BL_SRC_BUF1[127..0]         :DFFE;
-    BL_SRC_BUF2[127..0]         :DFFE;
-    BL_SRC_BUF3[127..0]         :DFFE;
-    BL_DST_BUFRD[127..0]        :DFFE;
+    signal dist_right       : std_logic_vector(8 downto 0);
+    signal bs_skew          : std_logic_vector(7 downto 0);
+    signal bl_bsin          : std_logic_vector(383 downto 0);
+    signal bl_bsout         : std_logic_vector(383 downto 0);
+    signal shift_dir        : std_logic;
+        
+    signal bl_src_buf1      : std_logic_vector(127 downto 0);
+    signal bl_src_buf2      : std_logic_vector(127 downto 0);
+    signal bl_src_buf3      : std_logic_vector(127 downto 0);
+    signal bl_dst_bufrd     : std_logic_vector(127 downto 0);
+
     BL_READ_DST                 :NODE;              -- LATCH SIGNAL DST BUF RD
     BL_READ_SRC                 :NODE;              -- LATCH SIGNAL SRC BUF
     SRC_READ                    :NODE;              -- FREIGABE LATCH SIGNAL
