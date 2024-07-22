@@ -1,6 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+library altera_mf;
+use altera_mf.altera_mf_components.all;
+
 entity blitter is
     port
     (
@@ -56,7 +59,7 @@ architecture rtl of blitter is
     signal bl_endmask3_cs   : std_logic;
     signal bl_endmask3,
            bl_endmask0,
-           bl_endmaskf.
+           bl_endmaskf,
            bl_endmaskl,
            bl_endmaskr      : std_logic_vector(15 downto 0);
     
@@ -98,8 +101,8 @@ architecture rtl of blitter is
     signal bl_y_cnt         : std_logic_vector(15 downto 0);
     
     signal bl_hop_cs        : std_logic;
-    signal bl_hop           : std_logic(7 downto 0);
-    signal bl_op            : std_logic(7 downto 0);
+    signal bl_hop           : std_logic_vector(7 downto 0);
+    signal bl_op            : std_logic_vector(7 downto 0);
     
     signal bl_ln_cs         : std_logic;
     signal bl_ln_wr         : std_logic;
@@ -151,7 +154,7 @@ architecture rtl of blitter is
     signal ror_cnt          : std_logic_vector(8 downto 0);
     signal endmask123       : std_logic_vector(127 downto 0);
     signal endmaskend       : std_logic_vector(31 downto 0);
-    signal blitter_sig      : std_logic;
+    -- signal blitter_sig      : std_logic;
     signal blitter_req      : std_logic;
     signal bl_start         : std_logic;
     signal bl_notrun        : std_logic;
@@ -160,4 +163,32 @@ architecture rtl of blitter is
     type blitter_state_type is (START, NEW_LINE, RDSRC3, RDSRC2, RDSRC1, RDDST, WRDSTW, WRDST, TESTZEILENENDE, TESTFERTIG, FERTIG);
     signal bl_sm            : blitter_state_type := START;
 begin
+    -- byte and word select 16 bits
+    byt <= not fb_size1 and fb_size0;
+    fb_16b(0) <= '1' when fb_adr(0) = '0' else '0';
+    fb_16b(1) <= '1' when fb_adr(0) = '1' or byt = '0' else '0';
+    
+    -- blitter cs
+    blitter_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 7) = x"1f1f" else '0';    -- x"ff8a00" - x"ff8a7f"
+    blitter_ta <= blitter_cs;
+    
+    -- registers
+    -- halftone RAM
+    bl_hram_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 5) = x"7c50" else '0';    -- x"ff8a00" - xf"f8a1f"
+    bl_hram_be(1) <= bl_hram_cs and fb_16b(0);
+    bl_hram_be(0) <= bl_hram_cs and fb_16b(1);
+    wren_b <= '0';
+    -- FIXME: line_nr <= bl_ln(3 downto 0) + ((y_index(3 downto 0) and not bl_dst_x_inc(15)) - (y_index(3 downto 0) and bl_dst_x_inc(15)));
+    -- FIXME: (bl_dpram_out, bl_hram_out) <= altsyncram0(fb_adr(4 downto 1), line_nr, bl_hram_be, main_clk, ddrclk0, fb_ad(31 downto 16), bl_hram_cs and not nFB_WR, wren_b);
+    
+    -- until we have something more reasonable:
+    blitter_run <= '0';
+    blitter_int <= '0';
+    blitter_dout <= (others => '0');
+    blitter_adr <= (others => '0');
+    blitter_sig <= '0';
+    blitter_wr <= '0';
+    blitter_ta <= '0';
+    
+    
 end architecture rtl;

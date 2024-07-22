@@ -672,8 +672,13 @@ set_location_assignment PLL_1 -to "altpll3:i_altpll3|altpll:altpll_component|alt
 set_location_assignment PLL_3 -to "altpll2:i_altpll2|altpll:altpll_component|altpll_1r33:auto_generated|pll1" -disable
 set_location_assignment PLL_2 -to "altpll4:i_altpll4|altpll:altpll_component|altpll_r4n2:auto_generated|pll1" -disable
 set_location_assignment PLL_4 -to "altpll1:i_altpll1|altpll:altpll_component|altpll_hsp2:auto_generated|pll1" -disable
-set_global_assignment -name AHDL_FILE blitter.tdf
+set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+set_global_assignment -name SEED 0
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name VHDL_FILE video/blitter/blitter.vhd
 set_global_assignment -name VHDL_FILE video/video_regs.vhd
+set_global_assignment -name AHDL_FILE ahdl_blitter.tdf
 set_global_assignment -name VHDL_FILE byte_selector.vhd
 set_global_assignment -name VHDL_FILE firebee_utils.vhd
 set_global_assignment -name VHDL_FILE video/video_mod_mux_clutctr.vhd
@@ -862,8 +867,4 @@ set_global_assignment -name QIP_FILE video/Doppelzeilen_Fifo.qip
 set_global_assignment -name QIP_FILE video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE video/blitter/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee.stp
-set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
-set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
-set_global_assignment -name SEED 0
-set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
