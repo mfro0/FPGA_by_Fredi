@@ -119,45 +119,45 @@ architecture rtl of blitter is
     signal bl_src_buf3      : std_logic_vector(127 downto 0);
     signal bl_dst_bufrd     : std_logic_vector(127 downto 0);
 
-    BL_READ_DST                 :NODE;              -- LATCH SIGNAL DST BUF RD
-    BL_READ_SRC                 :NODE;              -- LATCH SIGNAL SRC BUF
-    SRC_READ                    :NODE;              -- FREIGABE LATCH SIGNAL
-    NOT_DST_READ                :NODE;
-    WREN_B                      :NODE;              -- WR ENA HALFTONE RAM
-    X_INDEX_CS                  :NODE;
-    X_INDEX[15..0]              :DFF;               -- LAUFZEIGER X COUNT
-    X_INDEX_CLR                 :DFF;               -- X INDEX L�SCHEN CPU WRITE
-    X_INDEX_CLR_DIR             :NODE;              -- X INDEX L�SCHEN STATE MACHINE
-    DST_X_INC[15..0]            :NODE;              -- ANZAHL WORTE PRO DURCHLAUF
-    X_CNT_T[15..0]              :NODE;
-    Y_INDEX_CS                  :NODE;
-    Y_INDEX[15..0]              :DFF;               -- LAUFZEIGER Y COUNT
-    Y_INDEX_CLR                 :DFF;
-    LINE_NR[3..0]               :NODE;
-    SDXINC                      :DFF;               -- INC INDEX SPALTE
-    YIINC                       :NODE;              -- INC INDEX ZEILE
-    ZAINC                       :NODE;              -- INC ADRESSEN ZEILENUMBRUCH
-    HOP_OUT[127..0]             :NODE;
-    OP_OUT[127..0]              :NODE;
-    ENDMASK1_SHIFT[7..0]        :NODE;
-    ENDMASK2_SHIFT[7..0]        :NODE;
-    ENDMASK12_IN[143..0]        :NODE;
-    ENDMASK12_OUT[143..0]       :NODE;
-    ENDMASK23_IN[143..0]        :NODE;
-    ENDMASK23_OUT[143..0]       :NODE;
-    ENDMASKM_IN[127..0]         :NODE;
-    ENDMASKM_OUT[127..0]        :NODE;
-    ROR_CNT[8..0]               :NODE;
-    ENDMASK123[127..0]          :DFF;
-    ENDMASKEND[31..0]           :NODE;
-    BLITTER_SIG                 :DFF;
-    BLITTER_REQ                 :NODE;
-    BL_START                    :DFF;
-    BL_NOTRUN                   :NODE;
+    signal bl_read_dst      : std_logic;            -- LATCH SIGNAL DST BUF RD
+    signal bl_read_src      : std_logic;            -- LATCH SIGNAL SRC BUF
+    signal src_read         : std_logic;            -- FREIGABE LATCH SIGNAL
+    signal not_dst_read     : std_logic;
+    signal wren_b           : std_logic;            -- WR ENA HALFTONE RAM
+    signal x_index_cs       : std_logic;
+    signal x_index          : std_logic_vector(15 downto 0);    -- LAUFZEIGER X COUNT
+    signal x_index_clr      : std_logic;            -- X INDEX L�SCHEN CPU WRITE
+    signal x_index_clr_dir  : std_logic;            -- X INDEX L�SCHEN STATE MACHINE
+    signal dst_x_inc        : std_logic_vector(15 downto 0);    -- ANZAHL WORTE PRO DURCHLAUF
+    signal x_cnt_t          : std_logic_vector(15 downto 0);
+    signal y_index_cs       : std_logic;
+    signal y_index          : std_logic_vector(15 downto 0);    -- LAUFZEIGER Y COUNT
+    signal y_index_clr      : std_logic;
+    signal line_nr          : std_logic_vector(3 downto 0);
+    signal sdxinc           : std_logic;            -- INC INDEX SPALTE
+    signal yiinc            : std_logic;            -- INC INDEX ZEILE
+    signal zainc            : std_logic;            -- INC ADRESSEN ZEILENUMBRUCH
+    signal hop_out          : std_logic_vector(127 downto 0);
+    signal op_out           : std_logic_vector(127 downto 0);
+    signal endmask1_shift,
+           endmask2_shift   : std_logic_vector(7 downto 0);
+    signal endmask12_in,
+           endmask12_out,
+           endmask23_in,
+           endmask23_out    : std_logic_vector(143 downto 0);
+    signal endmaskm_in,
+           endmaskm_out     : std_logic_vector(127 downto 0);
+
+    signal ror_cnt          : std_logic_vector(8 downto 0);
+    signal endmask123       : std_logic_vector(127 downto 0);
+    signal endmaskend       : std_logic_vector(31 downto 0);
+    signal blitter_sig      : std_logic;
+    signal blitter_req      : std_logic;
+    signal bl_start         : std_logic;
+    signal bl_notrun        : std_logic;
 
 -- MAIN STATE MACHINE
-    BL_SM                       :MACHINE WITH STATES(START,NEW_LINE,RDSRC3,RDSRC2,RDSRC1,RDDST,WRDSTW,WRDST,TESTZEILENENDE,TESTFERTIG,FERTIG);
-
-    
+    type blitter_state_type is (START, NEW_LINE, RDSRC3, RDSRC2, RDSRC1, RDDST, WRDSTW, WRDST, TESTZEILENENDE, TESTFERTIG, FERTIG);
+    signal bl_sm            : blitter_state_type := START;
 begin
 end architecture rtl;

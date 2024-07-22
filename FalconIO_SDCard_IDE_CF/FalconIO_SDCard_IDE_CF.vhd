@@ -33,7 +33,7 @@ use ieee.std_logic_unsigned.all;
 
 --  Entity Declaration
 
-ENTITY FalconIO_SDCard_IDE_CF IS
+ENTITY falcon_io IS
         -- {{ALTERA_IO_BEGIN}} DO NOT REMOVE THIS LINE!
         PORT
         (
@@ -146,12 +146,12 @@ ENTITY FalconIO_SDCard_IDE_CF IS
         );
         -- {{ALTERA_IO_END}} DO NOT REMOVE THIS LINE!
 
-END FalconIO_SDCard_IDE_CF;
+END falcon_io;
 
 
 --  Architecture Body
 
-ARCHITECTURE FalconIO_SDCard_IDE_CF_architecture OF FalconIO_SDCard_IDE_CF IS
+ARCHITECTURE FalconIO_SDCard_IDE_CF_architecture OF falcon_io IS
     -- system
     signal SYS_CLK                              : STD_LOGIC;
     signal RESETn                               : STD_LOGIC;
