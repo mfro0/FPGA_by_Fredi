@@ -8,7 +8,7 @@ else
 endif
 ALTOPT = --64bit
 
-BITSTREAM=$(PROJ).sof
+BITSTREAM=output_files/$(PROJ).sof
 BUILD_DIR=.
 
 PROJ=firebee
