@@ -54,7 +54,108 @@ architecture rtl of blitter is
     signal bl_endmask2_cs   : std_logic;
     signal bl_endmask2      : std_logic_vector(15 downto 0);
     signal bl_endmask3_cs   : std_logic;
-    signal bl_endmask3      : std_logic_vector(15 downto 0);
+    signal bl_endmask3,
+           bl_endmask0,
+           bl_endmaskf.
+           bl_endmaskl,
+           bl_endmaskr      : std_logic_vector(15 downto 0);
+    
+    signal bl_src_adrh_cs,
+           bl_src_adrl_cs   : std_logic;
+    signal bl_src_adr       : std_logic_vector(31 downto 0);
+    signal src_old          : std_logic_vector(27 downto 0);
+    signal iaddrh_cs,
+           iaddrl_cs        : std_logic;
+    signal src_iadr         : std_logic_vector(31 downto 0);
+    signal src_iadr_clr     : std_logic;
+    signal src_adr32        : std_logic_vector(31 downto 0);
+    
+    signal bl_dst_x_inc_cs  : std_logic;
+    signal bl_dst_x_inc     : std_logic_vector(15 downto 0);
+    
+    signal dst_adr_inc      : std_logic_vector(31 downto 0);
+    signal dst_xinc32       : std_logic_vector(31 downto 0);
+    
+    signal bl_dst_y_inc_cs  : std_logic;
+    signal bl_dst_y_inc     : std_logic_vector(15 downto 0);
+    
+    signal dst_yinc32       : std_logic_vector(31 downto 0);
+    
+    signal bl_dst_adrh_cs,
+           bl_dst_adrl_cs   : std_logic;
+    signal bl_dst_adr       : std_logic_vector(31 downto 0);
+    
+    signal dst_iadrh_cs     : std_logic;
+    signal dsb_iadrl_cs     : std_logic;
+    signal dst_iadr         : std_logic_vector(31 downto 0);
+    signal dst_iadr_clr     : std_logic;
+    signal dst_adr32        : std_logic_vector(31 downto 0);
+    
+    signal bl_x_cnt_cs      : std_logic;
+    signal bl_x_cnt         : std_logic_vector(15 downto 0);
+    signal x_cnt16          : std_logic_vector(15 downto 0);
+    signal bl_y_cnt_cs      : std_logic;
+    signal bl_y_cnt         : std_logic_vector(15 downto 0);
+    
+    signal bl_hop_cs        : std_logic;
+    signal bl_hop           : std_logic(7 downto 0);
+    signal bl_op            : std_logic(7 downto 0);
+    
+    signal bl_ln_cs         : std_logic;
+    signal bl_ln_wr         : std_logic;
+    signal ln7_clr          : std_logic;
+    signal bl_ln            : std_logic_vector(7 downto 0);
+    signal bl_skew          : std_logic_vector(7 downto 0);
+
+    -- barrel shifter
+    DIST_RIGHT[8..0]            :NODE;
+    BS_SKEW[7..0]               :NODE;
+    BL_BSIN[383..0]             :NODE;
+    BL_BSOUT[383..0]            :NODE;
+    SHIFT_DIR                   :NODE;
+    BL_SRC_BUF1[127..0]         :DFFE;
+    BL_SRC_BUF2[127..0]         :DFFE;
+    BL_SRC_BUF3[127..0]         :DFFE;
+    BL_DST_BUFRD[127..0]        :DFFE;
+    BL_READ_DST                 :NODE;              -- LATCH SIGNAL DST BUF RD
+    BL_READ_SRC                 :NODE;              -- LATCH SIGNAL SRC BUF
+    SRC_READ                    :NODE;              -- FREIGABE LATCH SIGNAL
+    NOT_DST_READ                :NODE;
+    WREN_B                      :NODE;              -- WR ENA HALFTONE RAM
+    X_INDEX_CS                  :NODE;
+    X_INDEX[15..0]              :DFF;               -- LAUFZEIGER X COUNT
+    X_INDEX_CLR                 :DFF;               -- X INDEX L�SCHEN CPU WRITE
+    X_INDEX_CLR_DIR             :NODE;              -- X INDEX L�SCHEN STATE MACHINE
+    DST_X_INC[15..0]            :NODE;              -- ANZAHL WORTE PRO DURCHLAUF
+    X_CNT_T[15..0]              :NODE;
+    Y_INDEX_CS                  :NODE;
+    Y_INDEX[15..0]              :DFF;               -- LAUFZEIGER Y COUNT
+    Y_INDEX_CLR                 :DFF;
+    LINE_NR[3..0]               :NODE;
+    SDXINC                      :DFF;               -- INC INDEX SPALTE
+    YIINC                       :NODE;              -- INC INDEX ZEILE
+    ZAINC                       :NODE;              -- INC ADRESSEN ZEILENUMBRUCH
+    HOP_OUT[127..0]             :NODE;
+    OP_OUT[127..0]              :NODE;
+    ENDMASK1_SHIFT[7..0]        :NODE;
+    ENDMASK2_SHIFT[7..0]        :NODE;
+    ENDMASK12_IN[143..0]        :NODE;
+    ENDMASK12_OUT[143..0]       :NODE;
+    ENDMASK23_IN[143..0]        :NODE;
+    ENDMASK23_OUT[143..0]       :NODE;
+    ENDMASKM_IN[127..0]         :NODE;
+    ENDMASKM_OUT[127..0]        :NODE;
+    ROR_CNT[8..0]               :NODE;
+    ENDMASK123[127..0]          :DFF;
+    ENDMASKEND[31..0]           :NODE;
+    BLITTER_SIG                 :DFF;
+    BLITTER_REQ                 :NODE;
+    BL_START                    :DFF;
+    BL_NOTRUN                   :NODE;
+
+-- MAIN STATE MACHINE
+    BL_SM                       :MACHINE WITH STATES(START,NEW_LINE,RDSRC3,RDSRC2,RDSRC1,RDDST,WRDSTW,WRDST,TESTZEILENENDE,TESTFERTIG,FERTIG);
+
     
 begin
 end architecture rtl;
