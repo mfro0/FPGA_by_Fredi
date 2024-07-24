@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 library altera_mf;
 use altera_mf.altera_mf_components.all;
@@ -107,7 +108,7 @@ architecture rtl of blitter is
     signal bl_ln_cs         : std_logic;
     signal bl_ln_wr         : std_logic;
     signal ln7_clr          : std_logic;
-    signal bl_ln            : std_logic_vector(7 downto 0);
+    signal bl_ln            : unsigned(7 downto 0);
     signal bl_skew          : std_logic_vector(7 downto 0);
 
     -- barrel shifter
@@ -134,9 +135,9 @@ architecture rtl of blitter is
     signal dst_x_inc        : std_logic_vector(15 downto 0);    -- ANZAHL WORTE PRO DURCHLAUF
     signal x_cnt_t          : std_logic_vector(15 downto 0);
     signal y_index_cs       : std_logic;
-    signal y_index          : std_logic_vector(15 downto 0);    -- LAUFZEIGER Y COUNT
+    signal y_index          : unsigned(15 downto 0);    -- LAUFZEIGER Y COUNT
     signal y_index_clr      : std_logic;
-    signal line_nr          : std_logic_vector(3 downto 0);
+    signal line_nr          : unsigned(3 downto 0);
     signal sdxinc           : std_logic;            -- INC INDEX SPALTE
     signal yiinc            : std_logic;            -- INC INDEX ZEILE
     signal zainc            : std_logic;            -- INC ADRESSEN ZEILENUMBRUCH
@@ -178,8 +179,11 @@ begin
     bl_hram_be(1) <= bl_hram_cs and fb_16b(0);
     bl_hram_be(0) <= bl_hram_cs and fb_16b(1);
     wren_b <= '0';
-    -- FIXME: line_nr <= bl_ln(3 downto 0) + ((y_index(3 downto 0) and not bl_dst_x_inc(15)) - (y_index(3 downto 0) and bl_dst_x_inc(15)));
-    -- FIXME: (bl_dpram_out, bl_hram_out) <= altsyncram0(fb_adr(4 downto 1), line_nr, bl_hram_be, main_clk, ddrclk0, fb_ad(31 downto 16), bl_hram_cs and not nFB_WR, wren_b);
+
+    line_nr <= resize(bl_ln + y_index(3 downto 0), line_nr'length) when bl_dst_x_inc < d"0" else
+               resize(bl_ln - y_index(3 downto 0), line_nr'length);
+
+    -- FIXME: (bl_dpram_out, bl_hram_out) <= altsyncram(fb_adr(4 downto 1), line_nr, bl_hram_be, main_clk, ddrclk0, fb_ad(31 downto 16), bl_hram_cs and not nFB_WR, wren_b);
     
     -- until we have something more reasonable:
     blitter_run <= '0';
