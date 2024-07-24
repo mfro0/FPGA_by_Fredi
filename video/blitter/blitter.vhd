@@ -48,7 +48,7 @@ architecture rtl of blitter is
     signal bl_src_x_inc_cs  : std_logic;
     signal bl_src_x_inc     : std_logic_vector(15 downto 0);
     signal src_adr_inc      : std_logic_vector(31 downto 0);
-    signal src_xinc32       : std_logic_vector(31 downto 0);
+    signal src_xinc32       : signed(31 downto 0);
     
     signal bl_src_y_inc_cs  : std_logic;
     signal bl_src_y_inc     : std_logic_vector(31 downto 0);
@@ -227,7 +227,17 @@ begin
             q_a => bl_dpram_out,
             q_b => bl_hram_out            
         );
-    -- FIXME: (bl_dpram_out, bl_hram_out) <= altsyncram(fb_adr(4 downto 1), line_nr, bl_hram_be, main_clk, ddrclk0, fb_ad(31 downto 16), bl_hram_cs and not nFB_WR, wren_b);
+    
+    dp_ram_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = x"7c528" else '0';
+    
+    -- src_x_inc
+    p_src_x_inc : process(all)
+    begin
+        if rising_edge(MAIN_CLK) then
+            -- sign extend to 32 bits
+            src_xinc32 <= resize(signed(bl_src_x_inc), src_xinc32'length);
+        end if;
+    end process p_src_x_inc;
     
     -- until we have something more reasonable:
     blitter_run <= '0';
