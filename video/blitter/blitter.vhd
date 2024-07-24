@@ -43,6 +43,7 @@ architecture rtl of blitter is
            bl_hram_cs,
            dp_ram_cs        : std_logic;
     signal bl_hram_be       : std_logic_vector(1 downto 0);
+    signal bl_hram_out      : std_logic_vector(15 downto 0);
     signal bl_dpram_out     : std_logic_vector(15 downto 0);
     signal bl_src_x_inc_cs  : std_logic;
     signal bl_src_x_inc     : std_logic_vector(15 downto 0);
@@ -183,6 +184,49 @@ begin
     line_nr <= resize(bl_ln + y_index(3 downto 0), line_nr'length) when bl_dst_x_inc < d"0" else
                resize(bl_ln - y_index(3 downto 0), line_nr'length);
 
+    i_altsyncram : altsyncram
+        generic map
+        (
+            ADDRESS_REG_B => "CLOCK1",
+            BYTE_SIZE => 8,
+            CLOCK_ENABLE_INPUT_A => "BYPASS",
+            CLOCK_ENABLE_INPUT_B => "BYPASS",
+            CLOCK_ENABLE_OUTPUT_A => "BYPASS",
+            CLOCK_ENABLE_OUTPUT_B => "BYPASS",
+            INDATA_REG_B => "CLOCK1",
+            INTENDED_DEVICE_FAMILY => "Cyclone III",
+            LPM_TYPE => "altsyncram",
+            NUMWORDS_A => 16,
+            NUMWORDS_B => 16,
+            OPERATION_MODE => "BIDIR_DUAL_PORT",
+            OUTDATA_ACLR_A => "NONE",
+            OUTDATA_ACLR_B => "NONE",
+            OUTDATA_REG_A => "UNREGISTERED",
+            OUTDATA_REG_B => "UNREGISTERED",
+            POWER_UP_UNINITIALIZED => "FALSE",
+            READ_DURING_WRITE_MODE_PORT_A => "NEW_DATA_WITH_NBE_READ",
+            READ_DURING_WRITE_MODE_PORT_B => "NEW_DATA_WITH_NBE_READ",
+            WIDTHAD_A => 4,
+            WIDTHAD_B => 4,
+            WIDTH_A => 16,
+            WIDTH_B => 16,
+            WIDTH_BYTEENA_A => 2,
+            WIDTH_BYTEENA_B => 1,
+            WRCONTROL_WRADDRESS_REG_B => "CLOCK1"
+        )
+        port map
+        (
+            address_a => fb_adr(4 downto 1),
+            address_b => std_logic_vector(line_nr),
+            byteena_a => bl_hram_be,
+            clock0 => MAIN_CLK,
+            clock1 => ddrclk0,
+            data_a => fb_ad(31 downto 16),
+            wren_a => bl_hram_cs and not nFB_WR,
+            wren_b => wren_b,
+            q_a => bl_dpram_out,
+            q_b => bl_hram_out            
+        );
     -- FIXME: (bl_dpram_out, bl_hram_out) <= altsyncram(fb_adr(4 downto 1), line_nr, bl_hram_be, main_clk, ddrclk0, fb_ad(31 downto 16), bl_hram_cs and not nFB_WR, wren_b);
     
     -- until we have something more reasonable:
