@@ -458,16 +458,16 @@ set_instance_assignment -name CLOCK_SETTINGS fast -to DDRCLK[0]
 set_instance_assignment -name CLOCK_SETTINGS fast -to DDRCLK[1]
 set_instance_assignment -name CLOCK_SETTINGS fast -to DDRCLK[2]
 set_instance_assignment -name CLOCK_SETTINGS fast -to DDRCLK[3]
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDRCLK"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDRCLK[0]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDRCLK[1]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDRCLK[2]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDRCLK[3]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[0]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[1]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[2]"
-set_instance_assignment -name CLOCK_SETTINGS fast -to "Video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[3]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDRCLK"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDRCLK[0]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDRCLK[1]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDRCLK[2]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDRCLK[3]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[0]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[1]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[2]"
+set_instance_assignment -name CLOCK_SETTINGS fast -to "video:Fredi_Aschwanden|DDR_CTR_BLITTER:DDR_CTR_BLITTER|DDRCLK[3]"
 set_instance_assignment -name INPUT_MAX_DELAY "4 ns" -from * -to FB_ALE
 set_instance_assignment -name MAX_DELAY "5 ns" -from VD -to FB_AD
 set_instance_assignment -name MAX_DELAY "5 ns" -from FB_AD -to VA
@@ -796,7 +796,7 @@ set_global_assignment -name VHDL_FILE video/lpm_ff3.vhd
 set_global_assignment -name VHDL_FILE video/lpm_ff2.vhd
 set_global_assignment -name SOURCE_FILE video/lpm_fifo_dc0.cmp
 set_global_assignment -name VHDL_FILE video/lpm_fifo_dc0.vhd
-set_global_assignment -name BDF_FILE video/Video.bdf
+set_global_assignment -name BDF_FILE video/video.bdf
 set_global_assignment -name VHDL_FILE altpll1.vhd
 set_global_assignment -name SOURCE_FILE altpll1.cmp
 set_global_assignment -name BDF_FILE firebee.bdf
@@ -867,4 +867,5 @@ set_global_assignment -name QIP_FILE video/Doppelzeilen_Fifo.qip
 set_global_assignment -name QIP_FILE video/shiftreg_dpz.qip
 set_global_assignment -name QIP_FILE video/blitter/lpm_ror128.qip
 set_global_assignment -name SIGNALTAP_FILE firebee.stp
+
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
