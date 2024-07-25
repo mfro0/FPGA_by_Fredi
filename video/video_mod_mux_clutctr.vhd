@@ -223,38 +223,38 @@ begin
         );
 
     -- VIDEL cs
-    videl_cs <= adr_match(fb_adr, x"FFFF8200", fbcs, 1, 16#FF#);
-    acp_clut_cs <=  adr_match(fb_adr, work.video_regs.ACP_CLUT, fbcs, 2, 16#400#);
+    videl_cs <= addr_match(fb_adr, x"FFFF8200", fbcs, 1, 16#FF#);
+    acp_clut_cs <=  addr_match(fb_adr, work.video_regs.ACP_CLUT, fbcs, 2, 16#400#);
 
     acp_clut_rd <= '1' when acp_clut_cs and nFB_OE = '0' else '0';
     acp_clut_wr <= fb_b when acp_clut_cs and nFB_WR = '0' else (others => '0');
     
     -- Falcon clut
-    falcon_clut_cs <= adr_match(fb_adr, VDL_CLUT, fbcs, 1, 16#400#);
+    falcon_clut_cs <= addr_match(fb_adr, VDL_CLUT, fbcs, 1, 16#400#);
     falcon_clut_rdh <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '0' else '0';
     falcon_clut_rdl <= '1' when falcon_clut_cs and nFB_OE = '0' and fb_adr(1) = '1' else '0';
     falcon_clut_wr(1 downto 0) <= fb_16b when fb_adr(1) = '0' and falcon_clut_cs and nFB_WR = '0' else (others => '0');
     falcon_clut_wr(3 downto 2) <= fb_16b when fb_adr(1) = '1' and falcon_clut_cs and nFB_WR = '0' else (others => '0');
     
     -- ST clut
-    st_clut_cs <= adr_match(fb_adr, STE_PAL, fbcs, 1, 16#20#);
+    st_clut_cs <= addr_match(fb_adr, STE_PAL, fbcs, 1, 16#20#);
     st_clut_rd <= '1' when st_clut_cs and nFB_OE = '0' else '0';
     st_clut_wr <= fb_16b when st_clut_cs and nFB_WR = '0' else (others => '0');
     
-    st_shift_mode_cs <= adr_match(fb_adr, STSHIFT, fbcs, 1, 2);
-    falcon_shift_mode_cs <= adr_match(fb_adr, SPSHIFT, fbcs, 1, 2);
+    st_shift_mode_cs <= addr_match(fb_adr, STSHIFT, fbcs, 1, 2);
+    falcon_shift_mode_cs <= addr_match(fb_adr, SPSHIFT, fbcs, 1, 2);
     clut_off <= falcon_shift_mode(3 downto 0) when color4 else (others => '0');
     
-    acp_vctr_cs <= adr_match(fb_adr, VCTR, fbcs, 2, 4);
+    acp_vctr_cs <= addr_match(fb_adr, VCTR, fbcs, 2, 4);
     nPD_VGA <= dac_on;
     
     -- video PLL configuration
-    video_pll_config_cs <= adr_match(fb_adr, ACP_PLL_CFG, fbcs, 2, 16#200#) and fb_b(0) = '1' and fb_b(1) = '1'; 
+    video_pll_config_cs <= addr_match(fb_adr, ACP_PLL_CFG, fbcs, 2, 16#200#) and fb_b(0) = '1' and fb_b(1) = '1'; 
     
     vr_rd <= '1' when video_pll_config_cs and nFB_WR = '1' and vr_busy = '0' else '0';
     
     -- video PLL reconfig
-    video_pll_reconfig_cs <= adr_match(fb_adr, ACP_PLL_RECFG, fbcs, 2, 4) and fb_b(0) = '1';
+    video_pll_reconfig_cs <= addr_match(fb_adr, ACP_PLL_RECFG, fbcs, 2, 4) and fb_b(0) = '1';
     
     video_ram_ctr <= acp_vctr(31 downto 16);
     
@@ -266,39 +266,39 @@ begin
     pixel_clk <= pixel_clk_i;
     
     -- border colour
-    ccr_cs <= adr_match(fb_adr, work.video_regs.CCR, fbcs, 2, 4);
-    sys_ctr_cs <= adr_match(fb_adr, MONTYPE, fbcs, 1, 2);
+    ccr_cs <= addr_match(fb_adr, work.video_regs.CCR, fbcs, 2, 4);
+    sys_ctr_cs <= addr_match(fb_adr, MONTYPE, fbcs, 1, 2);
 
     
     blitter_on <= sys_ctr(3);
     
-    vdl_lof_cs <= adr_match(fb_adr, LIN_OFS, fbcs, 1, 2);
-    vdl_lwd_cs <= adr_match(fb_adr, VWRAP, fbcs, 1, 2);
+    vdl_lof_cs <= addr_match(fb_adr, LIN_OFS, fbcs, 1, 2);
+    vdl_lwd_cs <= addr_match(fb_adr, VWRAP, fbcs, 1, 2);
     -- FireBee specific R/O register: Bits per Plane
-    vdl_bpp_cs <= adr_match(fb_adr, VBPP, fbcs, 1, 2);
+    vdl_bpp_cs <= addr_match(fb_adr, VBPP, fbcs, 1, 2);
     -- FireBee specific R/O register: width in pixels. Doesn't seem to be used anywhere
-    vdl_ph_cs <= adr_match(fb_adr, VWPXL, fbcs, 1, 2);
+    vdl_ph_cs <= addr_match(fb_adr, VWPXL, fbcs, 1, 2);
     -- FireBee specific R/O register: height in pixels. Doesn't seem to be used anywhere
-    vdl_pv_cs <= adr_match(fb_adr, VHPXL, fbcs, 1, 2);
+    vdl_pv_cs <= addr_match(fb_adr, VHPXL, fbcs, 1, 2);
     
     -- here we are back to original Falcon registers
-    vdl_hht_cs <= adr_match(fb_adr, work.video_regs.VDL_HHT, fbcs, 1, 2);
-    vdl_hbb_cs <= adr_match(fb_adr, work.video_regs.VDL_HBB, fbcs, 1, 2);
-    vdl_hbe_cs <= adr_match(fb_adr, work.video_regs.VDL_HBE, fbcs, 1, 2);
-    vdl_hdb_cs <= adr_match(fb_adr, work.video_regs.VDL_HDB, fbcs, 1, 2);
-    vdl_hde_cs <= adr_match(fb_adr, work.video_regs.VDL_HDE, fbcs, 1, 2);
-    vdl_hss_cs <= adr_match(fb_adr, work.video_regs.VDL_HSS, fbcs, 1, 2);
+    vdl_hht_cs <= addr_match(fb_adr, work.video_regs.VDL_HHT, fbcs, 1, 2);
+    vdl_hbb_cs <= addr_match(fb_adr, work.video_regs.VDL_HBB, fbcs, 1, 2);
+    vdl_hbe_cs <= addr_match(fb_adr, work.video_regs.VDL_HBE, fbcs, 1, 2);
+    vdl_hdb_cs <= addr_match(fb_adr, work.video_regs.VDL_HDB, fbcs, 1, 2);
+    vdl_hde_cs <= addr_match(fb_adr, work.video_regs.VDL_HDE, fbcs, 1, 2);
+    vdl_hss_cs <= addr_match(fb_adr, work.video_regs.VDL_HSS, fbcs, 1, 2);
     
     -- vertical
     
-    vdl_vbe_cs <= adr_match(fb_adr, work.video_regs.VDL_VBE, fbcs, 1, 2);
-    vdl_vdb_cs <= adr_match(fb_adr, work.video_regs.VDL_VDB, fbcs, 1, 2);
-    vdl_vde_cs <= adr_match(fb_adr, work.video_regs.VDL_VDE, fbcs, 1, 2);
-    vdl_vbb_cs <= adr_match(fb_adr, work.video_regs.VDL_VBB, fbcs, 1, 2);
-    vdl_vss_cs <= adr_match(fb_adr, work.video_regs.VDL_VSS, fbcs, 1, 2);
-    vdl_vft_cs <= adr_match(fb_adr, work.video_regs.VDL_VFT, fbcs, 1, 2);
-    vdl_vct_cs <= adr_match(fb_adr, work.video_regs.VDL_VCT, fbcs, 1, 2);
-    vdl_vmd_cs <= adr_match(fb_adr, work.video_regs.VDL_VMD, fbcs, 1, 2);
+    vdl_vbe_cs <= addr_match(fb_adr, work.video_regs.VDL_VBE, fbcs, 1, 2);
+    vdl_vdb_cs <= addr_match(fb_adr, work.video_regs.VDL_VDB, fbcs, 1, 2);
+    vdl_vde_cs <= addr_match(fb_adr, work.video_regs.VDL_VDE, fbcs, 1, 2);
+    vdl_vbb_cs <= addr_match(fb_adr, work.video_regs.VDL_VBB, fbcs, 1, 2);
+    vdl_vss_cs <= addr_match(fb_adr, work.video_regs.VDL_VSS, fbcs, 1, 2);
+    vdl_vft_cs <= addr_match(fb_adr, work.video_regs.VDL_VFT, fbcs, 1, 2);
+    vdl_vct_cs <= addr_match(fb_adr, work.video_regs.VDL_VCT, fbcs, 1, 2);
+    vdl_vmd_cs <= addr_match(fb_adr, work.video_regs.VDL_VMD, fbcs, 1, 2);
     
     -- multiplication factor (not really, anymore)
     mulf <= 13d"1" when not st_video and (te or vdl_vct(0)) else

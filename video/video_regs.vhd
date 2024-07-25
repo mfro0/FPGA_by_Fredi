@@ -107,7 +107,7 @@ package video_regs is
     );
 
 
-    function adr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
+    function addr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
                        width : natural) return boolean; 
 end package video_regs;
 
@@ -126,7 +126,7 @@ package body video_regs is
         return x and x"FFFF" & "0000000000";    -- left shift 10 bits
     end function fbcs_csmr_bam;
 
-    function adr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
+    function addr_match(reg : addr_t; check : addr_t; fbcs : std_logic_vector; fbc : natural;
                        width : natural) return boolean is
         variable zero_count : natural := 0;
         variable upper      : natural := 0;
@@ -160,5 +160,5 @@ package body video_regs is
         end if;
         -- report "slice does not match";
         return false;
-    end function adr_match;
+    end function addr_match;
 end package body video_regs;
