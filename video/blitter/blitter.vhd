@@ -5,6 +5,8 @@ use ieee.numeric_std.all;
 library altera_mf;
 use altera_mf.altera_mf_components.all;
 
+use work.video_regs.all;
+
 entity blitter is
     port
     (
@@ -247,6 +249,4 @@ begin
     blitter_sig <= '0';
     blitter_wr <= '0';
     blitter_ta <= '0';
-    
-    
 end architecture rtl;
