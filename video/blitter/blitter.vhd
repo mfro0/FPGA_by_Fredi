@@ -43,7 +43,7 @@ architecture rtl of blitter is
     signal fb_16b           : std_logic_vector(1 downto 0);
     signal blitter_cs,
            bl_hram_cs,
-           dp_ram_cs        : std_logic;
+           dp_ram_cs        : boolean;
     signal bl_hram_be       : std_logic_vector(1 downto 0);
     signal bl_hram_out      : std_logic_vector(15 downto 0);
     signal bl_dpram_out     : std_logic_vector(15 downto 0);
@@ -166,21 +166,25 @@ architecture rtl of blitter is
 -- MAIN STATE MACHINE
     type blitter_state_type is (START, NEW_LINE, RDSRC3, RDSRC2, RDSRC1, RDDST, WRDSTW, WRDST, TESTZEILENENDE, TESTFERTIG, FERTIG);
     signal bl_sm            : blitter_state_type := START;
+    
+    signal fbcs                     : std_logic_vector(0 to 5);
 begin
+    fbcs <= '1' & nFB_CS1 & nFB_CS2 & nFB_CS3 & '1' & '1';
+    
     -- byte and word select 16 bits
     byt <= not fb_size1 and fb_size0;
     fb_16b(0) <= '1' when fb_adr(0) = '0' else '0';
     fb_16b(1) <= '1' when fb_adr(0) = '1' or byt = '0' else '0';
     
     -- blitter cs
-    blitter_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 7) = x"1f1f" else '0';    -- x"ff8a00" - x"ff8a7f"
-    blitter_ta <= blitter_cs;
+    blitter_cs <= true when nFB_CS1 = '0' and fb_adr(19 downto 7) = x"1f1f" else false;    -- x"ff8a00" - x"ff8a7f"
+    blitter_ta <= std_logic'val(boolean'pos(blitter_cs));
     
     -- registers
     -- halftone RAM
-    bl_hram_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 5) = x"7c50" else '0';    -- x"ff8a00" - xf"f8a1f"
-    bl_hram_be(1) <= bl_hram_cs and fb_16b(0);
-    bl_hram_be(0) <= bl_hram_cs and fb_16b(1);
+    bl_hram_cs <= true when nFB_CS1 = '0' and fb_adr(19 downto 5) = x"7c50" else false;    -- x"ff8a00" - xf"f8a1f"
+    bl_hram_be(1) <= std_logic'val(boolean'pos(bl_hram_cs and fb_16b(0) = '1'));
+    bl_hram_be(0) <= std_logic'val(boolean'pos(bl_hram_cs and fb_16b(1) = '1'));
     wren_b <= '0';
 
     line_nr <= resize(bl_ln + y_index(3 downto 0), line_nr'length) when bl_dst_x_inc < d"0" else
@@ -224,13 +228,14 @@ begin
             clock0 => MAIN_CLK,
             clock1 => ddrclk0,
             data_a => fb_ad(31 downto 16),
-            wren_a => bl_hram_cs and not nFB_WR,
+            wren_a => std_logic'val(boolean'pos(bl_hram_cs and nFB_WR = '0')),
             wren_b => wren_b,
             q_a => bl_dpram_out,
             q_b => bl_hram_out            
         );
     
-    dp_ram_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = x"7c528" else '0';
+    -- dp_ram_cs <= '1' when nFB_CS1 = '0' and fb_adr(19 downto 1) = x"7c528" else '0';
+    dp_ram_cs <= addr_match(fb_adr, DPRAM, fbcs, 1, 2);
     
     -- src_x_inc
     p_src_x_inc : process(all)

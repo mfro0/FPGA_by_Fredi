@@ -56,6 +56,30 @@ package video_regs is
     constant ACP_PLL_CFG        : addr_t := x"F0000600";        -- PLL config x"200" bytes
     constant ACP_PLL_RECFG      : addr_t := x"F0000800";        -- bit 31 = '1' = busy
 
+    -- Blitter registers
+    constant HALFTONE           : addr_t := x"FFFF8A00";        -- Blitter halftone RAM (16 words)
+    constant SRC_XINC           : addr_t := x"FFFF8A20";        -- Source-X increment (signed word)
+    constant SRC_YINC           : addr_t := x"FFFF8A22";        -- Source-Y increment (signed word)
+    constant SRC_ADDR           : addr_t := x"FFFF8A24";        -- Source address (long)
+    constant ENDMASK1           : addr_t := x"FFFF8A28";        -- left endmask (word)
+    constant ENDMASK2           : addr_t := x"FFFF8A2A";        -- "inner" endmask (word)
+    constant ENDMASK3           : addr_t := x"FFFF8A2C";        -- right endmask (word)
+    constant DST_XINC           : addr_t := x"FFFF8A2E";        -- Destination-X increment (signed word)
+    constant DST_YINC           : addr_t := x"FFFF8A30";        -- Destination-Y increment (signed word)
+    constant DST_ADDR           : addr_t := x"FFFF8A32";        -- Destination address (long)
+    constant X_COUNT            : addr_t := x"FFFF8A36";        -- bitblock words/line (word)
+    constant Y_COUNT            : addr_t := x"FFFF8A38";        -- bitblock height (word)
+    constant HOP                : addr_t := x"FFFF8A3A";        -- halftone operations (byte)
+    constant LOP                : addr_t := x"FFFF8A3B";        -- logic operation (byte)
+    constant LINE_NUM           : addr_t := x"FFFF8A3C";        -- line number+SMUDGE+HOG+BUSY (byte)
+    constant SKEW               : addr_t := x"FFFF8A3D";        -- skew between source and destination + NFSR + FXSR
+    
+    -- Firebee-only blitter registers
+    constant SRC_IADDRH         : addr_t := x"FFFF8A44";        -- 
+    constant SRC_IADDRL         : addr_t := x"FFFF8A46";        --
+    constant X_INDEX            : addr_t := x"FFFF8A48";        --
+    constant Y_INDEX            : addr_t := x"FFFF8A4A";        --
+    constant DPRAM              : addr_t := x"FFFF8A50";        --
     --
     subtype fbcs_t is std_logic_vector(5 downto 0);
 
