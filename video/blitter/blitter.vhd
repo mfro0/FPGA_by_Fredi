@@ -177,7 +177,8 @@ begin
     fb_16b(1) <= '1' when fb_adr(0) = '1' or byt = '0' else '0';
     
     -- blitter cs
-    blitter_cs <= true when nFB_CS1 = '0' and fb_adr(19 downto 7) = x"1f1f" else false;    -- x"ff8a00" - x"ff8a7f"
+    --blitter_cs <= true when nFB_CS1 = '0' and fb_adr(19 downto 7) = x"1f1f" else false;    -- x"ff8a00" - x"ff8a7f"
+    blitter_cs <= addr_match(fb_adr, BLIT, fbcs, 1, 16#50#);
     blitter_ta <= std_logic'val(boolean'pos(blitter_cs));
     
     -- registers

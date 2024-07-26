@@ -57,6 +57,7 @@ package video_regs is
     constant ACP_PLL_RECFG      : addr_t := x"F0000800";        -- bit 31 = '1' = busy
 
     -- Blitter registers
+    constant BLIT               : addr_t := x"FFFF8A00";
     constant HALFTONE           : addr_t := x"FFFF8A00";        -- Blitter halftone RAM (16 words)
     constant SRC_XINC           : addr_t := x"FFFF8A20";        -- Source-X increment (signed word)
     constant SRC_YINC           : addr_t := x"FFFF8A22";        -- Source-Y increment (signed word)
