@@ -50,7 +50,8 @@ use ieee.std_logic_1164.all;
 
 package FalconIO_SDCard_IDE_CF_PKG is
 	component WF25915IP_TOP_V1_SOC -- GLUE.
-		port (
+		port
+        (
 		    -- Clock system:
 			GL_CLK		: in std_logic; -- Originally 8MHz.
 			GL_CLK_016	: in std_logic; -- One sixteenth of GL_CLK.
@@ -165,13 +166,14 @@ package FalconIO_SDCard_IDE_CF_PKG is
 			GL_STE_PAD1Yn	: in std_logic; 		-- Counter input for the Paddle 1Y.
 			GL_STE_PADRSTn	: out std_logic; 		-- Paddle monoflops reset.
 			GL_STE_PENn		: in std_logic; 		-- Input of the light pen.
-			GL_STE_SCCn		: out std_logic;	-- Select signal for the STE or TT SCC chip.
-			GL_STE_CPROGn	: out std_logic	-- Select signal for the STE's cache processor.
+			GL_STE_SCCn		: out std_logic;	    -- Select signal for the STE or TT SCC chip.
+			GL_STE_CPROGn	: out std_logic	        -- Select signal for the STE's cache processor.
 			);
 	end component WF25915IP_TOP_V1_SOC;
 
     component WF5380_TOP_SOC
-        port (
+        port
+        (
             CLK			: in std_logic;
             RESETn	    : in std_logic;
             ADR			: in std_logic_vector(2 downto 0);
@@ -223,7 +225,8 @@ package FalconIO_SDCard_IDE_CF_PKG is
     end component WF5380_TOP_SOC;
 
 	component WF1772IP_TOP_SOC -- FDC.
-		port (
+		port
+        (
 			CLK			: in std_logic; -- 16MHz clock!
 			RESETn		: in std_logic;
 			CSn			: in std_logic;
@@ -249,55 +252,57 @@ package FalconIO_SDCard_IDE_CF_PKG is
 	end component WF1772IP_TOP_SOC;
 
 	component WF68901IP_TOP_SOC -- MFP.
-		port (  -- System control:
-				CLK			: in std_logic;
-				RESETn		: in std_logic;
+		port
+        (   -- System control:
+			CLK			: in std_logic;
+			RESETn		: in std_logic;
 				
-				-- Asynchronous bus control:
-				DSn			: in std_logic;
-				CSn			: in std_logic;
-				RWn			: in std_logic;
-				DTACKn		: out std_logic;
+			-- Asynchronous bus control:
+			DSn			: in std_logic;
+			CSn			: in std_logic;
+			RWn			: in std_logic;
+			DTACKn		: out std_logic;
 				
-				-- Data and Adresses:
-				RS			: in std_logic_vector(5 downto 1);
-				DATA_IN		: in std_logic_vector(7 downto 0);
-				DATA_OUT	: out std_logic_vector(7 downto 0);
-				DATA_EN		: out std_logic;
-				GPIP_IN		: in std_logic_vector(7 downto 0);
-				GPIP_OUT	: out std_logic_vector(7 downto 0);
-				GPIP_EN		: out std_logic_vector(7 downto 0);
+			-- Data and Adresses:
+			RS			: in std_logic_vector(5 downto 1);
+			DATA_IN		: in std_logic_vector(7 downto 0);
+			DATA_OUT	: out std_logic_vector(7 downto 0);
+			DATA_EN		: out std_logic;
+			GPIP_IN		: in std_logic_vector(7 downto 0);
+			GPIP_OUT	: out std_logic_vector(7 downto 0);
+			GPIP_EN		: out std_logic_vector(7 downto 0);
 				
-				-- Interrupt control:
-				IACKn		: in std_logic;
-				IEIn		: in std_logic;
-				IEOn		: out std_logic;
-				IRQn		: out std_logic;
+			-- Interrupt control:
+			IACKn		: in std_logic;
+			IEIn		: in std_logic;
+			IEOn		: out std_logic;
+			IRQn		: out std_logic;
 				
-				-- Timers and timer control:
-				XTAL1		: in std_logic; -- Use an oszillator instead of a quartz.
-				TAI			: in std_logic;
-				TBI			: in std_logic;
-				TAO			: out std_logic;			
-				TBO			: out std_logic;			
-				TCO			: out std_logic;			
-				TDO			: out std_logic;			
+			-- Timers and timer control:
+			XTAL1		: in std_logic; -- Use an oszillator instead of a quartz.
+			TAI			: in std_logic;
+			TBI			: in std_logic;
+			TAO			: out std_logic;			
+			TBO			: out std_logic;			
+			TCO			: out std_logic;			
+			TDO			: out std_logic;			
 				
-				-- Serial I/O control:
-				RC			: in std_logic;
-				TC			: in std_logic;
-				SI			: in std_logic;
-				SO			: out std_logic;
-				SO_EN		: out std_logic;
+			-- Serial I/O control:
+			RC			: in std_logic;
+			TC			: in std_logic;
+			SI			: in std_logic;
+			SO			: out std_logic;
+			SO_EN		: out std_logic;
 				
-				-- DMA control:
-				RRn			: out std_logic;
-				TRn			: out std_logic			
+			-- DMA control:
+			RRn			: out std_logic;
+			TRn			: out std_logic			
 		);
 	end component WF68901IP_TOP_SOC;
 
 	component WF2149IP_TOP_SOC -- Sound.
-		port(
+		port
+        (
 			
 			SYS_CLK		: in std_logic; -- Read the inforation in the header!
 			RESETn   	: in std_logic;
@@ -327,7 +332,8 @@ package FalconIO_SDCard_IDE_CF_PKG is
 	end component WF2149IP_TOP_SOC;
 
 	component WF6850IP_TOP_SOC -- ACIA.
-	  port (
+	  port
+      (
 			CLK					: in std_logic;
 	        RESETn				: in std_logic;
 
@@ -349,11 +355,12 @@ package FalconIO_SDCard_IDE_CF_PKG is
 	        IRQn				: out std_logic;
 	        TXDATA				: out std_logic;   
 	        RTSn				: out std_logic
-	       );                                              
+        );                                              
 	end component WF6850IP_TOP_SOC;
 
 	component WF_SD_CARD
-		port (
+		port
+        (
 			RESETn			: in std_logic;
 			CLK				: in std_logic;
 			ACSI_A1			: in std_logic;
@@ -377,28 +384,30 @@ package FalconIO_SDCard_IDE_CF_PKG is
 	end component WF_SD_CARD;
 
 	component dcfifo0 
-		PORT (
-			aclr			: IN STD_LOGIC ;
-			data			: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
-			rdclk			: IN STD_LOGIC ;
-			rdreq			: IN STD_LOGIC ;
-			wrclk			: IN STD_LOGIC ;
-			wrreq			: IN STD_LOGIC ;
-			q				: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
-			wrusedw			: OUT STD_LOGIC_VECTOR (9 DOWNTO 0) 
+		PORT
+        (
+			aclr			: in std_logic;
+			data			: in std_logic_vector(7 downto 0);
+			rdclk			: in std_logic;
+			rdreq			: in std_logic;
+			wrclk			: in std_logic;
+			wrreq			: in std_logic;
+			q				: out std_logic_vector(31 downto 0);
+			wrusedw			: out std_logic_vector(9 downto 0) 
 	);
 	end component dcfifo0;
 	
 	component dcfifo1
-		PORT (
-			aclr			: IN STD_LOGIC ;
-			data			: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
-			rdclk			: IN STD_LOGIC ;
-			rdreq			: IN STD_LOGIC ;
-			wrclk			: IN STD_LOGIC ;
-			wrreq			: IN STD_LOGIC ;
-			q				: OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
-			rdusedw			: OUT STD_LOGIC_VECTOR (9 DOWNTO 0) 
+		PORT
+        (
+			aclr			: in STD_LOGIC ;
+			data			: in STD_LOGIC_VECTOR (31 DOWNTO 0);
+			rdclk			: in STD_LOGIC ;
+			rdreq			: in STD_LOGIC ;
+			wrclk			: in STD_LOGIC ;
+			wrreq			: in STD_LOGIC ;
+			q				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+			rdusedw			: out STD_LOGIC_VECTOR (9 DOWNTO 0) 
 		);
 	end component;
 
